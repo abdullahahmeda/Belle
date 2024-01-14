@@ -1,0 +1,739 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="content-type" content="text/html; charset=UTF8" />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
+      integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU"
+      crossorigin="anonymous"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+      rel="stylesheet"
+    />
+    <!-- <script src="https://cdn.statically.io/gh/mohamed-eskandrane/Belle/main/Belle2.js"></script>
+  <link rel="stylesheet" href="https://cdn.statically.io/gh/mohamed-eskandrane/Belle/main/Belle.css"> -->
+    <script src="Js.js"></script>
+    <link rel="stylesheet" href="Style.css" />
+    <title> </title>
+  </head>
+  <body style="min-height: unset; word-break: unset">
+    <h2 id="MainLabel">برنامج المحاسبة</h2>
+    <div class="BA">
+      <button
+        id="Moon"
+        onclick="ConvertModeToMoon()"
+        type="button"
+        style="height: 30px; width: 30px"
+      >
+        <a class="fa fa-moon-o"></a>
+      </button>
+      <button
+        id="Sun"
+        onclick="ConvertModeToSun()"
+        type="button"
+        style="height: 30px; width: 30px"
+      >
+        <a class="fa fa-sun-o"></a>
+      </button>
+      <!-- <input type="text" id="Myusername" readonly="" />
+    <input type="text" id="MyMobile" readonly="" style="display: none;"/> -->
+    </div>
+    <!--loginPage  -->
+    <!-- <div class='login-box' id='loginPage' style='height: 163px; width: 80%;top: 50%;'>
+    <div class='hh'> <h3> تسجيل الدخول</h3> </div>
+  <form id='Branch_Main_form' style="justify-content: space-evenly;"> 
+      <div class='Users_Div' style='height: 25%;'>
+        <label for='User_PassWord' >كلمة السر</label>
+        <input id='User_PassWord' type="password" />
+        <span onclick='ShowPassword()'><a class='fa fa-eye' id='Eye_Password'></a></span>
+        <span><a id='error_User_ID'></a></span>
+      </div>
+      <div class='BB0' style='height: 25%; '>
+        <button class='Buto' onclick='Sign_In()' type='button'>
+          <a class='fa fa-sign-in' style='color:rgb(0, 65, 243)'></a>
+          تسجيل الدخول
+        </button> 
+        </div>
+  </form>  
+</div>  -->
+    <!-- Main -->
+    <div class="login-box" id="Main" style="display: none; height: 80%">
+      <div class="hh">
+        <h3 style="width: calc(100% - 70px)">الواجهة الرئيسية</h3>
+        <button
+          class="SignOut"
+          onclick="init()"
+          style="
+            background-color: rgba(206, 255, 92, 0.952);
+            width: 30px;
+            height: 30px;
+          "
+        >
+          <a
+            id="LoadingMain"
+            class="fa fa-refresh"
+            style="color: rgba(67, 78, 3, 0.603); width: 100%"
+          >
+          </a>
+        </button>
+        <!-- <button class='SignOut' onclick='SignOutUser()' style='background-color: red; height: 30px; width: 30px;'>
+        <a class='fa fa-close' style='color:rgba(100, 1, 1, 0.603) ;'> </a>
+      </button> -->
+      </div>
+      <form>
+        <div class="MainButtons">
+          <button
+            onclick="ShowSalesWi()"
+            style="width: 45%; background-color: rgb(245, 166, 166)"
+            type="button"
+          >
+            <a
+              id="invoicedollar"
+              class="fas fa-file-invoice-dollar"
+              style="color: rgba(197, 0, 43, 0.603)"
+            >
+            </a>
+            فاتورة مبيعات جديدة
+          </button>
+          <button
+            onclick="ShowSalesBrowser()"
+            style="width: 45%; background-color: rgb(245, 166, 166)"
+            type="button"
+          >
+            <a
+              id="invoicedollar2"
+              class="fas fa-file-invoice-dollar"
+              style="color: rgba(197, 0, 43, 0.603)"
+            >
+            </a>
+            المبيعات
+          </button>
+          <button
+            onclick="ShowMethodBrowser()"
+            style="width: 45%; background-color: rgb(55, 185, 22)"
+            tabindex="13"
+            type="button"
+          >
+            <a
+              id="creditcard"
+              class="fa fa-credit-card"
+              style="color: rgb(21, 82, 3)"
+            >
+            </a>
+            طرق الدفع
+          </button>
+        </div>
+      </form>
+    </div>
+    <!-- MethodWi -->
+    <div class="login-box" id="MethodWi" style="display: none; height: 85%">
+      <div class="hh">
+        <h3 style="width: calc(100% - 30px)">طريقة دفع جديدة</h3>
+        <button
+          class="SignOut"
+          onclick="ShowMethodBrowser()"
+          style="
+            background-color: rgba(92, 149, 255, 0.952);
+            width: 30px;
+            height: 30px;
+          "
+        >
+          <a
+            id="BackMethodBrowser"
+            class="fa fa-mail-reply"
+            style="color: rgba(5, 33, 85, 0.603); width: 100%"
+          >
+          </a>
+        </button>
+      </div>
+      <form
+        id="FormMethodDetails"
+        method="post"
+        style="height: 90%"
+        onsubmit="return true"
+      >
+        <div class="Three_Div">
+          <div class="user-box">
+            <label for="MetodName">طريقة الدفع</label>
+            <input id="typeP" name="Type" type="text" style="display: none" />
+            <input id="ModeP" name="Mode" type="text" style="display: none" />
+            <input
+              id="RowMethod"
+              name="RowMethod"
+              type="text"
+              style="display: none"
+            />
+            <input
+              id="MetodNum"
+              name="MetodNum"
+              required=""
+              type="text"
+              style="display: none"
+            />
+            <input
+              id="MetodName"
+              name="MetodName"
+              required=""
+              tabindex="1"
+              type="text"
+              autocomplete="off"
+            />
+            <label for="MetodName"></label>
+          </div>
+          <div class="user-box">
+            <label for="PercentMetod">نسبة الدفع </label>
+            <input
+              id="PercentMetod"
+              name="PercentMetod"
+              required=""
+              tabindex="2"
+              type="number"
+              autocomplete="off"
+            />
+            <label for="PercentMetod">% </label>
+          </div>
+          <div class="user-box">
+            <label for="AmountMetod">مبلغ ثابت</label>
+            <input
+              id="AmountMetod"
+              name="AmountMetod"
+              required=""
+              tabindex="3"
+              type="number"
+              autocomplete="off"
+            />
+            <label for="AmountMetod">ريال</label>
+          </div>
+        </div>
+        <div class="BB">
+          <button
+            class="Buto"
+            onclick="onsubmitForm1()"
+            style="width: 22%; background-color: rgb(30, 138, 3)"
+            tabindex="103"
+            type="button"
+          >
+            <a class="fa fa-plus" style="color: rgb(18, 68, 2)"> </a>
+            اضافة
+          </button>
+          <button
+            class="Buto"
+            onclick="onsubmitForm2()"
+            style="width: 22%; background-color: rgb(228, 155, 21)"
+            tabindex="104"
+            type="button"
+          >
+            <a class="fa fa-edit" style="color: rgb(80, 37, 3)"> </a>
+            تعديل
+          </button>
+          <button
+            class="Buto"
+            onclick="onsubmitForm3()"
+            style="width: 22%; background-color: rgb(185, 34, 7)"
+            tabindex="105"
+            type="button"
+          >
+            <a class="fa fa-trash" style="color: rgb(92, 14, 3)"> </a>
+            حذف
+          </button>
+          <button
+            class="Buto"
+            onclick="ClearItemCu()"
+            style="background-color: rgb(255 169 92 / 95%); width: 22%"
+            tabindex="105"
+            type="button"
+          >
+            <a class="fas fa-broom" style="color: rgba(240, 48, 0, 0.781)"> </a>
+            تفريغ
+          </button>
+        </div>
+      </form>
+    </div>
+    <!-- MethodBrowser -->
+    <div
+      class="login-box"
+      id="MethodBrowser"
+      style="display: none; height: 80%"
+    >
+      <div class="hh">
+        <h3 style="width: calc(100% - 100px)">طرق الدفع</h3>
+        <button
+          class="SignOut"
+          onclick="LoadMethodToTable()"
+          style="
+            background-color: rgba(206, 255, 92, 0.952);
+            width: 30px;
+            height: 30px;
+          "
+        >
+          <a
+            id="LoadingMethodBrowser"
+            class="fa fa-refresh"
+            style="color: rgba(67, 78, 3, 0.603); width: 100%"
+          >
+          </a>
+        </button>
+        <button
+          class="SignOut"
+          onclick="ShowMethodWi()"
+          style="background-color: rgb(30, 138, 3); width: 30px; height: 30px"
+        >
+          <a
+            id="LoadingMethodplus"
+            class="fa fa-plus"
+            style="color: white; width: 100%"
+          >
+          </a>
+        </button>
+        <button
+          class="SignOut"
+          onclick="GoToMain()"
+          style="
+            background-color: rgba(92, 149, 255, 0.952);
+            width: 30px;
+            height: 30px;
+          "
+        >
+          <a
+            class="fa fa-mail-reply"
+            style="color: rgba(5, 33, 85, 0.603); width: 100%"
+          >
+          </a>
+        </button>
+      </div>
+      <form style="height: 90%; display: block">
+        <form style="height: 40%">
+          <div class="tabdata" style="direction: rtl">
+            <table>
+              <thead>
+                <tr>
+                  <th style="width: 30px">ت</th>
+                  <th style="display: none"></th>
+                  <th style="width: calc(30% - 60px)">طريقة الدفع</th>
+                  <th style="width: calc(40% - 60px)">نسبة الدفع</th>
+                  <th style="width: calc(40% - 60px)">مبلغ ثابت</th>
+                  <th style="width: 30px"></th>
+                </tr>
+              </thead>
+              <tbody id="bodyTableMethod"></tbody>
+            </table>
+          </div>
+        </form>
+      </form>
+    </div>
+    <!-- SalesWi -->
+    <div class="login-box" id="SalesWi" style="display: none; height: 85%">
+      <div class="hh">
+        <h3 style="width: calc(100% - 30px)">فاتورة مبيعات جديدة</h3>
+        <button
+          class="SignOut"
+          onclick="GoToMain()"
+          style="
+            background-color: rgba(92, 149, 255, 0.952);
+            width: 30px;
+            height: 30px;
+          "
+        >
+          <a
+            id="BackMain"
+            class="fa fa-mail-reply"
+            style="color: rgba(5, 33, 85, 0.603); width: 100%"
+          >
+          </a>
+        </button>
+      </div>
+      <form
+        id="FormSalesWiDetails"
+        method="post"
+        style="height: 90%"
+        onsubmit="return true"
+      >
+        <div class="Three_Div">
+          <div class="user-box">
+            <label for="BillNumber">رقم الفاتورة</label>
+            <input id="typeS" name="Type" type="text" style="display: none" />
+            <input id="ModeS" name="Mode" type="text" style="display: none" />
+            <input id="RowS" name="RowS" type="text" style="display: none" />
+            <input id="BillNumber2" type="text" style="display: none" />
+            <input
+              id="BillNumber"
+              name="BillNumber"
+              required=""
+              type="text"
+              autocomplete="off"
+              tabindex="1"
+            />
+            <label for="BillNumber"></label>
+          </div>
+          <div class="user-box">
+            <label for="BillDate">تاريخ الفاتورة</label>
+            <input
+              id="BillDate"
+              name="BillDate"
+              required=""
+              tabindex="2"
+              type="date"
+              autocomplete="off"
+            />
+            <label for="BillDate"></label>
+          </div>
+          <div class="user-box">
+            <label for="AmountTotal">مبلغ الفاتورة</label>
+            <input
+              id="AmountTotal"
+              name="AmountTotal"
+              required=""
+              tabindex="3"
+              type="number"
+              autocomplete="off"
+              onchange="CaluclateTotalS()"
+              onkeyup="CaluclateTotalS()"
+            />
+            <label for="AmountTotal">ريال </label>
+          </div>
+          <div class="user-box">
+            <label for="AmountActualTotal">القيمة (بعد حساب المسترجع)</label>
+            <input
+              id="AmountActualTotal"
+              name="AmountActualTotal"
+              required=""
+              disabled=""
+              tabindex="-1"
+              type="number"
+              autocomplete="off"
+              readonly=""
+            />
+            <label for="AmountActualTotal">ريال</label>
+          </div>
+          <div class="user-box">
+            <label for="MethodNum">طريقة الدفع</label>
+            <select
+              name="MethodNum"
+              id="MethodNum"
+              required=""
+              tabindex="4"
+              onchange="OncahangeMethod(this.value)"
+            ></select>
+            <input id="MethodPer" type="text" style="display: none" />
+            <input id="MethodVa" type="text" style="display: none" />
+            <label for="MethodNum"></label>
+          </div>
+          <div class="user-box">
+            <label for="MethodAmount">خصم الدفع</label>
+            <input
+              id="MethodAmount"
+              name="MethodAmount"
+              type="number"
+              readonly=""
+            />
+            <label for="MethodAmount">ريال </label>
+          </div>
+          <div class="user-box">
+            <label for="DesCountAmount">خصومات اخرى</label>
+            <input
+              id="DesCountAmount"
+              name="DesCountAmount"
+              type="number"
+              tabindex="5"
+              onchange="CaluclateTotalS()"
+              onkeyup="CaluclateTotalS()"
+            />
+            <select
+              id="DesCountSel"
+              name="DesCountSel"
+              required=""
+              tabindex="6"
+              style="width: 60px"
+              onchange="CaluclateTotalS()"
+            >
+              <option value="ريال">ريال</option>
+              <option value="%">%</option>
+            </select>
+          </div>
+
+          <div class="user-box">
+            <label for="Tax">ضريبة القيمة المضافة</label>
+            <input id="Tax" name="Tax" type="number" readonly="" />
+            <input id="TaxP" type="number" style="display: none" />
+            <label for="Tax">ريال</label>
+          </div>
+
+          <div class="user-box">
+            <label for="Ready">تجهيز الطلب</label>
+            <input
+              id="Ready"
+              name="Ready"
+              required=""
+              tabindex="8"
+              type="number"
+              autocomplete="off"
+              onkeyup="CaluclateTotalS()"
+              onchange="CaluclateTotalS()"
+            />
+            <label for="Ready">ريال </label>
+          </div>
+
+          <div class="user-box">
+            <input
+              type="checkbox"
+              id="checkbox1"
+              required=""
+              onchange="onchangecheckbox()"
+              style="width: 50px; margin-right: 50px"
+            />
+            <label for="checkbox1" style="width: calc(100% - 100px)"
+              >هل الشحن مجاني</label
+            >
+          </div>
+
+          <div class="user-box">
+            <label for="ShipNum">نوع الشحن</label>
+            <select
+              name="ShipNum"
+              id="ShipNum"
+              required=""
+              tabindex="7"
+              onchange="OncahangeShip(this.value)"
+              disabled=""
+            ></select>
+            <label for="ShipNum"></label>
+          </div>
+
+          <div class="user-box">
+            <label for="ShipAmount">مبلغ الشحن</label>
+            <input
+              id="ShipAmount"
+              name="ShipAmount"
+              required=""
+              tabindex="8"
+              type="number"
+              autocomplete="off"
+              onkeyup="CaluclateTotalS()"
+              onchange="CaluclateTotalS()"
+              disabled=""
+            />
+            <label for="ShipAmount">ريال </label>
+          </div>
+          <div class="user-box">
+            <label for="RefundAmount">المسترجع</label>
+            <input
+              id="RefundAmount"
+              name="RefundAmount"
+              value="0"
+              required=""
+              tabindex="8"
+              type="number"
+              autocomplete="off"
+              onkeyup="CaluclateTotalS()"
+              onchange="CaluclateTotalS()"
+            />
+            <label for="ShipAmount">ريال </label>
+          </div>
+          <div class="user-box">
+            <label for="PlaceName">مكان التوصيل</label>
+            <select
+              name="PlaceName"
+              id="PlaceName"
+              required=""
+              tabindex="7"
+              onchange="OncahangePlaceName(this.value)"
+            ></select>
+            <label for="PlaceName"></label>
+          </div>
+
+          <div class="user-box">
+            <label for="PlacePrice">سعر التوصيل</label>
+            <input
+              id="PlacePrice"
+              name="PlacePrice"
+              required=""
+              tabindex="8"
+              type="number"
+              autocomplete="off"
+              onkeyup="CaluclateTotalS()"
+              onchange="CaluclateTotalS()"
+            />
+            <label for="PlacePrice">ريال </label>
+          </div>
+          <div class="user-box">
+            <label for="OtherCost">تكاليف اخرى</label>
+            <input
+              id="OtherCost"
+              name="OtherCost"
+              required=""
+              tabindex="9"
+              type="number"
+              autocomplete="off"
+              onkeyup="CaluclateTotalS()"
+              onchange="CaluclateTotalS()"
+            />
+            <label for="OtherCost">ريال</label>
+          </div>
+
+          <div class="user-box">
+            <label for="AmountNet">صافي الفاتورة</label>
+            <input
+              id="AmountNet"
+              name="AmountNet"
+              required=""
+              tabindex="10"
+              type="number"
+              autocomplete="off"
+              readonly=""
+            />
+            <label for="AmountNet">ريال</label>
+          </div>
+        </div>
+        <div class="BB">
+          <button
+            class="Buto"
+            onclick="onsubmitFormS1()"
+            style="width: 22%; background-color: rgb(30, 138, 3)"
+            tabindex="103"
+            type="button"
+          >
+            <a class="fa fa-plus" style="color: rgb(18, 68, 2)"> </a>
+            اضافة
+          </button>
+          <button
+            class="Buto"
+            onclick="onsubmitFormS2()"
+            style="width: 22%; background-color: rgb(228, 155, 21)"
+            tabindex="104"
+            type="button"
+          >
+            <a class="fa fa-edit" style="color: rgb(80, 37, 3)"> </a>
+            تعديل
+          </button>
+          <button
+            class="Buto"
+            onclick="onsubmitFormS3()"
+            style="width: 22%; background-color: rgb(185, 34, 7)"
+            tabindex="105"
+            type="button"
+          >
+            <a class="fa fa-trash" style="color: rgb(92, 14, 3)"> </a>
+            حذف
+          </button>
+          <button
+            class="Buto"
+            onclick="ClearItemSa()"
+            style="background-color: rgb(255 169 92 / 95%); width: 22%"
+            tabindex="105"
+            type="button"
+          >
+            <a class="fas fa-broom" style="color: rgba(240, 48, 0, 0.781)"> </a>
+            تفريغ
+          </button>
+        </div>
+      </form>
+    </div>
+    <!-- SalesBrowser -->
+    <div class="login-box" id="SalesBrowser" style="display: none; height: 80%">
+      <div class="hh">
+        <h3 style="width: calc(100% - 70px)">المبيعات</h3>
+        <button
+          class="SignOut"
+          onclick="ShowSalesBrowser()"
+          style="
+            background-color: rgba(206, 255, 92, 0.952);
+            width: 30px;
+            height: 30px;
+          "
+        >
+          <a
+            id="LoadingSalesBrowser"
+            class="fa fa-refresh"
+            style="color: rgba(67, 78, 3, 0.603); width: 100%"
+          >
+          </a>
+        </button>
+        <button
+          class="SignOut"
+          onclick="GoToMain()"
+          style="
+            background-color: rgba(92, 149, 255, 0.952);
+            width: 30px;
+            height: 30px;
+          "
+        >
+          <a
+            class="fa fa-mail-reply"
+            style="color: rgba(5, 33, 85, 0.603); width: 100%"
+          >
+          </a>
+        </button>
+      </div>
+      <form style="height: 90%; display: block">
+        <div class="Three_Div">
+          <div class="user-box">
+            <label for="SeaNumber" style="width: 30%">بحث عن رقم</label>
+            <input id="SeaNumber" type="text" style="width: calc(70% - 35px)" />
+            <button
+              class="SignOut"
+              onclick="ClearValueNu()"
+              style="background-color: #efbaba; height: 30px; width: 30px"
+              type="button"
+            >
+              <a class="fa fa-close" style="color: red"> </a>
+            </button>
+          </div>
+          <div class="user-box">
+            <label for="SeaDate" style="width: 30%">بحث عن تاريخ</label>
+            <input id="SeaDate" type="date" style="width: calc(70% - 70px)" />
+            <button
+              class="SignOut"
+              onclick="ClearValueDa()"
+              style="background-color: #efbaba; height: 30px; width: 30px"
+              type="button"
+            >
+              <a class="fa fa-close" style="color: red"> </a>
+            </button>
+            <button
+              class="SignOut"
+              onclick="FillterSalesToTable()"
+              style="background-color: #cbefba; height: 30px; width: 30px"
+              type="button"
+            >
+              <a class="fa fa-search" style="color: rgb(6, 114, 3)"> </a>
+            </button>
+          </div>
+        </div>
+        <form style="height: 40%">
+          <div class="tabdata" style="direction: rtl">
+            <table>
+              <thead>
+                <tr>
+                  <th style="width: calc(5% - 30px)">ت</th>
+                  <th style="width: calc(10% - 30px)">رقم</th>
+                  <th style="width: calc(10% - 30px)">التاريخ</th>
+                  <th style="width: calc(10% - 30px)">مبلغ</th>
+                  <th style="width: calc(10% - 30px)">مسترجع</th>
+                  <th style="width: calc(10% - 30px)">طريقة الدفع</th>
+                  <th style="width: calc(10% - 30px)">خصم الدفع</th>
+                  <th style="width: calc(10% - 30px)">ضريبة</th>
+                  <th style="width: calc(10% - 30px)">نوع الشحن</th>
+                  <th style="width: calc(10% - 30px)">مبلغ الشحن</th>
+                  <th style="width: calc(5% - 30px)">تكاليف اخرى</th>
+                  <th style="width: calc(10% - 30px)">صافي</th>
+                  <th style="display: none"></th>
+                  <th style="display: none"></th>
+                  <th style="width: 30px"></th>
+                  <th style="display: none"></th>
+                  <th style="display: none"></th>
+                  <th style="display: none"></th>
+                </tr>
+              </thead>
+              <tbody id="bodydataS"></tbody>
+            </table>
+          </div>
+        </form>
+      </form>
+    </div>
+  </body>
+</html>
