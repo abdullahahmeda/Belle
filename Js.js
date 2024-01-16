@@ -1,6 +1,6 @@
 const sheetId = "1q3M1Etd73E7s3HaH_SZyEwBAZUCbAY_nhjmB02WDoTc";
 const Script =
-  "https://script.google.com/macros/s/AKfycbyDDDuRTvw1v7cxkhOYi2irRjU6goZUZScdavh5OIsjhs8UuyzWN966fVtmqzF6v2xGJA/exec";
+  "https://script.google.com/macros/s/AKfycbw1LDgs06wRs_ykyAgGh0XAgkOKWAfHSoNnZ6fgI7RjnBLgeHzFEyXy9ZHyX16olrUkfQ/exec";
 const base = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?`;
 let query = encodeURIComponent("Select *");
 let places = "places";
