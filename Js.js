@@ -1016,6 +1016,7 @@ function ShowSalesBrowser() {
     if (isNaN(InvoicesData[0].Num) == false) {
       for (let index = 0; index < InvoicesData.length; index++) {
         if (InvoicesData[index].Num != "") {
+          console.log(InvoicesData);
           AddRowPrS(
             InvoicesData[index].Num,
             InvoicesData[index].BillNumber,
@@ -1163,10 +1164,10 @@ function AddRowPrS(
   cell.className = "Calcu3";
   cell = row.insertCell();
   cell.id = "S" + bodydata.childElementCount + "ShipType";
-  cell.innerHTML = ShipType;
+  cell.innerHTML = PlaceName;
   cell = row.insertCell();
   cell.id = "S" + bodydata.childElementCount + "ShipAmount";
-  cell.innerHTML = GetFormat(String(ShipAmount));
+  cell.innerHTML = GetFormat(String(PlacePrice));
   cell.className = "Calcu4";
   cell = row.insertCell();
   cell.id = "S" + bodydata.childElementCount + "OtherCost";
