@@ -1,19 +1,22 @@
 const sheetId = "1q3M1Etd73E7s3HaH_SZyEwBAZUCbAY_nhjmB02WDoTc";
 const Script =
-  "https://script.google.com/macros/s/AKfycbw1LDgs06wRs_ykyAgGh0XAgkOKWAfHSoNnZ6fgI7RjnBLgeHzFEyXy9ZHyX16olrUkfQ/exec";
+  "https://script.google.com/macros/s/AKfycbyLkJiHyd0Vf6-_JdEOe4XruDcMpAab5E6nQ5W4vti68K29QmFgvMZoqzIfVHzsqM6ARA/exec";
 const base = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?`;
 let query = encodeURIComponent("Select *");
-let places = "places";
-let Urlplaces = `${base}&sheet=${places}&tq=${query}`;
+let PlacesSheetName = "places";
+let PlacesUrl = `${base}&sheet=${PlacesSheetName}&tq=${query}`;
 let Dataplaces = [];
-let Data0 = "Data0";
-let UrlData0 = `${base}&sheet=${Data0}&tq=${query}`;
-let DataData0 = [];
-let Method = "Data1";
-let UrlMethod = `${base}&sheet=${Method}&tq=${query}`;
-let DataMethod = [];
-let Setting = "Setting";
-let UrlSetting = `${base}&sheet=${Setting}&tq=${query}`;
+let InvoicesSheetName = "Data0";
+let InvoicesUrl = `${base}&sheet=${InvoicesSheetName}&tq=${query}`;
+let InvoicesData = [];
+let MethodSheetName = "Data1";
+let MethodUrl = `${base}&sheet=${MethodSheetName}&tq=${query}`;
+let DataPaymentMethods = [];
+let TahseelSheetName = "Tahseel";
+let TahseelUrl = `${base}&sheet=${TahseelSheetName}&tq=${query}`;
+let DataTahseel = [];
+let SettingSheetName = "Setting";
+let SettingUrl = `${base}&sheet=${SettingSheetName}&tq=${query}`;
 let DataSetting = [];
 
 document.addEventListener("DOMContentLoaded", init);
@@ -36,6 +39,8 @@ function ShowSelectForm(ActiveForm) {
   document.getElementById("MethodBrowser").style.display = "none";
   document.getElementById("SalesWi").style.display = "none";
   document.getElementById("SalesBrowser").style.display = "none";
+  document.getElementById("Tahseel_Wi").style.display = "none";
+  document.getElementById("Tahseel_Browser").style.display = "none";
   document.getElementById(ActiveForm).style.display = "flex";
   localStorage.setItem("ActiveForm", ActiveForm);
 }
@@ -62,7 +67,7 @@ function ShowMethodBrowser() {
 function ShowMethodWi() {
   let Loading = document.getElementById("LoadingMethodplus");
   Loading.className = "fa fa-refresh fa-spin";
-  LoadMethod();
+  LoadPaymentMethods();
   const myTimeout = setTimeout(function () {
     ShowSelectForm("MethodWi");
     Loading.className = "fa fa-plus";
@@ -70,14 +75,29 @@ function ShowMethodWi() {
   }, 1000);
 }
 
+async function ShowTahseelWi() {
+  let loadingElm = document.getElementById("new-tahseel-icon");
+  loadingElm.className = "fa fa-refresh fa-spin";
+  const invoices = await LoadInvoices();
+  populateSelect(document.getElementById("Tahseel_Wi__InvoiceNum"), invoices, {
+    value: "BillNumber",
+    label: "BillNumber",
+  });
+  await LoadPaymentMethods(false);
+  ShowSelectForm("Tahseel_Wi");
+  loadingElm.className = "fa fa-plus";
+  onTahseelInvoiceNumChange();
+  onTahseelIsPaidChange();
+}
+
 function ShowSalesWi() {
   let Loading = document.getElementById("invoicedollar");
   let Loading1 = document.getElementById("BackMain");
   Loading.className = "fa fa-refresh fa-spin";
   Loading1.className = "fa fa-refresh fa-spin";
-  LoadMethod();
+  LoadPaymentMethods();
   LoadSetting();
-  LoadData0();
+  LoadInvoices();
   Loadplaces();
   const myTimeout = setTimeout(function () {
     Loading.className = "fas fa-file-invoice-dollar";
@@ -90,6 +110,10 @@ function ShowSalesWi() {
 
 function GoToMain() {
   ShowSelectForm("Main");
+}
+
+function showLoading(elm) {
+  elm.className = "fa fa-refresh fa-spin";
 }
 
 // function IsfoundUser(TPassWord){
@@ -145,9 +169,9 @@ function GoToMain() {
 
 // **************************MethodBrowser***********
 
-function LoadMethod() {
-  DataMethod = [];
-  fetch(UrlMethod)
+async function LoadPaymentMethods(populateSelect = true) {
+  DataPaymentMethods = [];
+  await fetch(MethodUrl)
     .then((res) => res.text())
     .then((rep) => {
       const jsonMethod = JSON.parse(rep.substring(47).slice(0, -2));
@@ -163,10 +187,11 @@ function LoadMethod() {
         colzMethod.forEach((ele, ind) => {
           rowMethod[ele] = rowMethod1.c[ind] != null ? rowMethod1.c[ind].v : "";
         });
-        DataMethod.push(rowMethod);
+        DataPaymentMethods.push(rowMethod);
       });
-      LoadMethodName();
+      if (populateSelect) LoadMethodName();
     });
+  return DataPaymentMethods;
 }
 
 function LoadMethodName() {
@@ -174,10 +199,10 @@ function LoadMethodName() {
   let optionClass;
   let MethodNum = document.getElementById("MethodNum");
   MethodNum.innerHTML = "";
-  for (let index = 0; index < DataMethod.length; index++) {
-    MetodNum = DataMethod[index].MetodNum;
-    MetodName = DataMethod[index].MetodName;
-    if (DataMethod[index].Num != "") {
+  for (let index = 0; index < DataPaymentMethods.length; index++) {
+    MetodNum = DataPaymentMethods[index].MetodNum;
+    MetodName = DataPaymentMethods[index].MetodName;
+    if (DataPaymentMethods[index].Num != "") {
       optionClass = document.createElement("option");
       optionClass.value = MetodNum;
       optionClass.textContent = MetodName;
@@ -191,16 +216,16 @@ function LoadMethodToTable() {
   let Loading = document.getElementById("LoadingMethodBrowser");
   Loading.className = "fa fa-refresh fa-spin";
   document.getElementById("bodyTableMethod").innerHTML = "";
-  LoadMethod();
+  LoadPaymentMethods();
   const myTimeout = setTimeout(function () {
-    if (isNaN(DataMethod[0].Num) == false) {
-      for (let index = 0; index < DataMethod.length; index++) {
-        Num = DataMethod[index].Num;
-        MetodNum = DataMethod[index].MetodNum;
-        MetodName = DataMethod[index].MetodName;
-        PercentMetod = DataMethod[index].PercentMetod;
-        AmountMetod = DataMethod[index].AmountMetod;
-        if (DataMethod[index].Num != "") {
+    if (isNaN(DataPaymentMethods[0].Num) == false) {
+      for (let index = 0; index < DataPaymentMethods.length; index++) {
+        Num = DataPaymentMethods[index].Num;
+        MetodNum = DataPaymentMethods[index].MetodNum;
+        MetodName = DataPaymentMethods[index].MetodName;
+        PercentMetod = DataPaymentMethods[index].PercentMetod;
+        AmountMetod = DataPaymentMethods[index].AmountMetod;
+        if (DataPaymentMethods[index].Num != "") {
           AddRowMethod(Num, MetodNum, MetodName, PercentMetod, AmountMetod);
         }
       }
@@ -269,7 +294,7 @@ function EditeMethod() {
   document.getElementById("PercentMetod").value = PercentMetod;
   document.getElementById("AmountMetod").value = AmountMetod;
   Loading.className = "fa fa-refresh fa-spin";
-  LoadMethod();
+  LoadPaymentMethods();
   const myTimeout = setTimeout(function () {
     ShowSelectForm("MethodWi");
     Loading.className = "fa fa-edit";
@@ -282,9 +307,9 @@ function EditeMethod() {
 function MaxMethodNumber() {
   let XX;
   let MethodNumber = [];
-  for (let index = 0; index < DataMethod.length; index++) {
-    if (DataMethod[index].MetodName != "") {
-      MethodNumber.push(DataMethod[index].MetodNum);
+  for (let index = 0; index < DataPaymentMethods.length; index++) {
+    if (DataPaymentMethods[index].MetodName != "") {
+      MethodNumber.push(DataPaymentMethods[index].MetodNum);
     }
   }
   XX = Math.max.apply(Math, MethodNumber) + 1;
@@ -304,8 +329,8 @@ function ClearItemCu() {
 
 function IsFoundMethodName(MethodName) {
   if (MethodName != undefined) {
-    for (let index = 0; index < DataMethod.length; index++) {
-      if (MethodName.value == DataMethod[index].MetodName) {
+    for (let index = 0; index < DataPaymentMethods.length; index++) {
+      if (MethodName.value == DataPaymentMethods[index].MetodName) {
         MethodName.style.border = "2px solid #ff0000";
         return index;
       }
@@ -353,10 +378,10 @@ function onsubmitForm1() {
 
 function IsFoundMethodModify(MetodName, MetodNum) {
   if (MetodName != undefined) {
-    for (let index = 0; index < DataMethod.length; index++) {
+    for (let index = 0; index < DataPaymentMethods.length; index++) {
       if (
-        MetodName.value == DataMethod[index].MetodName &&
-        MetodNum.value != DataMethod[index].MetodNum
+        MetodName.value == DataPaymentMethods[index].MetodName &&
+        MetodNum.value != DataPaymentMethods[index].MetodNum
       ) {
         MetodName.style.border = "2px solid #ff0000";
         return index;
@@ -402,10 +427,188 @@ function onsubmitForm(Time) {
   }
 }
 
+// ******************** Tahseel ********************
+async function LoadTahseel() {
+  DataTahseel = [];
+  await fetch(TahseelUrl)
+    .then((res) => res.text())
+    .then((rep) => {
+      const jsonData0 = JSON.parse(rep.substring(47).slice(0, -2));
+      const colzData0 = [];
+      jsonData0.table.cols.forEach((headingData0) => {
+        if (headingData0.label) {
+          let columnData0 = headingData0.label;
+          colzData0.push(columnData0);
+        }
+      });
+      jsonData0.table.rows.forEach((rowData01) => {
+        const rowData0 = {};
+        colzData0.forEach((ele, ind) => {
+          rowData0[ele.trim()] =
+            rowData01.c[ind] != null ? rowData01.c[ind].v : "";
+        });
+        DataTahseel.push(rowData0);
+      });
+    });
+  return DataTahseel;
+}
+async function ShowTahseelBrowser() {
+  let Loading = document.getElementById("tahseel-browser-loading");
+  Loading.className = "fa fa-refresh fa-spin";
+  await LoadTahseel();
+  document.getElementById("bodyTableTahseel").innerHTML = "";
+  if (isNaN(DataTahseel[0].Num) == false) {
+    for (let index = 0; index < DataTahseel.length; index++) {
+      if (DataTahseel[index].Num != "") {
+        AddTahseelTableRow(
+          DataTahseel[index].Num,
+          DataTahseel[index].BillNumber,
+          DataTahseel[index].BillAmount,
+          DataTahseel[index].PaymentMethodName,
+          (DataTahseel[index].IsPaid === true ? 0 : -1) *
+            DataTahseel[index].ReqAmount,
+        );
+      }
+    }
+    // AddRowTotal();
+  }
+  Loading.className = "fa fa-refresh";
+  Loading.className = "fas fa-file-invoice-dollar";
+  ShowSelectForm("Tahseel_Browser");
+}
+
+function AddTahseelTableRow(
+  Num,
+  BillNumber,
+  BillAmount,
+  PaymentMethodName,
+  ReqAmount,
+) {
+  let bodydata = document.getElementById("bodyTableTahseel");
+  let row = bodydata.insertRow();
+  row.id = "S" + bodydata.childElementCount;
+  let cell = row.insertCell();
+  cell.id = "S" + bodydata.childElementCount + "Num";
+  cell.innerHTML = Num;
+  cell = row.insertCell();
+  cell.id = "S" + bodydata.childElementCount + "BillNumber";
+  cell.innerHTML = BillNumber;
+  cell = row.insertCell();
+  cell.id = "S" + bodydata.childElementCount + "BillAmount";
+  cell.innerHTML = BillAmount;
+  cell = row.insertCell();
+  cell.id = "S" + bodydata.childElementCount + "PaymentMethodName";
+  cell.innerHTML = PaymentMethodName;
+  cell = row.insertCell();
+  cell.id = "S" + bodydata.childElementCount + "ReqAmount";
+  cell.innerHTML = ReqAmount;
+  row.appendChild((td = document.createElement("td")));
+  var btb = document.createElement("button");
+  btb.type = "button";
+  btb.id = "ButS" + bodydata.childElementCount;
+  btb.onclick = async function () {
+    await showTahseel();
+  };
+  btb.innerHTML = `<a class='fa fa-edit' style='color:#ff5e00 ; width:100% ;'> </a>`;
+  td.appendChild(btb);
+  btb.style.cursor = "pointer";
+  btb.style.color = "red";
+  btb.style.width = "100%";
+}
+
+async function showTahseel() {
+  let indextable = document.activeElement.parentElement.parentElement.id;
+  let Num = document.getElementById(indextable).children.item(0).textContent;
+  let BillNumber = document
+    .getElementById(indextable)
+    .children.item(1).textContent;
+  let IsPaid =
+    document.getElementById(indextable).children.item(4).textContent === "0";
+  let Loading = document
+    .getElementById(indextable)
+    .children.item(5)
+    .children.item(0)
+    .children.item(0);
+  await LoadInvoices();
+  await LoadPaymentMethods();
+  const invoiceNumElm = document.getElementById("Tahseel_Wi__InvoiceNum");
+  populateSelect(invoiceNumElm, InvoicesData, {
+    label: "BillNumber",
+    value: "BillNumber",
+  });
+  Loading.className = "fa fa-refresh fa-spin";
+  document.getElementById("tahseel-row").value = Number(Num) + 1;
+  document.getElementById("Tahseel_Wi__InvoiceNum").value = BillNumber;
+  invoiceNumElm.dispatchEvent(new Event("change"));
+
+  if (IsPaid) {
+    document.getElementById("Tahseel_Wi__IsPaid").checked = true;
+  }
+  ShowSelectForm("Tahseel_Wi");
+  onTahseelInvoiceNumChange();
+  onTahseelIsPaidChange();
+  Loading.className = "fa fa-edit";
+}
+
+function onTahseelIsPaidChange() {
+  const newValue = document.getElementById("Tahseel_Wi__IsPaid").checked;
+  document.getElementById("Tahseel_Wi__IsPaidActual").value = newValue;
+}
+
+function onTahseelInvoiceNumChange() {
+  const newValue = document.getElementById("Tahseel_Wi__InvoiceNum").value;
+  console.log(newValue);
+  const num = newValue;
+  const invoice = InvoicesData.find((invoice) => invoice.BillNumber === num);
+  const amount = invoice.AmountTotal - invoice.RefundAmount;
+  document.getElementById("Tahseel_Wi__InvoiceAmount").value = amount;
+  const paymentMethod = DataPaymentMethods.find(
+    (p) => p.Num === invoice.MethodNum,
+  );
+  document.getElementById("Tahseel_Wi__MethodName").value = invoice.MethodName;
+  document.getElementById("Tahseel_Wi__ReqAmount").value =
+    calculatePaymentMethodFee(amount, paymentMethod);
+}
+
+function createNewTahseel() {
+  document.getElementById("tahseel-mode").value = "create";
+  submitTahseelForm();
+}
+
+function editTahseel() {
+  if (document.getElementById("tahseel-row").value === "") return;
+  document.getElementById("tahseel-mode").value = "update";
+  submitTahseelForm();
+}
+
+function deleteTahseel() {
+  if (document.getElementById("tahseel-row").value === "") return;
+  document.getElementById("tahseel-mode").value = "delete";
+  submitTahseelForm();
+}
+
+function submitTahseelForm(Time = 5000) {
+  const isPaidElm = document.getElementById("Tahseel_Wi__IsPaid");
+  isPaidElm.value = isPaidElm.value ? "true" : "false";
+  document.getElementById("tahseel-type").value = "tahseel";
+  let MainForm = document.getElementById("FormTahseelDetails");
+  var w = window.open("", "form_target", "width=600, height=400");
+  MainForm.target = "form_target";
+  MainForm.action = Script;
+  MainForm.submit();
+  if (MainForm.onsubmit() == true) {
+    const myTimeout = setTimeout(function () {
+      w.close();
+      clearTimeout(myTimeout);
+      location.reload();
+    }, Time);
+  }
+}
+
 // ********************SalesWi
 function LoadSetting() {
   DataSetting = [];
-  fetch(UrlSetting)
+  fetch(SettingUrl)
     .then((res) => res.text())
     .then((rep) => {
       const jsonSetting = JSON.parse(rep.substring(47).slice(0, -2));
@@ -460,10 +663,10 @@ function OncahangeMethod(Myvalue) {
   let AmountMetod, PercentMetod, MetodNum;
   let MethodPer = document.getElementById("MethodPer");
   let MethodVa = document.getElementById("MethodVa");
-  for (let index = 0; index < DataMethod.length; index++) {
-    MetodNum = DataMethod[index].MetodNum;
-    PercentMetod = DataMethod[index].PercentMetod;
-    AmountMetod = DataMethod[index].AmountMetod;
+  for (let index = 0; index < DataPaymentMethods.length; index++) {
+    MetodNum = DataPaymentMethods[index].MetodNum;
+    PercentMetod = DataPaymentMethods[index].PercentMetod;
+    AmountMetod = DataPaymentMethods[index].AmountMetod;
     if (MetodNum == Myvalue) {
       MethodPer.value = PercentMetod;
       MethodVa.value = AmountMetod;
@@ -474,7 +677,7 @@ function OncahangeMethod(Myvalue) {
 
 function Loadplaces() {
   Dataplaces = [];
-  fetch(Urlplaces)
+  fetch(PlacesUrl)
     .then((res) => res.text())
     .then((rep) => {
       const jsonplaces = JSON.parse(rep.substring(47).slice(0, -2));
@@ -679,11 +882,11 @@ function onsubmitFormS1() {
 }
 
 function IsNumberFound(MyNum) {
-  if (isNaN(DataData0[0].Num) == true) {
+  if (isNaN(InvoicesData[0].Num) == true) {
     return -1;
   }
-  for (let index = 0; index < DataData0.length; index++) {
-    if (DataData0[index].BillNumber == MyNum) {
+  for (let index = 0; index < InvoicesData.length; index++) {
+    if (InvoicesData[index].BillNumber == MyNum) {
       return index;
     }
   }
@@ -738,9 +941,9 @@ function onsubmitFormS(Time) {
 
 // **************************SalesBrowser***********
 
-function LoadData0() {
-  DataData0 = [];
-  fetch(UrlData0)
+async function LoadInvoices() {
+  InvoicesData = [];
+  await fetch(InvoicesUrl)
     .then((res) => res.text())
     .then((rep) => {
       const jsonData0 = JSON.parse(rep.substring(47).slice(0, -2));
@@ -756,9 +959,10 @@ function LoadData0() {
         colzData0.forEach((ele, ind) => {
           rowData0[ele] = rowData01.c[ind] != null ? rowData01.c[ind].v : "";
         });
-        DataData0.push(rowData0);
+        InvoicesData.push(rowData0);
       });
     });
+  return InvoicesData;
 }
 
 function ClearValueNu() {
@@ -793,31 +997,31 @@ function ShowSalesBrowser() {
   Loading.className = "fa fa-refresh fa-spin";
   Loading1.className = "fa fa-refresh fa-spin";
   document.getElementById("bodydataS").innerHTML = "";
-  LoadData0();
+  LoadInvoices();
   const myTimeout = setTimeout(function () {
-    if (isNaN(DataData0[0].Num) == false) {
-      for (let index = 0; index < DataData0.length; index++) {
-        if (DataData0[index].Num != "") {
+    if (isNaN(InvoicesData[0].Num) == false) {
+      for (let index = 0; index < InvoicesData.length; index++) {
+        if (InvoicesData[index].Num != "") {
           AddRowPrS(
-            DataData0[index].Num,
-            DataData0[index].BillNumber,
-            DataData0[index].BillDate,
-            DataData0[index].AmountTotal,
-            DataData0[index].RefundAmount,
-            DataData0[index].MethodName,
-            DataData0[index].MethodAmount,
-            DataData0[index].Tax,
-            DataData0[index].ShipType,
-            DataData0[index].ShipAmount,
-            DataData0[index].OtherCost,
-            DataData0[index].AmountNet,
-            DataData0[index].MethodNum,
-            DataData0[index].ShipNum,
-            DataData0[index].DesCountAmount,
-            DataData0[index].Ready,
-            DataData0[index].DesCountSel,
-            DataData0[index].PlaceName,
-            DataData0[index].PlacePrice,
+            InvoicesData[index].Num,
+            InvoicesData[index].BillNumber,
+            InvoicesData[index].BillDate,
+            InvoicesData[index].AmountTotal,
+            InvoicesData[index].RefundAmount,
+            InvoicesData[index].MethodName,
+            InvoicesData[index].MethodAmount,
+            InvoicesData[index].Tax,
+            InvoicesData[index].ShipType,
+            InvoicesData[index].ShipAmount,
+            InvoicesData[index].OtherCost,
+            InvoicesData[index].AmountNet,
+            InvoicesData[index].MethodNum,
+            InvoicesData[index].ShipNum,
+            InvoicesData[index].DesCountAmount,
+            InvoicesData[index].Ready,
+            InvoicesData[index].DesCountSel,
+            InvoicesData[index].PlaceName,
+            InvoicesData[index].PlacePrice,
           );
         }
       }
@@ -1054,7 +1258,7 @@ function showdatarowsS() {
   let PlacePrice = document
     .getElementById(indextable)
     .children.item(19).textContent;
-  LoadMethod();
+  LoadPaymentMethods();
   LoadSetting();
   Loading.className = "fa fa-refresh fa-spin";
   const myTimeout = setTimeout(function () {
@@ -1094,58 +1298,58 @@ function FillterSalesToTable() {
   let Loading = document.getElementById("LoadingSalesBrowser");
   Loading.className = "fa fa-refresh fa-spin";
   document.getElementById("bodydataS").innerHTML = "";
-  LoadData0();
+  LoadInvoices();
   let BillNumber, BillDateS;
   const myTimeout = setTimeout(function () {
-    if (isNaN(DataData0[0].Num) == false) {
-      for (let index = 0; index < DataData0.length; index++) {
-        BillNumber = DataData0[index].BillNumber;
-        BillDateS = DataData0[index].BillDate;
-        if (DataData0[index].Num != "") {
+    if (isNaN(InvoicesData[0].Num) == false) {
+      for (let index = 0; index < InvoicesData.length; index++) {
+        BillNumber = InvoicesData[index].BillNumber;
+        BillDateS = InvoicesData[index].BillDate;
+        if (InvoicesData[index].Num != "") {
           if (SeaNumber.value != "") {
             if (BillNumber == SeaNumber.value) {
               AddRowPrS(
-                DataData0[index].Num,
-                DataData0[index].BillNumber,
-                DataData0[index].BillDate,
-                DataData0[index].AmountTotal,
-                DataData0[index].MethodName,
-                DataData0[index].MethodAmount,
-                DataData0[index].Tax,
-                DataData0[index].ShipType,
-                DataData0[index].ShipAmount,
-                DataData0[index].OtherCost,
-                DataData0[index].AmountNet,
-                DataData0[index].MethodNum,
-                DataData0[index].ShipNum,
-                DataData0[index].DesCountAmount,
-                DataData0[index].Ready,
-                DataData0[index].DesCountSel,
-                DataData0[index].PlaceName,
-                DataData0[index].PlacePrice,
+                InvoicesData[index].Num,
+                InvoicesData[index].BillNumber,
+                InvoicesData[index].BillDate,
+                InvoicesData[index].AmountTotal,
+                InvoicesData[index].MethodName,
+                InvoicesData[index].MethodAmount,
+                InvoicesData[index].Tax,
+                InvoicesData[index].ShipType,
+                InvoicesData[index].ShipAmount,
+                InvoicesData[index].OtherCost,
+                InvoicesData[index].AmountNet,
+                InvoicesData[index].MethodNum,
+                InvoicesData[index].ShipNum,
+                InvoicesData[index].DesCountAmount,
+                InvoicesData[index].Ready,
+                InvoicesData[index].DesCountSel,
+                InvoicesData[index].PlaceName,
+                InvoicesData[index].PlacePrice,
               );
             }
           } else if (SeaDate.value != "") {
             if (GetDateFromString(BillDateS) == SeaDate.value) {
               AddRowPrS(
-                DataData0[index].Num,
-                DataData0[index].BillNumber,
-                DataData0[index].BillDate,
-                DataData0[index].AmountTotal,
-                DataData0[index].MethodName,
-                DataData0[index].MethodAmount,
-                DataData0[index].Tax,
-                DataData0[index].ShipType,
-                DataData0[index].ShipAmount,
-                DataData0[index].OtherCost,
-                DataData0[index].AmountNet,
-                DataData0[index].MethodNum,
-                DataData0[index].ShipNum,
-                DataData0[index].DesCountAmount,
-                DataData0[index].Ready,
-                DataData0[index].DesCountSel,
-                DataData0[index].PlaceName,
-                DataData0[index].PlacePrice,
+                InvoicesData[index].Num,
+                InvoicesData[index].BillNumber,
+                InvoicesData[index].BillDate,
+                InvoicesData[index].AmountTotal,
+                InvoicesData[index].MethodName,
+                InvoicesData[index].MethodAmount,
+                InvoicesData[index].Tax,
+                InvoicesData[index].ShipType,
+                InvoicesData[index].ShipAmount,
+                InvoicesData[index].OtherCost,
+                InvoicesData[index].AmountNet,
+                InvoicesData[index].MethodNum,
+                InvoicesData[index].ShipNum,
+                InvoicesData[index].DesCountAmount,
+                InvoicesData[index].Ready,
+                InvoicesData[index].DesCountSel,
+                InvoicesData[index].PlaceName,
+                InvoicesData[index].PlacePrice,
               );
             }
           }
@@ -1196,4 +1400,26 @@ function ConvertModeToMoon() {
   document.querySelector(":root").style.setProperty("--Font3Color", "black");
   document.querySelector(":root").style.setProperty("--THColor", "gray");
   document.querySelector(":root").style.setProperty("--TDColor", "Red");
+}
+
+// Helper
+function populateSelect(selectElm, data, keys) {
+  selectElm.innerHTML = "";
+  for (let index = 0; index < data.length; index++) {
+    const value = data[index][keys.value];
+    const label = data[index][keys.label];
+    if (data[index][keys.value] != "") {
+      optionClass = document.createElement("option");
+      optionClass.value = value;
+      optionClass.textContent = label;
+      selectElm.appendChild(optionClass);
+    }
+  }
+}
+
+function calculatePaymentMethodFee(amount, paymentMethod) {
+  return (
+    amount -
+    (paymentMethod.AmountMetod + (paymentMethod.PercentMetod / 100) * amount)
+  );
 }

@@ -114,6 +114,32 @@
             المبيعات
           </button>
           <button
+            onclick="ShowTahseelWi()"
+            style="width: 45%; background-color: rgb(245, 166, 166)"
+            type="button"
+          >
+            <a
+              id="new-tahseel-icon"
+              class="fas fa-plus"
+              style="color: rgba(197, 0, 43, 0.603)"
+            >
+            </a>
+            إنشاء تحصيل جديد
+          </button>
+          <button
+            onclick="ShowTahseelBrowser()"
+            style="width: 45%; background-color: rgb(245, 166, 166)"
+            type="button"
+          >
+            <a
+              id="tahseel-browser-loading"
+              class="fas fa-file-invoice-dollar"
+              style="color: rgba(197, 0, 43, 0.603)"
+            >
+            </a>
+            التحصيلات
+          </button>
+          <button
             onclick="ShowMethodBrowser()"
             style="width: 45%; background-color: rgb(55, 185, 22)"
             tabindex="13"
@@ -730,6 +756,231 @@
                 </tr>
               </thead>
               <tbody id="bodydataS"></tbody>
+            </table>
+          </div>
+        </form>
+      </form>
+    </div>
+
+    <!-- TahseelWi -->
+    <div class="login-box" id="Tahseel_Wi" style="display: none; height: 85%">
+      <div class="hh">
+        <h3 style="width: calc(100% - 30px)">تحصيل جديد</h3>
+        <button
+          class="SignOut"
+          onclick="GoToMain()"
+          style="
+            background-color: rgba(92, 149, 255, 0.952);
+            width: 30px;
+            height: 30px;
+          "
+        >
+          <a
+            id="BackTahseelBrowser"
+            class="fa fa-mail-reply"
+            style="color: rgba(5, 33, 85, 0.603); width: 100%"
+          >
+          </a>
+        </button>
+      </div>
+      <form
+        id="FormTahseelDetails"
+        method="post"
+        style="height: 90%"
+        onsubmit="return true"
+      >
+        <div class="Three_Div">
+          <div class="user-box">
+            <label for="Tahseel_Wi__InvoiceNum">رقم الفاتورة</label>
+            <input
+              id="tahseel-type"
+              name="Type"
+              type="text"
+              style="display: none"
+            />
+            <input
+              id="tahseel-mode"
+              name="Mode"
+              type="text"
+              style="display: none"
+            />
+            <input
+              id="tahseel-row"
+              name="Row"
+              type="text"
+              style="display: none"
+            />
+            <select
+              id="Tahseel_Wi__InvoiceNum"
+              name="BillNumber"
+              required=""
+              tabindex="1"
+              onchange="onTahseelInvoiceNumChange()"
+            ></select>
+            <label for="Tahseel_Wi__InvoiceNum"></label>
+          </div>
+          <div class="user-box">
+            <label for="Tahseel_Wi__InvoiceAmount">مبلغ الفاتورة</label>
+            <input
+              id="Tahseel_Wi__InvoiceAmount"
+              name="BillAmount"
+              required=""
+              tabindex="2"
+              type="number"
+            />
+            <label for="Tahseel_Wi__InvoiceAmount"></label>
+          </div>
+          <div class="user-box">
+            <label for="Tahseel_Wi__MethodName">طريقة الدفع</label>
+            <input
+              id="Tahseel_Wi__MethodName"
+              name="PaymentMethodName"
+              type="text"
+              readonly=""
+            />
+            <label for="Tahseel_Wi__MethodName"></label>
+          </div>
+          <div class="user-box">
+            <label for="Tahseel_Wi__ReqAmount">المبلغ المطلوب</label>
+            <input
+              id="Tahseel_Wi__ReqAmount"
+              name="ReqAmount"
+              required=""
+              tabindex="3"
+              type="number"
+            />
+            <label for="Tahseel_Wi__ReqAmount">ريال</label>
+          </div>
+          <div class="user-box">
+            <input
+              type="checkbox"
+              id="Tahseel_Wi__IsPaid"
+              required=""
+              style="width: 50px; margin-right: 50px"
+              onchange="onTahseelIsPaidChange()"
+            />
+            <input
+              type="text"
+              name="IsPaid"
+              id="Tahseel_Wi__IsPaidActual"
+              style="display: none"
+            />
+            <label for="Tahseel_Wi__IsPaid" style="width: calc(100% - 100px)"
+              >تم الدفع</label
+            >
+          </div>
+        </div>
+        <div class="BB">
+          <button
+            class="Buto"
+            onclick="createNewTahseel()"
+            style="width: 22%; background-color: rgb(30, 138, 3)"
+            tabindex="103"
+            type="button"
+          >
+            <a class="fa fa-plus" style="color: rgb(18, 68, 2)"> </a>
+            اضافة
+          </button>
+          <button
+            class="Buto"
+            onclick="editTahseel()"
+            style="width: 22%; background-color: rgb(228, 155, 21)"
+            tabindex="104"
+            type="button"
+          >
+            <a class="fa fa-edit" style="color: rgb(80, 37, 3)"> </a>
+            تعديل
+          </button>
+          <button
+            class="Buto"
+            onclick="deleteTahseel()"
+            style="width: 22%; background-color: rgb(185, 34, 7)"
+            tabindex="105"
+            type="button"
+          >
+            <a class="fa fa-trash" style="color: rgb(92, 14, 3)"> </a>
+            حذف
+          </button>
+          <button
+            class="Buto"
+            onclick="return true;"
+            style="background-color: rgb(255 169 92 / 95%); width: 22%"
+            tabindex="105"
+            type="button"
+          >
+            <a class="fas fa-broom" style="color: rgba(240, 48, 0, 0.781)"> </a>
+            تفريغ
+          </button>
+        </div>
+      </form>
+    </div>
+    <!-- TahseelBrowser -->
+    <div
+      class="login-box"
+      id="Tahseel_Browser"
+      style="display: none; height: 80%"
+    >
+      <div class="hh">
+        <h3 style="width: calc(100% - 100px)">طرق الدفع</h3>
+        <button
+          class="SignOut"
+          onclick="LoadTahseelToTable()"
+          style="
+            background-color: rgba(206, 255, 92, 0.952);
+            width: 30px;
+            height: 30px;
+          "
+        >
+          <a
+            id="LoadingTahseelBrowser"
+            class="fa fa-refresh"
+            style="color: rgba(67, 78, 3, 0.603); width: 100%"
+          >
+          </a>
+        </button>
+        <button
+          class="SignOut"
+          onclick="ShowTahseelWi()"
+          style="background-color: rgb(30, 138, 3); width: 30px; height: 30px"
+        >
+          <a
+            id="LoadingTahseelplus"
+            class="fa fa-plus"
+            style="color: white; width: 100%"
+          >
+          </a>
+        </button>
+        <button
+          class="SignOut"
+          onclick="GoToMain()"
+          style="
+            background-color: rgba(92, 149, 255, 0.952);
+            width: 30px;
+            height: 30px;
+          "
+        >
+          <a
+            class="fa fa-mail-reply"
+            style="color: rgba(5, 33, 85, 0.603); width: 100%"
+          >
+          </a>
+        </button>
+      </div>
+      <form style="height: 90%; display: block">
+        <form style="height: 40%">
+          <div class="tabdata" style="direction: rtl">
+            <table>
+              <thead>
+                <tr>
+                  <th style="width: 40px">ت</th>
+                  <th style="width: calc(25% - 70px)">رقم الفاتورة</th>
+                  <th style="width: calc(25% - 70px)">مبلغ الفاتورة</th>
+                  <th style="width: calc(25% - 70px)">وسيلة الدفع</th>
+                  <th style="width: calc(25% - 70px)">المبلغ المطلوب</th>
+                  <th style="width: 30px"></th>
+                </tr>
+              </thead>
+              <tbody id="bodyTableTahseel"></tbody>
             </table>
           </div>
         </form>
