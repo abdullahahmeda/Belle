@@ -1,6 +1,6 @@
 const sheetId = "1q3M1Etd73E7s3HaH_SZyEwBAZUCbAY_nhjmB02WDoTc";
 const Script =
-  "https://script.google.com/macros/s/AKfycbyLkJiHyd0Vf6-_JdEOe4XruDcMpAab5E6nQ5W4vti68K29QmFgvMZoqzIfVHzsqM6ARA/exec";
+  "https://script.google.com/macros/s/AKfycbz9s7eRypRUdbdwoZo57zt78gZ8LMImB-OG72Ls8p3z6DMR6-SD9899d5bcvW4cCpC4zA/exec";
 const base = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?`;
 let query = encodeURIComponent("Select *");
 let PlacesSheetName = "places";
@@ -79,10 +79,14 @@ async function ShowTahseelWi() {
   let loadingElm = document.getElementById("new-tahseel-icon");
   loadingElm.className = "fa fa-refresh fa-spin";
   const invoices = await LoadInvoices();
-  populateSelect(document.getElementById("Tahseel_Wi__InvoiceNum"), invoices, {
-    value: "BillNumber",
-    label: "BillNumber",
-  });
+  populateSelect(
+    document.getElementById("Tahseel_Wi__InvoiceBillNumber"),
+    invoices,
+    {
+      value: "BillNumber",
+      label: "BillNumber",
+    },
+  );
   await LoadPaymentMethods(false);
   ShowSelectForm("Tahseel_Wi");
   loadingElm.className = "fa fa-plus";
@@ -428,6 +432,28 @@ function onsubmitForm(Time) {
 }
 
 // ******************** Tahseel ********************
+async function LoadTahseelTable() {
+  let Loading = document.getElementById("LoadingTahseelBrowser");
+  Loading.className = "fa fa-refresh fa-spin";
+  document.getElementById("bodyTableTahseel").innerHTML = "";
+  await LoadTahseel();
+  if (isNaN(DataTahseel[0].Num) == false) {
+    for (let index = 0; index < DataTahseel.length; index++) {
+      if (DataTahseel[index].Num != "") {
+        AddTahseelTableRow(
+          DataTahseel[index].Num,
+          DataTahseel[index].BillNumber,
+          DataTahseel[index].BillAmount,
+          DataTahseel[index].PaymentMethodName,
+          (DataTahseel[index].IsPaid === true ? 0 : -1) *
+            DataTahseel[index].ReqAmount,
+        );
+      }
+    }
+    // AddRowTotal();
+  }
+  Loading.className = "fa fa-refresh";
+}
 async function LoadTahseel() {
   DataTahseel = [];
   await fetch(TahseelUrl)
@@ -455,23 +481,7 @@ async function LoadTahseel() {
 async function ShowTahseelBrowser() {
   let Loading = document.getElementById("tahseel-browser-loading");
   Loading.className = "fa fa-refresh fa-spin";
-  await LoadTahseel();
-  document.getElementById("bodyTableTahseel").innerHTML = "";
-  if (isNaN(DataTahseel[0].Num) == false) {
-    for (let index = 0; index < DataTahseel.length; index++) {
-      if (DataTahseel[index].Num != "") {
-        AddTahseelTableRow(
-          DataTahseel[index].Num,
-          DataTahseel[index].BillNumber,
-          DataTahseel[index].BillAmount,
-          DataTahseel[index].PaymentMethodName,
-          (DataTahseel[index].IsPaid === true ? 0 : -1) *
-            DataTahseel[index].ReqAmount,
-        );
-      }
-    }
-    // AddRowTotal();
-  }
+  LoadTahseelTable();
   Loading.className = "fa fa-refresh";
   Loading.className = "fas fa-file-invoice-dollar";
   ShowSelectForm("Tahseel_Browser");
@@ -531,14 +541,16 @@ async function showTahseel() {
     .children.item(0);
   await LoadInvoices();
   await LoadPaymentMethods();
-  const invoiceNumElm = document.getElementById("Tahseel_Wi__InvoiceNum");
+  const invoiceNumElm = document.getElementById(
+    "Tahseel_Wi__InvoiceBillNumber",
+  );
   populateSelect(invoiceNumElm, InvoicesData, {
     label: "BillNumber",
     value: "BillNumber",
   });
   Loading.className = "fa fa-refresh fa-spin";
   document.getElementById("tahseel-row").value = Number(Num) + 1;
-  document.getElementById("Tahseel_Wi__InvoiceNum").value = BillNumber;
+  document.getElementById("Tahseel_Wi__InvoiceBillNumber").value = BillNumber;
   invoiceNumElm.dispatchEvent(new Event("change"));
 
   if (IsPaid) {
@@ -556,16 +568,18 @@ function onTahseelIsPaidChange() {
 }
 
 function onTahseelInvoiceNumChange() {
-  const newValue = document.getElementById("Tahseel_Wi__InvoiceNum").value;
-  console.log(newValue);
+  const newValue = document.getElementById(
+    "Tahseel_Wi__InvoiceBillNumber",
+  ).value;
   const num = newValue;
   const invoice = InvoicesData.find((invoice) => invoice.BillNumber === num);
   const amount = invoice.AmountTotal - invoice.RefundAmount;
   document.getElementById("Tahseel_Wi__InvoiceAmount").value = amount;
+  document.getElementById("Tahseel_Wi__InvoiceNum").value = invoice.Num;
   const paymentMethod = DataPaymentMethods.find(
     (p) => p.Num === invoice.MethodNum,
   );
-  document.getElementById("Tahseel_Wi__MethodName").value = invoice.MethodName;
+  document.getElementById("Tahseel_Wi__MethodNum").value = invoice.MethodNum;
   document.getElementById("Tahseel_Wi__ReqAmount").value =
     calculatePaymentMethodFee(amount, paymentMethod);
 }

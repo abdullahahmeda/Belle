@@ -811,12 +811,18 @@
               style="display: none"
             />
             <select
-              id="Tahseel_Wi__InvoiceNum"
+              id="Tahseel_Wi__InvoiceBillNumber"
               name="BillNumber"
               required=""
               tabindex="1"
               onchange="onTahseelInvoiceNumChange()"
             ></select>
+            <input
+              type="text"
+              id="Tahseel_Wi__InvoiceNum"
+              style="display: none"
+              name="BillNum"
+            />
             <label for="Tahseel_Wi__InvoiceNum"></label>
           </div>
           <div class="user-box">
@@ -833,12 +839,12 @@
           <div class="user-box">
             <label for="Tahseel_Wi__MethodName">طريقة الدفع</label>
             <input
-              id="Tahseel_Wi__MethodName"
-              name="PaymentMethodName"
+              id="Tahseel_Wi__MethodNum"
+              name="PaymentMethodNum"
               type="text"
               readonly=""
             />
-            <label for="Tahseel_Wi__MethodName"></label>
+            <label for="Tahseel_Wi__MethodNum"></label>
           </div>
           <div class="user-box">
             <label for="Tahseel_Wi__ReqAmount">المبلغ المطلوب</label>
