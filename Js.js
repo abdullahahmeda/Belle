@@ -1,6 +1,6 @@
 const sheetId = "1q3M1Etd73E7s3HaH_SZyEwBAZUCbAY_nhjmB02WDoTc";
 const Script =
-  "https://script.google.com/macros/s/AKfycbyFSgV2-bTOZOTKN7JsL2igN6acPATU57E8_osNffdTFTsI3-t5ko2y9ZsBY1wxchJ3hw/exec";
+  "https://script.google.com/macros/s/AKfycbyrjuUJkRWijnDmeyDM5BmEUdxv_GDlnS66u1PM6rMnt5vOIDCT_2Vi1Z15mdmNfWvuTg/exec";
 const base = `${Script}?`;
 let query = encodeURIComponent("Select *");
 let PlacesSheetName = "places";
@@ -94,14 +94,14 @@ async function ShowTahseelWi() {
   onTahseelIsPaidChange();
 }
 
-function ShowSalesWi() {
+async function ShowSalesWi() {
   let Loading = document.getElementById("invoicedollar");
   let Loading1 = document.getElementById("BackMain");
   Loading.className = "fa fa-refresh fa-spin";
   Loading1.className = "fa fa-refresh fa-spin";
-  LoadPaymentMethods();
+  await LoadPaymentMethods();
   LoadSetting();
-  LoadInvoices();
+  await LoadInvoices();
   Loadplaces();
   const myTimeout = setTimeout(function () {
     Loading.className = "fas fa-file-invoice-dollar";
@@ -1005,48 +1005,44 @@ function GetDateFromString(Str) {
   return ZZ[0] + "-" + MM + "-" + DD;
 }
 
-function ShowSalesBrowser() {
+async function ShowSalesBrowser() {
   let Loading = document.getElementById("LoadingSalesBrowser");
   let Loading1 = document.getElementById("invoicedollar2");
   Loading.className = "fa fa-refresh fa-spin";
   Loading1.className = "fa fa-refresh fa-spin";
   document.getElementById("bodydataS").innerHTML = "";
-  LoadInvoices();
-  const myTimeout = setTimeout(function () {
-    if (isNaN(InvoicesData[0].Num) == false) {
-      for (let index = 0; index < InvoicesData.length; index++) {
-        if (InvoicesData[index].Num != "") {
-          console.log(InvoicesData);
-          AddRowPrS(
-            InvoicesData[index].Num,
-            InvoicesData[index].BillNumber,
-            InvoicesData[index].BillDate,
-            InvoicesData[index].AmountTotal,
-            InvoicesData[index].RefundAmount,
-            InvoicesData[index].MethodName,
-            InvoicesData[index].MethodAmount,
-            InvoicesData[index].Tax,
-            InvoicesData[index].ShipType,
-            InvoicesData[index].ShipAmount,
-            InvoicesData[index].OtherCost,
-            InvoicesData[index].AmountNet,
-            InvoicesData[index].MethodNum,
-            InvoicesData[index].ShipNum,
-            InvoicesData[index].DesCountAmount,
-            InvoicesData[index].Ready,
-            InvoicesData[index].DesCountSel,
-            InvoicesData[index].PlaceName,
-            InvoicesData[index].PlacePrice,
-          );
-        }
+  await LoadInvoices();
+  if (isNaN(InvoicesData[0].Num) == false) {
+    for (let index = 0; index < InvoicesData.length; index++) {
+      if (InvoicesData[index].Num != "") {
+        AddRowPrS(
+          InvoicesData[index].Num,
+          InvoicesData[index].BillNumber,
+          InvoicesData[index].BillDate,
+          InvoicesData[index].AmountTotal,
+          InvoicesData[index].RefundAmount,
+          InvoicesData[index].MethodName,
+          InvoicesData[index].MethodAmount,
+          InvoicesData[index].Tax,
+          InvoicesData[index].ShipType,
+          InvoicesData[index].ShipAmount,
+          InvoicesData[index].OtherCost,
+          InvoicesData[index].AmountNet,
+          InvoicesData[index].MethodNum,
+          InvoicesData[index].ShipNum,
+          InvoicesData[index].DesCountAmount,
+          InvoicesData[index].Ready,
+          InvoicesData[index].DesCountSel,
+          InvoicesData[index].PlaceName,
+          InvoicesData[index].PlacePrice,
+        );
       }
-      AddRowTotal();
     }
-    Loading.className = "fa fa-refresh";
-    Loading1.className = "fas fa-file-invoice-dollar";
-    ShowSelectForm("SalesBrowser");
-    clearTimeout(myTimeout);
-  }, 2000);
+    AddRowTotal();
+  }
+  Loading.className = "fa fa-refresh";
+  Loading1.className = "fas fa-file-invoice-dollar";
+  ShowSelectForm("SalesBrowser");
 }
 
 function GetFormat(StrText) {
@@ -1307,74 +1303,71 @@ function showdatarowsS() {
   }, 2000);
 }
 
-function FillterSalesToTable() {
+async function FillterSalesToTable() {
   let SeaNumber = document.getElementById("SeaNumber");
   let SeaDate = document.getElementById("SeaDate");
   let Loading = document.getElementById("LoadingSalesBrowser");
   Loading.className = "fa fa-refresh fa-spin";
   document.getElementById("bodydataS").innerHTML = "";
-  LoadInvoices();
+  await LoadInvoices();
   let BillNumber, BillDateS;
-  const myTimeout = setTimeout(function () {
-    if (isNaN(InvoicesData[0].Num) == false) {
-      for (let index = 0; index < InvoicesData.length; index++) {
-        BillNumber = InvoicesData[index].BillNumber;
-        BillDateS = InvoicesData[index].BillDate;
-        if (InvoicesData[index].Num != "") {
-          if (SeaNumber.value != "") {
-            if (BillNumber == SeaNumber.value) {
-              AddRowPrS(
-                InvoicesData[index].Num,
-                InvoicesData[index].BillNumber,
-                InvoicesData[index].BillDate,
-                InvoicesData[index].AmountTotal,
-                InvoicesData[index].MethodName,
-                InvoicesData[index].MethodAmount,
-                InvoicesData[index].Tax,
-                InvoicesData[index].ShipType,
-                InvoicesData[index].ShipAmount,
-                InvoicesData[index].OtherCost,
-                InvoicesData[index].AmountNet,
-                InvoicesData[index].MethodNum,
-                InvoicesData[index].ShipNum,
-                InvoicesData[index].DesCountAmount,
-                InvoicesData[index].Ready,
-                InvoicesData[index].DesCountSel,
-                InvoicesData[index].PlaceName,
-                InvoicesData[index].PlacePrice,
-              );
-            }
-          } else if (SeaDate.value != "") {
-            if (GetDateFromString(BillDateS) == SeaDate.value) {
-              AddRowPrS(
-                InvoicesData[index].Num,
-                InvoicesData[index].BillNumber,
-                InvoicesData[index].BillDate,
-                InvoicesData[index].AmountTotal,
-                InvoicesData[index].MethodName,
-                InvoicesData[index].MethodAmount,
-                InvoicesData[index].Tax,
-                InvoicesData[index].ShipType,
-                InvoicesData[index].ShipAmount,
-                InvoicesData[index].OtherCost,
-                InvoicesData[index].AmountNet,
-                InvoicesData[index].MethodNum,
-                InvoicesData[index].ShipNum,
-                InvoicesData[index].DesCountAmount,
-                InvoicesData[index].Ready,
-                InvoicesData[index].DesCountSel,
-                InvoicesData[index].PlaceName,
-                InvoicesData[index].PlacePrice,
-              );
-            }
+  if (isNaN(InvoicesData[0].Num) == false) {
+    for (let index = 0; index < InvoicesData.length; index++) {
+      BillNumber = InvoicesData[index].BillNumber;
+      BillDateS = InvoicesData[index].BillDate;
+      if (InvoicesData[index].Num != "") {
+        if (SeaNumber.value != "") {
+          if (BillNumber == SeaNumber.value) {
+            AddRowPrS(
+              InvoicesData[index].Num,
+              InvoicesData[index].BillNumber,
+              InvoicesData[index].BillDate,
+              InvoicesData[index].AmountTotal,
+              InvoicesData[index].MethodName,
+              InvoicesData[index].MethodAmount,
+              InvoicesData[index].Tax,
+              InvoicesData[index].ShipType,
+              InvoicesData[index].ShipAmount,
+              InvoicesData[index].OtherCost,
+              InvoicesData[index].AmountNet,
+              InvoicesData[index].MethodNum,
+              InvoicesData[index].ShipNum,
+              InvoicesData[index].DesCountAmount,
+              InvoicesData[index].Ready,
+              InvoicesData[index].DesCountSel,
+              InvoicesData[index].PlaceName,
+              InvoicesData[index].PlacePrice,
+            );
+          }
+        } else if (SeaDate.value != "") {
+          if (GetDateFromString(BillDateS) == SeaDate.value) {
+            AddRowPrS(
+              InvoicesData[index].Num,
+              InvoicesData[index].BillNumber,
+              InvoicesData[index].BillDate,
+              InvoicesData[index].AmountTotal,
+              InvoicesData[index].MethodName,
+              InvoicesData[index].MethodAmount,
+              InvoicesData[index].Tax,
+              InvoicesData[index].ShipType,
+              InvoicesData[index].ShipAmount,
+              InvoicesData[index].OtherCost,
+              InvoicesData[index].AmountNet,
+              InvoicesData[index].MethodNum,
+              InvoicesData[index].ShipNum,
+              InvoicesData[index].DesCountAmount,
+              InvoicesData[index].Ready,
+              InvoicesData[index].DesCountSel,
+              InvoicesData[index].PlaceName,
+              InvoicesData[index].PlacePrice,
+            );
           }
         }
       }
-      AddRowTotal();
     }
-    Loading.className = "fa fa-refresh";
-    clearTimeout(myTimeout);
-  }, 2000);
+    AddRowTotal();
+  }
+  Loading.className = "fa fa-refresh";
 }
 
 // ***********************Mode*********************
