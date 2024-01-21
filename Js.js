@@ -1,22 +1,22 @@
 const sheetId = "1q3M1Etd73E7s3HaH_SZyEwBAZUCbAY_nhjmB02WDoTc";
 const Script =
-  "https://script.google.com/macros/s/AKfycbz9s7eRypRUdbdwoZo57zt78gZ8LMImB-OG72Ls8p3z6DMR6-SD9899d5bcvW4cCpC4zA/exec";
-const base = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?`;
+  "https://script.google.com/macros/s/AKfycbyFSgV2-bTOZOTKN7JsL2igN6acPATU57E8_osNffdTFTsI3-t5ko2y9ZsBY1wxchJ3hw/exec";
+const base = `${Script}?`;
 let query = encodeURIComponent("Select *");
 let PlacesSheetName = "places";
-let PlacesUrl = `${base}&sheet=${PlacesSheetName}&tq=${query}`;
+let PlacesUrl = `${base}sheet=${PlacesSheetName}&tq=${query}`;
 let Dataplaces = [];
 let InvoicesSheetName = "Data0";
-let InvoicesUrl = `${base}&sheet=${InvoicesSheetName}&tq=${query}`;
+let InvoicesUrl = `${base}sheet=${InvoicesSheetName}&tq=${query}`;
 let InvoicesData = [];
 let MethodSheetName = "Data1";
-let MethodUrl = `${base}&sheet=${MethodSheetName}&tq=${query}`;
+let MethodUrl = `${base}sheet=${MethodSheetName}&tq=${query}`;
 let DataPaymentMethods = [];
 let TahseelSheetName = "Tahseel";
-let TahseelUrl = `${base}&sheet=${TahseelSheetName}&tq=${query}`;
+let TahseelUrl = `${base}sheet=${TahseelSheetName}&tq=${query}`;
 let DataTahseel = [];
 let SettingSheetName = "Setting";
-let SettingUrl = `${base}&sheet=${SettingSheetName}&tq=${query}`;
+let SettingUrl = `${base}sheet=${SettingSheetName}&tq=${query}`;
 let DataSetting = [];
 
 document.addEventListener("DOMContentLoaded", init);
@@ -175,7 +175,9 @@ function showLoading(elm) {
 
 async function LoadPaymentMethods(populateSelect = true) {
   DataPaymentMethods = [];
-  await fetch(MethodUrl)
+  await fetch(MethodUrl, {
+    mode: "no-cors",
+  })
     .then((res) => res.text())
     .then((rep) => {
       const jsonMethod = JSON.parse(rep.substring(47).slice(0, -2));
@@ -456,7 +458,9 @@ async function LoadTahseelTable() {
 }
 async function LoadTahseel() {
   DataTahseel = [];
-  await fetch(TahseelUrl)
+  await fetch(TahseelUrl, {
+    mode: "no-cors",
+  })
     .then((res) => res.text())
     .then((rep) => {
       const jsonData0 = JSON.parse(rep.substring(47).slice(0, -2));
@@ -622,7 +626,9 @@ function submitTahseelForm(Time = 5000) {
 // ********************SalesWi
 function LoadSetting() {
   DataSetting = [];
-  fetch(SettingUrl)
+  fetch(SettingUrl, {
+    mode: "no-cors",
+  })
     .then((res) => res.text())
     .then((rep) => {
       const jsonSetting = JSON.parse(rep.substring(47).slice(0, -2));
@@ -691,7 +697,9 @@ function OncahangeMethod(Myvalue) {
 
 function Loadplaces() {
   Dataplaces = [];
-  fetch(PlacesUrl)
+  fetch(PlacesUrl, {
+    mode: "no-cors",
+  })
     .then((res) => res.text())
     .then((rep) => {
       const jsonplaces = JSON.parse(rep.substring(47).slice(0, -2));
@@ -957,7 +965,9 @@ function onsubmitFormS(Time) {
 
 async function LoadInvoices() {
   InvoicesData = [];
-  await fetch(InvoicesUrl)
+  await fetch(InvoicesUrl, {
+    mode: "no-cors",
+  })
     .then((res) => res.text())
     .then((rep) => {
       const jsonData0 = JSON.parse(rep.substring(47).slice(0, -2));
