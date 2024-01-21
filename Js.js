@@ -175,9 +175,7 @@ function showLoading(elm) {
 
 async function LoadPaymentMethods(populateSelect = true) {
   DataPaymentMethods = [];
-  await fetch(MethodUrl, {
-    mode: "no-cors",
-  })
+  await fetch(MethodUrl)
     .then((res) => res.text())
     .then((rep) => {
       const jsonMethod = JSON.parse(rep.substring(47).slice(0, -2));
@@ -458,9 +456,7 @@ async function LoadTahseelTable() {
 }
 async function LoadTahseel() {
   DataTahseel = [];
-  await fetch(TahseelUrl, {
-    mode: "no-cors",
-  })
+  await fetch(TahseelUrl)
     .then((res) => res.text())
     .then((rep) => {
       const jsonData0 = JSON.parse(rep.substring(47).slice(0, -2));
@@ -626,9 +622,7 @@ function submitTahseelForm(Time = 5000) {
 // ********************SalesWi
 function LoadSetting() {
   DataSetting = [];
-  fetch(SettingUrl, {
-    mode: "no-cors",
-  })
+  fetch(SettingUrl)
     .then((res) => res.text())
     .then((rep) => {
       const jsonSetting = JSON.parse(rep.substring(47).slice(0, -2));
@@ -697,9 +691,7 @@ function OncahangeMethod(Myvalue) {
 
 function Loadplaces() {
   Dataplaces = [];
-  fetch(PlacesUrl, {
-    mode: "no-cors",
-  })
+  fetch(PlacesUrl)
     .then((res) => res.text())
     .then((rep) => {
       const jsonplaces = JSON.parse(rep.substring(47).slice(0, -2));
@@ -965,9 +957,7 @@ function onsubmitFormS(Time) {
 
 async function LoadInvoices() {
   InvoicesData = [];
-  await fetch(InvoicesUrl, {
-    mode: "no-cors",
-  })
+  await fetch(InvoicesUrl)
     .then((res) => res.text())
     .then((rep) => {
       const jsonData0 = JSON.parse(rep.substring(47).slice(0, -2));
