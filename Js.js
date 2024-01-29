@@ -1,6 +1,6 @@
 const sheetId = "1q3M1Etd73E7s3HaH_SZyEwBAZUCbAY_nhjmB02WDoTc";
 const Script =
-  "https://script.google.com/macros/s/AKfycbyrjuUJkRWijnDmeyDM5BmEUdxv_GDlnS66u1PM6rMnt5vOIDCT_2Vi1Z15mdmNfWvuTg/exec";
+  "https://script.google.com/macros/s/AKfycbzHoNFrA-opvU2vcQ4aw_xMz930zURNXK_XUJQ917n_vJVG8FdZNm2z2AuRkDowCR1KkQ/exec";
 const base = `${Script}?`;
 let query = encodeURIComponent("Select *");
 let PlacesSheetName = "places";
@@ -15,6 +15,15 @@ let DataPaymentMethods = [];
 let TahseelSheetName = "Tahseel";
 let TahseelUrl = `${base}sheet=${TahseelSheetName}&tq=${query}`;
 let DataTahseel = [];
+let TahseelTypesSheetName = "TahseelType";
+let TahseelTypesUrl = `${base}sheet=${TahseelTypesSheetName}&tq=${query}`;
+let DataTahseelTypes = [];
+let ExpenseTypesSheetName = "ExpenseType";
+let ExpenseTypesUrl = `${base}sheet=${ExpenseTypesSheetName}&tq=${query}`;
+let DataExpenseTypes = [];
+let ExpensesSheetName = "Expense";
+let ExpensesUrl = `${base}sheet=${ExpensesSheetName}&tq=${query}`;
+let DataExpenses = [];
 let SettingSheetName = "Setting";
 let SettingUrl = `${base}sheet=${SettingSheetName}&tq=${query}`;
 let DataSetting = [];
@@ -41,11 +50,43 @@ function ShowSelectForm(ActiveForm) {
   document.getElementById("SalesBrowser").style.display = "none";
   document.getElementById("Tahseel_Wi").style.display = "none";
   document.getElementById("Tahseel_Browser").style.display = "none";
+  document.getElementById("Expense_Types__Wi").style.display = "none";
+  document.getElementById("Expense_Types__Browser").style.display = "none";
+  document.getElementById("Tahseel_Types__Wi").style.display = "none";
+  document.getElementById("Tahseel_Types__Browser").style.display = "none";
+  document.getElementById("Expenses__Wi").style.display = "none";
+  document.getElementById("Expenses__Browser").style.display = "none";
+  document.getElementById("Reports").style.display = "none";
   document.getElementById(ActiveForm).style.display = "flex";
   localStorage.setItem("ActiveForm", ActiveForm);
 }
 
 // *************************************Main**************
+async function ShowReports() {
+  let Loading = document.getElementById("reports-icon");
+  Loading.className = "fa fa-refresh fa-spin";
+  await LoadInvoices();
+  await LoadTahseel();
+  await LoadExpenses();
+  ShowSelectForm("Reports");
+  const totalTahseel = DataTahseel.reduce(
+    (acc, tahseel) => tahseel.ReqAmount + acc,
+    0,
+  );
+  const totalExpenses = DataExpenses.reduce((acc, exp) => exp.Amount + acc, 0);
+  document.getElementById("total-sales-count").textContent =
+    InvoicesData.length;
+  document.getElementById("total-sales-amount").textContent =
+    InvoicesData.reduce((acc, inv) => inv.AmountTotal + acc, 0) + " ريال";
+  document.getElementById("total-sales-amount-net").textContent =
+    InvoicesData.reduce((acc, inv) => inv.AmountNet + acc, 0) + " ريال";
+  document.getElementById("total-tahseel").textContent = totalTahseel + " ريال";
+  document.getElementById("total-expenses").textContent =
+    totalExpenses + " ريال";
+  document.getElementById("available-amount").textContent =
+    totalTahseel - totalExpenses + " ريال";
+  Loading.className = "fas fa-chart-bar";
+}
 
 function ShowMethodBrowser() {
   let Loading = document.getElementById("LoadingMethodBrowser");
@@ -64,6 +105,64 @@ function ShowMethodBrowser() {
   }, 2000);
 }
 
+async function ShowTahseelTypesBrowser() {
+  let Loading = document.getElementById("LoadingTahseelTypesBrowser");
+  let Loading1 = document.getElementById("tahseel-types-icon");
+  Loading.className = "fa fa-refresh fa-spin";
+  Loading1.className = "fa fa-refresh fa-spin";
+  await LoadTahseelTypesToTable();
+  ShowSelectForm("Tahseel_Types__Browser");
+  Loading.className = "fa fa-refresh";
+  Loading1.className = "fa fa-credit-card";
+}
+
+async function ShowExpenseTypesBrowser() {
+  let Loading = document.getElementById("LoadingExpenseTypesBrowser");
+  let Loading1 = document.getElementById("expense-types-icon");
+  Loading.className = "fa fa-refresh fa-spin";
+  Loading1.className = "fa fa-refresh fa-spin";
+  await LoadExpenseTypesToTable();
+  ShowSelectForm("Expense_Types__Browser");
+  Loading.className = "fa fa-refresh";
+  Loading1.className = "fa fa-credit-card";
+}
+
+async function ShowExpensesWi() {
+  let Loading = document.getElementById("new-expenses-icon");
+  let Loading2 = document.getElementById("LoadingExpensesPlus");
+  Loading.className = "fa fa-refresh fa-spin";
+  Loading2.className = "fa fa-refresh fa-spin";
+  await LoadExpenseTypes();
+  populateSelect(
+    document.getElementById("Expenses__Wi__ExpenseTypeNum"),
+    DataExpenseTypes,
+    {
+      label: "Name",
+      value: "Num",
+    },
+  );
+  ShowSelectForm("Expenses__Wi");
+  Loading.className = "fa fa-plus";
+  Loading2.className = "fa fa-plus";
+  updateExpenseTypeName();
+}
+
+async function ShowTahseelTypesWi() {
+  let Loading = document.getElementById("LoadingTahseelTypesPlus");
+  Loading.className = "fa fa-refresh fa-spin";
+  await LoadPaymentMethods();
+  ShowSelectForm("Tahseel_Types__Wi");
+  Loading.className = "fa fa-plus";
+}
+
+async function ShowExpenseTypesWi() {
+  let Loading = document.getElementById("LoadingExpenseTypesPlus");
+  Loading.className = "fa fa-refresh fa-spin";
+  await LoadPaymentMethods();
+  ShowSelectForm("Expense_Types__Wi");
+  Loading.className = "fa fa-plus";
+}
+
 function ShowMethodWi() {
   let Loading = document.getElementById("LoadingMethodplus");
   Loading.className = "fa fa-refresh fa-spin";
@@ -78,19 +177,26 @@ function ShowMethodWi() {
 async function ShowTahseelWi() {
   let loadingElm = document.getElementById("new-tahseel-icon");
   loadingElm.className = "fa fa-refresh fa-spin";
-  const invoices = await LoadInvoices();
+  const tahseelTypes = await LoadTahseelTypes();
   populateSelect(
-    document.getElementById("Tahseel_Wi__InvoiceBillNumber"),
-    invoices,
+    document.getElementById("Tahseel_Wi__TahseelTypeNum"),
+    tahseelTypes,
     {
-      value: "BillNumber",
-      label: "BillNumber",
+      value: "Num",
+      label: "Name",
     },
   );
   await LoadPaymentMethods(false);
+  populateSelect(
+    document.getElementById("Tahseel_Wi__MethodNum"),
+    DataPaymentMethods,
+    {
+      value: "Num",
+      label: "MetodName",
+    },
+  );
   ShowSelectForm("Tahseel_Wi");
   loadingElm.className = "fa fa-plus";
-  onTahseelInvoiceNumChange();
   onTahseelIsPaidChange();
 }
 
@@ -104,7 +210,7 @@ async function ShowSalesWi() {
   await LoadInvoices();
   Loadplaces();
   const myTimeout = setTimeout(function () {
-    Loading.className = "fas fa-file-invoice-dollar";
+    Loading.className = "fas fa-plus";
     Loading1.className = "fa fa-mail-reply";
     ClearItemSa();
     ShowSelectForm("SalesWi");
@@ -431,6 +537,477 @@ function onsubmitForm(Time) {
   }
 }
 
+// ******************** Expense ********************
+async function ShowExpensesBrowser() {
+  let Loading = document.getElementById("expenses-browser-icon");
+  Loading.className = "fa fa-refresh fa-spin";
+  await LoadExpenseTable();
+  Loading.className = "fa fa-refresh";
+  Loading.className = "fas fa-file-invoice-dollar";
+  ShowSelectForm("Expenses__Browser");
+}
+
+async function LoadExpenseTable() {
+  let Loading = document.getElementById("LoadingExpensesBrowser");
+  Loading.className = "fa fa-refresh fa-spin";
+  document.getElementById("bodyTableExpenses").innerHTML = "";
+  await LoadExpenses();
+  if (isNaN(DataExpenses[0].Num) == false) {
+    for (let index = 0; index < DataExpenses.length; index++) {
+      if (DataExpenses[index].Num != "") {
+        AddExpenseTableRow(
+          DataExpenses[index].Num,
+          DataExpenses[index].Amount,
+          DataExpenses[index].Tax,
+          DataExpenses[index].ExpenseTypeName,
+          DataExpenses[index].ExpenseTypeNum,
+          DataExpenses[index].Recipient,
+          DataExpenses[index].Date,
+        );
+      }
+    }
+    AddExpenseTotalRow();
+  }
+  Loading.className = "fa fa-refresh";
+}
+
+function AddExpenseTotalRow() {
+  let bodydata = document.getElementById("bodyTableExpenses");
+  let row = bodydata.insertRow();
+  row.id = "S" + bodydata.childElementCount;
+  let cell = row.insertCell();
+  cell.id = "S" + bodydata.childElementCount + "NumT";
+  cell.innerHTML = "المجموع";
+  cell = row.insertCell();
+  cell.id = "S" + bodydata.childElementCount + "AmountT";
+  cell.innerHTML = GetFormat(String(Calculate("Expense__Browser__Amount")));
+  cell = row.insertCell();
+  cell.id = "S" + bodydata.childElementCount + "TaxT";
+  cell.innerHTML = GetFormat(String(Calculate("Expense__Browser__Tax")));
+  cell = row.insertCell();
+  cell.id = "S" + bodydata.childElementCount + "ExpenseTypeT";
+  cell.innerHTML = "";
+  cell = row.insertCell();
+  cell.id = "S" + bodydata.childElementCount + "RecipientT";
+  cell.innerHTML = "";
+  cell = row.insertCell();
+  cell.id = "S" + bodydata.childElementCount + "DateT";
+  cell.innerHTML = "";
+  cell = row.insertCell();
+}
+
+async function LoadExpenses() {
+  DataExpenses = [];
+  await fetch(ExpensesUrl)
+    .then((res) => res.text())
+    .then((rep) => {
+      const jsonData0 = JSON.parse(rep.substring(47).slice(0, -2));
+      const colzData0 = [];
+      jsonData0.table.cols.forEach((headingData0) => {
+        if (headingData0.label) {
+          let columnData0 = headingData0.label;
+          colzData0.push(columnData0);
+        }
+      });
+      jsonData0.table.rows.forEach((rowData01) => {
+        const rowData0 = {};
+        colzData0.forEach((ele, ind) => {
+          rowData0[ele.trim()] =
+            rowData01.c[ind] != null ? rowData01.c[ind].v : "";
+        });
+        DataExpenses.push(rowData0);
+      });
+    });
+  return DataExpenses;
+}
+
+function AddExpenseTableRow(
+  Num,
+  Amount,
+  Tax,
+  ExpenseTypeName,
+  ExpenseTypeNum,
+  Recipient,
+  Date,
+) {
+  let bodydata = document.getElementById("bodyTableExpenses");
+  let row = bodydata.insertRow();
+  row.id = "S" + bodydata.childElementCount;
+  let cell = row.insertCell();
+  cell.id = "S" + bodydata.childElementCount + "Num";
+  cell.innerHTML = Num;
+  cell = row.insertCell();
+  cell.id = "S" + bodydata.childElementCount + "Amount";
+  cell.innerHTML = Amount;
+  cell.className = "Expense__Browser__Amount";
+  cell = row.insertCell();
+  cell.id = "S" + bodydata.childElementCount + "Tax";
+  cell.innerHTML = Tax;
+  cell.className = "Expense__Browser__Tax";
+  cell = row.insertCell();
+  cell.id = "S" + bodydata.childElementCount + "ExpenseTypeName";
+  cell.innerHTML = ExpenseTypeName;
+  cell = row.insertCell();
+  cell.id = "S" + bodydata.childElementCount + "ExpenseTypeNum";
+  cell.innerHTML = ExpenseTypeNum;
+  cell.style = "display: none";
+  cell = row.insertCell();
+  cell.id = "S" + bodydata.childElementCount + "Recipient";
+  cell.innerHTML = Recipient;
+  cell = row.insertCell();
+  cell.id = "S" + bodydata.childElementCount + "Date";
+  cell.innerHTML = GetDateFromString(Date);
+  row.appendChild((td = document.createElement("td")));
+  var btb = document.createElement("button");
+  btb.type = "button";
+  btb.id = "ButS" + bodydata.childElementCount;
+  btb.onclick = async function () {
+    await showExpense();
+  };
+  btb.innerHTML = `<a class='fa fa-edit' style='color:#ff5e00 ; width:100% ;'> </a>`;
+  td.appendChild(btb);
+  btb.style.cursor = "pointer";
+  btb.style.color = "red";
+  btb.style.width = "100%";
+}
+
+async function showExpense() {
+  let indextable = document.activeElement.parentElement.parentElement.id;
+  let Num = document.getElementById(indextable).children.item(0).textContent;
+  let Amount = document.getElementById(indextable).children.item(1).textContent;
+  let Tax = document.getElementById(indextable).children.item(2).textContent;
+  let ExpenseTypeName = document
+    .getElementById(indextable)
+    .children.item(3).textContent;
+  let ExpenseTypeNum = document
+    .getElementById(indextable)
+    .children.item(4).textContent;
+  let Recipient = document
+    .getElementById(indextable)
+    .children.item(5).textContent;
+  let Date = document.getElementById(indextable).children.item(6).textContent;
+  let Loading = document
+    .getElementById(indextable)
+    .children.item(7)
+    .children.item(0)
+    .children.item(0);
+
+  Loading.className = "fa fa-refresh fa-spin";
+  await LoadExpenseTypes();
+  populateSelect(
+    document.getElementById("Expenses__Wi__ExpenseTypeNum"),
+    DataExpenseTypes,
+    {
+      value: "Num",
+      label: "Name",
+    },
+  );
+  document.getElementById("Expenses__Wi__Row").value = Number(Num) + 1;
+  document.getElementById("Expenses__Wi__Amount").value = Amount;
+  document.getElementById("Expenses__Wi__Tax").value = Tax;
+  document.getElementById("Expenses__Wi__ExpenseTypeNum").value =
+    ExpenseTypeNum;
+  document.getElementById("Expenses__Wi__ExpenseTypeName").value =
+    ExpenseTypeName;
+  document.getElementById("Expenses__Wi__Recipient").value = Recipient;
+  document.getElementById("Expenses__Wi__Date").value = Date;
+  ShowSelectForm("Expenses__Wi");
+  Loading.className = "fa fa-edit";
+}
+
+function onExpenseAmountChange() {
+  document.getElementById("Expenses__Wi__Tax").value =
+    document.getElementById("Expenses__Wi__Amount").value * 0.15;
+}
+
+function updateExpenseTypeName() {
+  const num = document.getElementById("Expenses__Wi__ExpenseTypeNum").value;
+  const name = DataExpenseTypes.find((t) => t.Num === Number(num)).Name;
+  document.getElementById("Expenses__Wi__ExpenseTypeName").value = name;
+}
+
+function createExpense() {
+  document.getElementById("Expenses__Wi__Mode").value = "create";
+  submitExpenseForm();
+}
+
+function editExpense() {
+  if (document.getElementById("Expenses__Wi__Row").value === "") return;
+  document.getElementById("Expenses__Wi__Mode").value = "update";
+  submitExpenseForm();
+}
+
+function deleteExpense() {
+  if (document.getElementById("Expenses__Wi__Row").value === "") return;
+  document.getElementById("Expenses__Wi__Mode").value = "delete";
+  submitExpenseForm();
+}
+
+function clearExpense() {
+  document.getElementById("Expenses__Wi__Amount").value = "";
+  document.getElementById("Expenses__Wi__Recipient").value = "";
+  document.getElementById("Expenses__Wi__Date").value = "";
+  onExpenseAmountChange();
+}
+
+function submitExpenseForm(Time = 5000) {
+  document.getElementById("Expenses__Wi__Type").value = "expense";
+  let MainForm = document.getElementById("FormExpensesDetails");
+  var w = window.open("", "form_target", "width=600, height=400");
+  MainForm.target = "form_target";
+  MainForm.action = Script;
+  MainForm.submit();
+  if (MainForm.onsubmit() == true) {
+    const myTimeout = setTimeout(function () {
+      w.close();
+      clearTimeout(myTimeout);
+      location.reload();
+    }, Time);
+  }
+}
+
+// ******************** Tahseel Type ***************
+function createTahseelType() {
+  document.getElementById("Tahseel_Types__Wi__Mode").value = "create";
+  submitTahseelTypeForm();
+}
+
+function editTahseelType() {
+  if (document.getElementById("Tahseel_Types__Wi__Row").value === "") return;
+  document.getElementById("Tahseel_Types__Wi__Mode").value = "update";
+  submitTahseelTypeForm();
+}
+
+function deleteTahseelType() {
+  if (document.getElementById("Tahseel_Types__Wi__Row").value === "") return;
+  document.getElementById("Tahseel_Types__Wi__Mode").value = "delete";
+  submitTahseelTypeForm();
+}
+
+function clearTahseelType() {
+  document.getElementById("Tahseel_Types__Wi__Name").value = "";
+}
+
+function submitTahseelTypeForm(Time = 5000) {
+  document.getElementById("Tahseel_Types__Wi__Type").value = "tahseel-type";
+  let MainForm = document.getElementById("FormTahseelTypesDetails");
+  var w = window.open("", "form_target", "width=600, height=400");
+  MainForm.target = "form_target";
+  MainForm.action = Script;
+  MainForm.submit();
+  if (MainForm.onsubmit() == true) {
+    const myTimeout = setTimeout(function () {
+      w.close();
+      clearTimeout(myTimeout);
+      location.reload();
+    }, Time);
+  }
+}
+
+async function LoadTahseelTypesToTable() {
+  let Num, Name;
+  let Loading = document.getElementById("LoadingTahseelTypesBrowser");
+  Loading.className = "fa fa-refresh fa-spin";
+  document.getElementById("bodyTableTahseelTypes").innerHTML = "";
+  await LoadTahseelTypes();
+  if (isNaN(DataTahseelTypes[0].Num) == false) {
+    for (let index = 0; index < DataTahseelTypes.length; index++) {
+      Num = DataTahseelTypes[index].Num;
+      Name = DataTahseelTypes[index].Name;
+      if (DataTahseelTypes[index].Num != "") {
+        AddRowTahseelType(Num, Name);
+      }
+    }
+  }
+  Loading.className = "fa fa-refresh";
+}
+
+async function LoadTahseelTypes() {
+  DataTahseelTypes = [];
+  await fetch(TahseelTypesUrl)
+    .then((res) => res.text())
+    .then((rep) => {
+      const jsonData0 = JSON.parse(rep.substring(47).slice(0, -2));
+      const colzData0 = [];
+      jsonData0.table.cols.forEach((headingData0) => {
+        if (headingData0.label) {
+          let columnData0 = headingData0.label;
+          colzData0.push(columnData0);
+        }
+      });
+      jsonData0.table.rows.forEach((rowData01) => {
+        const rowData0 = {};
+        colzData0.forEach((ele, ind) => {
+          rowData0[ele.trim()] =
+            rowData01.c[ind] != null ? rowData01.c[ind].v : "";
+        });
+        DataTahseelTypes.push(rowData0);
+      });
+    });
+  return DataTahseelTypes;
+}
+
+function AddRowTahseelType(Num, Name) {
+  let bodydata = document.getElementById("bodyTableTahseelTypes");
+  let row = bodydata.insertRow();
+  row.id = "S" + bodydata.childElementCount;
+  let cell = row.insertCell();
+  cell.id = "S" + bodydata.childElementCount + "Num";
+  cell.innerHTML = Num;
+  cell = row.insertCell();
+  cell.id = "S" + bodydata.childElementCount + "Name";
+  cell.innerHTML = Name;
+  row.appendChild((td = document.createElement("td")));
+  var btb = document.createElement("button");
+  btb.type = "button";
+  btb.id = "ButS" + bodydata.childElementCount;
+  btb.onclick = async function () {
+    await showTahseelType();
+  };
+  btb.innerHTML = `<a class='fa fa-edit' style='color:#ff5e00 ; width:100% ;'> </a>`;
+  td.appendChild(btb);
+  btb.style.cursor = "pointer";
+  btb.style.color = "red";
+  btb.style.width = "100%";
+}
+
+async function showTahseelType() {
+  let indextable = document.activeElement.parentElement.parentElement.id;
+  let Num = document.getElementById(indextable).children.item(0).textContent;
+  let Name = document.getElementById(indextable).children.item(1).textContent;
+  let Loading = document
+    .getElementById(indextable)
+    .children.item(2)
+    .children.item(0)
+    .children.item(0);
+  Loading.className = "fa fa-refresh fa-spin";
+  document.getElementById("Tahseel_Types__Wi__Row").value = Number(Num) + 1;
+  document.getElementById("Tahseel_Types__Wi__Name").value = Name;
+  ShowSelectForm("Tahseel_Types__Wi");
+  Loading.className = "fa fa-edit";
+}
+
+// ******************** Expense Type ***************
+function createExpenseType() {
+  document.getElementById("Expense_Types__Wi__Mode").value = "create";
+  submitExpenseTypeForm();
+}
+
+function editExpenseType() {
+  if (document.getElementById("Expense_Types__Wi__Row").value === "") return;
+  document.getElementById("Expense_Types__Wi__Mode").value = "update";
+  submitExpenseTypeForm();
+}
+
+function deleteExpenseType() {
+  if (document.getElementById("Expense_Types__Wi__Row").value === "") return;
+  document.getElementById("Expense_Types__Wi__Mode").value = "delete";
+  submitExpenseTypeForm();
+}
+
+function clearExpenseType() {
+  document.getElementById("Expense_Types__Wi__Name").value = "";
+}
+
+function submitExpenseTypeForm(Time = 5000) {
+  document.getElementById("Expense_Types__Wi__Type").value = "expense-type";
+  let MainForm = document.getElementById("FormExpenseTypesDetails");
+  var w = window.open("", "form_target", "width=600, height=400");
+  MainForm.target = "form_target";
+  MainForm.action = Script;
+  MainForm.submit();
+  if (MainForm.onsubmit() == true) {
+    const myTimeout = setTimeout(function () {
+      w.close();
+      clearTimeout(myTimeout);
+      location.reload();
+    }, Time);
+  }
+}
+
+async function LoadExpenseTypesToTable() {
+  let Num, Name;
+  let Loading = document.getElementById("LoadingExpenseTypesBrowser");
+  Loading.className = "fa fa-refresh fa-spin";
+  document.getElementById("bodyTableExpenseTypes").innerHTML = "";
+  await LoadExpenseTypes();
+  if (isNaN(DataExpenseTypes[0].Num) == false) {
+    for (let index = 0; index < DataExpenseTypes.length; index++) {
+      Num = DataExpenseTypes[index].Num;
+      Name = DataExpenseTypes[index].Name;
+      if (DataExpenseTypes[index].Num != "") {
+        AddRowExpenseType(Num, Name);
+      }
+    }
+  }
+  Loading.className = "fa fa-refresh";
+}
+
+async function LoadExpenseTypes() {
+  DataExpenseTypes = [];
+  await fetch(ExpenseTypesUrl)
+    .then((res) => res.text())
+    .then((rep) => {
+      const jsonData0 = JSON.parse(rep.substring(47).slice(0, -2));
+      const colzData0 = [];
+      jsonData0.table.cols.forEach((headingData0) => {
+        if (headingData0.label) {
+          let columnData0 = headingData0.label;
+          colzData0.push(columnData0);
+        }
+      });
+      jsonData0.table.rows.forEach((rowData01) => {
+        const rowData0 = {};
+        colzData0.forEach((ele, ind) => {
+          rowData0[ele.trim()] =
+            rowData01.c[ind] != null ? rowData01.c[ind].v : "";
+        });
+        DataExpenseTypes.push(rowData0);
+      });
+    });
+  return DataExpenseTypes;
+}
+
+function AddRowExpenseType(Num, Name) {
+  let bodydata = document.getElementById("bodyTableExpenseTypes");
+  let row = bodydata.insertRow();
+  row.id = "S" + bodydata.childElementCount;
+  let cell = row.insertCell();
+  cell.id = "S" + bodydata.childElementCount + "Num";
+  cell.innerHTML = Num;
+  cell = row.insertCell();
+  cell.id = "S" + bodydata.childElementCount + "Name";
+  cell.innerHTML = Name;
+  row.appendChild((td = document.createElement("td")));
+  var btb = document.createElement("button");
+  btb.type = "button";
+  btb.id = "ButS" + bodydata.childElementCount;
+  btb.onclick = async function () {
+    await showExpenseType();
+  };
+  btb.innerHTML = `<a class='fa fa-edit' style='color:#ff5e00 ; width:100% ;'> </a>`;
+  td.appendChild(btb);
+  btb.style.cursor = "pointer";
+  btb.style.color = "red";
+  btb.style.width = "100%";
+}
+
+async function showExpenseType() {
+  let indextable = document.activeElement.parentElement.parentElement.id;
+  let Num = document.getElementById(indextable).children.item(0).textContent;
+  let Name = document.getElementById(indextable).children.item(1).textContent;
+  let Loading = document
+    .getElementById(indextable)
+    .children.item(2)
+    .children.item(0)
+    .children.item(0);
+  Loading.className = "fa fa-refresh fa-spin";
+  document.getElementById("Expense_Types__Wi__Row").value = Number(Num) + 1;
+  document.getElementById("Expense_Types__Wi__Name").value = Name;
+  ShowSelectForm("Expense_Types__Wi");
+  Loading.className = "fa fa-edit";
+}
+
 // ******************** Tahseel ********************
 async function LoadTahseelTable() {
   let Loading = document.getElementById("LoadingTahseelBrowser");
@@ -445,15 +1022,20 @@ async function LoadTahseelTable() {
           DataTahseel[index].BillNumber,
           DataTahseel[index].BillAmount,
           DataTahseel[index].PaymentMethodName,
-          (DataTahseel[index].IsPaid === true ? 0 : -1) *
-            DataTahseel[index].ReqAmount,
+          DataTahseel[index].PaymentMethodNum,
+          DataTahseel[index].ReqAmount,
+          DataTahseel[index].Date,
+          DataTahseel[index].TahseelTypeNum,
+          DataTahseel[index].TahseelTypeName,
+          DataTahseel[index].IsPaid === true,
         );
       }
     }
-    // AddRowTotal();
+    AddTahseelTotalRow();
   }
   Loading.className = "fa fa-refresh";
 }
+
 async function LoadTahseel() {
   DataTahseel = [];
   await fetch(TahseelUrl)
@@ -481,7 +1063,7 @@ async function LoadTahseel() {
 async function ShowTahseelBrowser() {
   let Loading = document.getElementById("tahseel-browser-loading");
   Loading.className = "fa fa-refresh fa-spin";
-  LoadTahseelTable();
+  await LoadTahseelTable();
   Loading.className = "fa fa-refresh";
   Loading.className = "fas fa-file-invoice-dollar";
   ShowSelectForm("Tahseel_Browser");
@@ -492,7 +1074,12 @@ function AddTahseelTableRow(
   BillNumber,
   BillAmount,
   PaymentMethodName,
+  PaymentMethodNum,
   ReqAmount,
+  Date,
+  TahseelTypeNum,
+  TahseelTypeName,
+  IsPaid,
 ) {
   let bodydata = document.getElementById("bodyTableTahseel");
   let row = bodydata.insertRow();
@@ -507,11 +1094,43 @@ function AddTahseelTableRow(
   cell.id = "S" + bodydata.childElementCount + "BillAmount";
   cell.innerHTML = BillAmount;
   cell = row.insertCell();
+  cell.id = "S" + bodydata.childElementCount + "PaymentMethodNum";
+  cell.innerHTML = PaymentMethodNum;
+  cell.style = "display: none;";
+  cell = row.insertCell();
   cell.id = "S" + bodydata.childElementCount + "PaymentMethodName";
   cell.innerHTML = PaymentMethodName;
   cell = row.insertCell();
+  cell.id = "S" + bodydata.childElementCount + "TrueReqAmount";
+  cell.innerHTML = GetFormat(String(ReqAmount));
+  cell.style = "display: none;";
+  cell = row.insertCell();
   cell.id = "S" + bodydata.childElementCount + "ReqAmount";
-  cell.innerHTML = ReqAmount;
+  cell.innerHTML = GetFormat(String(IsPaid ? 0 : -1 * ReqAmount));
+  cell.className = "Tahseel_Browser__ReqAmount";
+  cell = row.insertCell();
+  cell.id = "S" + bodydata.childElementCount + "Paid";
+  cell.innerHTML = GetFormat(String(IsPaid ? ReqAmount : 0));
+  cell.className = "Tahseel_Browser__Paid";
+  cell = row.insertCell();
+  cell.id = "S" + bodydata.childElementCount + "Date";
+  cell.innerHTML = GetDateFromString(Date);
+  cell = row.insertCell();
+  cell.id = "S" + bodydata.childElementCount + "TahseelTypeNum";
+  cell.innerHTML = TahseelTypeNum;
+  cell.style = "display: none";
+  cell = row.insertCell();
+  cell.id = "S" + bodydata.childElementCount + "TahseelTypeName";
+  cell.innerHTML = TahseelTypeName;
+  cell = row.insertCell();
+  cell.id = "S" + bodydata.childElementCount + "IsPaidActual";
+  cell.style = "display: none";
+  cell.innerHTML = IsPaid ? "0" : "1";
+  cell = row.insertCell();
+  cell.id = "S" + bodydata.childElementCount + "IsPaid";
+  cell.innerHTML = `<input type="checkbox" onchange="updateIsPaid(${Num}, this.checked)" ${
+    IsPaid ? 'checked=""' : ""
+  }>`;
   row.appendChild((td = document.createElement("td")));
   var btb = document.createElement("button");
   btb.type = "button";
@@ -526,38 +1145,114 @@ function AddTahseelTableRow(
   btb.style.width = "100%";
 }
 
+function AddTahseelTotalRow() {
+  let bodydata = document.getElementById("bodyTableTahseel");
+  let row = bodydata.insertRow();
+  row.id = "S" + bodydata.childElementCount;
+  let cell = row.insertCell();
+  cell.id = "S" + bodydata.childElementCount + "NumT";
+  cell.innerHTML = "المجموع";
+  cell = row.insertCell();
+  cell.id = "S" + bodydata.childElementCount + "BillNumberT";
+  cell.innerHTML = "";
+  cell = row.insertCell();
+  cell.id = "S" + bodydata.childElementCount + "BillAmountT";
+  cell.innerHTML = "";
+  cell = row.insertCell();
+  cell.id = "S" + bodydata.childElementCount + "PaymentMethodT";
+  cell.innerHTML = "";
+  cell = row.insertCell();
+  cell.id = "S" + bodydata.childElementCount + "ReqAmountT";
+  cell.innerHTML = GetFormat(String(Calculate("Tahseel_Browser__ReqAmount")));
+  cell = row.insertCell();
+  cell.id = "S" + bodydata.childElementCount + "PaidT";
+  cell.innerHTML = GetFormat(String(Calculate("Tahseel_Browser__Paid")));
+  cell = row.insertCell();
+  cell.id = "S" + bodydata.childElementCount + "IsPaidT";
+  cell.innerHTML = "";
+  cell = row.insertCell();
+  cell.id = "S" + bodydata.childElementCount + "DateT";
+  cell.innerHTML = "";
+  cell = row.insertCell();
+  cell.id = "S" + bodydata.childElementCount + "TahseelTypeT";
+  cell.innerHTML = "";
+  cell = row.insertCell();
+}
+
+function updateIsPaid(Num, IsPaid) {
+  const Row = Num + 1;
+  const data = new URLSearchParams();
+  data.append("Type", "tahseel");
+  data.append("Mode", "update");
+  data.append("Row", Row);
+  data.append("IsPaid", IsPaid);
+  fetch(Script, {
+    method: "POST",
+    body: data,
+  }).then(async () => {
+    await ShowTahseelBrowser();
+    Toastify({
+      text: "تم تحديث التحصيل",
+      gravity: "bottom",
+    }).showToast();
+  });
+}
+
 async function showTahseel() {
   let indextable = document.activeElement.parentElement.parentElement.id;
   let Num = document.getElementById(indextable).children.item(0).textContent;
   let BillNumber = document
     .getElementById(indextable)
     .children.item(1).textContent;
+  let BillAmount = document
+    .getElementById(indextable)
+    .children.item(2).textContent;
+  let PaymentMethodNum = document
+    .getElementById(indextable)
+    .children.item(3).textContent;
+  let ReqAmount = document
+    .getElementById(indextable)
+    .children.item(5).textContent;
+  let Date = document.getElementById(indextable).children.item(8).textContent;
+  let TahseelTypeNum = document
+    .getElementById(indextable)
+    .children.item(9).textContent;
   let IsPaid =
-    document.getElementById(indextable).children.item(4).textContent === "0";
+    document.getElementById(indextable).children.item(11).textContent === "0";
   let Loading = document
     .getElementById(indextable)
-    .children.item(5)
+    .children.item(13)
     .children.item(0)
     .children.item(0);
-  await LoadInvoices();
-  await LoadPaymentMethods();
-  const invoiceNumElm = document.getElementById(
-    "Tahseel_Wi__InvoiceBillNumber",
-  );
-  populateSelect(invoiceNumElm, InvoicesData, {
-    label: "BillNumber",
-    value: "BillNumber",
-  });
   Loading.className = "fa fa-refresh fa-spin";
+  await LoadPaymentMethods();
+  await LoadTahseelTypes();
+  populateSelect(
+    document.getElementById("Tahseel_Wi__TahseelTypeNum"),
+    DataTahseelTypes,
+    {
+      value: "Num",
+      label: "Name",
+    },
+  );
+  populateSelect(
+    document.getElementById("Tahseel_Wi__MethodNum"),
+    DataPaymentMethods,
+    {
+      value: "Num",
+      label: "MetodName",
+    },
+  );
+  console.log(document.getElementById(indextable).children.item(13));
   document.getElementById("tahseel-row").value = Number(Num) + 1;
   document.getElementById("Tahseel_Wi__InvoiceBillNumber").value = BillNumber;
-  invoiceNumElm.dispatchEvent(new Event("change"));
-
-  if (IsPaid) {
-    document.getElementById("Tahseel_Wi__IsPaid").checked = true;
-  }
+  document.getElementById("Tahseel_Wi__InvoiceAmount").value = BillAmount;
+  document.getElementById("Tahseel_Wi__MethodNum").value = PaymentMethodNum;
+  document.getElementById("Tahseel_Wi__ReqAmount").value = ReqAmount;
+  document.getElementById("Tahseel_Wi__Date").value = Date;
+  document.getElementById("Tahseel_Wi__TahseelTypeNum").value = TahseelTypeNum;
+  document.getElementById("Tahseel_Wi__IsPaid").checked = !!IsPaid;
   ShowSelectForm("Tahseel_Wi");
-  onTahseelInvoiceNumChange();
   onTahseelIsPaidChange();
   Loading.className = "fa fa-edit";
 }
@@ -1385,9 +2080,9 @@ function ConvertModeToSun() {
   document.getElementById("Sun").style.display = "none";
   document.querySelector(":root").style.setProperty("--FColor", "wheat");
   document.querySelector(":root").style.setProperty("--EColor", "white");
-  document
-    .querySelector(":root")
-    .style.setProperty("--loginColor", "whitesmoke");
+  // document
+  //   .querySelector(":root")
+  //   .style.setProperty("--loginColor", "whitesmoke");
   document.querySelector(":root").style.setProperty("--FontColor", "#f2a20b");
   document.querySelector(":root").style.setProperty("--Font2Color", "#a53333");
   document.querySelector(":root").style.setProperty("--Font3Color", "#a53333");
@@ -1400,9 +2095,9 @@ function ConvertModeToMoon() {
   document.getElementById("Moon").style.display = "none";
   document.querySelector(":root").style.setProperty("--FColor", "#141e30");
   document.querySelector(":root").style.setProperty("--EColor", "#243b55");
-  document
-    .querySelector(":root")
-    .style.setProperty("--loginColor", "#00000080");
+  // document
+  //   .querySelector(":root")
+  //   .style.setProperty("--loginColor", "#00000080");
   document.querySelector(":root").style.setProperty("--FontColor", "white");
   document.querySelector(":root").style.setProperty("--Font2Color", "#d3f6f8");
   document.querySelector(":root").style.setProperty("--Font3Color", "black");

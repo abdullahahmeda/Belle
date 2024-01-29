@@ -1,7 +1,7 @@
 :root {
   --FColor: wheat;
   --EColor: white;
-  --loginColor: whitesmoke;
+  --loginColor: #1c1933;
   --FontColor: #f2a20b;
   --Font2Color: #a53333;
   --Row1Color: rgb(155, 153, 153);
@@ -10,6 +10,7 @@
   --Font3Color: #a53333;
   --THColor: wheat;
   --TDColor: yellow;
+  --font-family: "Noto Sans Arabic", sans-serif;
 }
 
 @media screen and (min-width: 200px) and (max-width: 454px) {
@@ -130,6 +131,11 @@
     } */
 }
 
+* {
+  box-sizing: border-box;
+  font-family: var(--font-family);
+}
+
 html {
   height: 100%;
 }
@@ -137,8 +143,8 @@ html {
 body {
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
-  background: linear-gradient(var(--FColor), var(--EColor));
+  font-family: var(--font-family);
+  background-color: #2b2a2a;
 }
 
 input {
@@ -179,7 +185,7 @@ form {
   box-shadow: 0 15px 25px rgba(0, 0, 0, 0.6);
   border-radius: 10px;
   font-size: var(--fontZ);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-family);
   font-weight: 600;
 }
 
@@ -197,7 +203,7 @@ form {
 input,
 select,
 button {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-family);
 }
 
 button {
@@ -593,7 +599,7 @@ h4 {
 }
 
 .MainButtons button {
-  height: 30%;
+  height: 17%;
 }
 
 .MainButtons button {
@@ -722,7 +728,7 @@ h4 {
   border: 1px solid var(--Row1Color);
   align-items: center;
   font-size: calc(var(--fontZ) + 2);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-family);
   justify-content: flex-start;
   justify-items: center;
   align-items: flex-start;
@@ -800,4 +806,20 @@ a[class*="fa"] {
   color: white;
   border: 0;
   border-radius: 25px;
+}
+
+.reports-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.Reports_Card {
+  background-color: var(--FColor);
+  text-align: center;
+  color: white;
+  padding: 1rem;
+  max-width: 15rem;
+  border-radius: 4px;
 }
