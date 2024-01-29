@@ -145,7 +145,7 @@ body {
   margin: 0;
   padding: 0;
   font-family: var(--font-family);
-  background: #2b2a2a;
+  background: #2b2a2a !important;
 }
 
 input {
