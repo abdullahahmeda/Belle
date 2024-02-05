@@ -76,15 +76,23 @@ async function ShowReports() {
   const totalExpenses = DataExpenses.reduce((acc, exp) => exp.Amount + acc, 0);
   document.getElementById("total-sales-count").textContent =
     InvoicesData.length;
+  const totalSalesAmount = InvoicesData.reduce(
+    (acc, inv) => inv.AmountTotal + acc,
+    0,
+  );
   document.getElementById("total-sales-amount").textContent =
-    InvoicesData.reduce((acc, inv) => inv.AmountTotal + acc, 0) + " ريال";
+    totalSalesAmount + " ريال";
+  const totalAmountNet = InvoicesData.reduce(
+    (acc, inv) => inv.AmountNet + acc,
+    0,
+  );
   document.getElementById("total-sales-amount-net").textContent =
-    InvoicesData.reduce((acc, inv) => inv.AmountNet + acc, 0) + " ريال";
+    totalAmountNet + " ريال";
   document.getElementById("total-tahseel").textContent = totalTahseel + " ريال";
   document.getElementById("total-expenses").textContent =
     totalExpenses + " ريال";
   document.getElementById("available-amount").textContent =
-    totalTahseel - totalExpenses + " ريال";
+    totalAmountNet - totalExpenses + " ريال";
   Loading.className = "fas fa-chart-bar";
 }
 
@@ -128,9 +136,7 @@ async function ShowExpenseTypesBrowser() {
 }
 
 async function ShowExpensesWi() {
-  let Loading = document.getElementById("new-expenses-icon");
   let Loading2 = document.getElementById("LoadingExpensesPlus");
-  Loading.className = "fa fa-refresh fa-spin";
   Loading2.className = "fa fa-refresh fa-spin";
   await LoadExpenseTypes();
   populateSelect(
@@ -142,14 +148,12 @@ async function ShowExpensesWi() {
     },
   );
   ShowSelectForm("Expenses__Wi");
-  Loading.className = "fa fa-plus";
   Loading2.className = "fa fa-plus";
   updateExpenseTypeName();
 }
 
 async function ShowTahseelTypesWi() {
   let Loading = document.getElementById("LoadingTahseelTypesPlus");
-  Loading.className = "fa fa-refresh fa-spin";
   await LoadPaymentMethods();
   ShowSelectForm("Tahseel_Types__Wi");
   Loading.className = "fa fa-plus";
@@ -175,8 +179,6 @@ function ShowMethodWi() {
 }
 
 async function ShowTahseelWi() {
-  let loadingElm = document.getElementById("new-tahseel-icon");
-  loadingElm.className = "fa fa-refresh fa-spin";
   const tahseelTypes = await LoadTahseelTypes();
   populateSelect(
     document.getElementById("Tahseel_Wi__TahseelTypeNum"),
@@ -196,7 +198,6 @@ async function ShowTahseelWi() {
     },
   );
   ShowSelectForm("Tahseel_Wi");
-  loadingElm.className = "fa fa-plus";
   onTahseelIsPaidChange();
 }
 

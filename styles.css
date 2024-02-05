@@ -1,0 +1,319 @@
+@import url("https://fonts.googleapis.com/css2?family=Alexandria:wght@400;700&display=swap");
+
+/* Utility classes */
+.text-center {
+  text-align: center;
+}
+
+.hidden {
+  display: none;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-1 {
+  flex: 1;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.mr-auto {
+  margin-right: auto;
+}
+
+.my-4 {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.gap-2 {
+  gap: 0.5rem;
+}
+
+.container {
+  margin-right: auto;
+  margin-left: auto;
+  padding-right: 1rem;
+  padding-left: 1rem;
+  max-width: 90rem;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.button-secondary {
+  background-color: #84a7a1;
+  color: #000;
+}
+
+.button-secondary:hover {
+  background-color: #6a8681;
+}
+
+.button-success {
+  background-color: #27b304;
+  color: #fff;
+}
+
+.button-success:hover {
+  background-color: #1f8f03;
+}
+
+.button-error {
+  background-color: #84a7a1;
+  color: #000;
+}
+
+.button-error:hover {
+  background-color: #6a8681;
+}
+
+.button-warning {
+  background-color: #84a7a1;
+  color: #000;
+}
+
+.button-warning:hover {
+  background-color: #6a8681;
+}
+/* End of utility classes */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #2f2e2e;
+  color: #fefefe;
+  font-family: "Alexandria", sans-serif;
+  margin: 0;
+}
+
+button {
+  font-family: "Alexandria", sans-serif;
+  min-width: 30px;
+  border-radius: 4px;
+  border-width: 0;
+  padding: 0.5rem;
+  box-shadow: 0px 5px 5px -4px rgba(0, 0, 0, 0.1);
+  transition:
+    background-color 0.3s,
+    box-shadow 0.3s;
+}
+
+button:hover {
+  box-shadow: 0px 7px 10px -4px rgba(0, 0, 0, 0.1);
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+table,
+table th,
+table td {
+  border: 1px solid #2a2929;
+}
+
+table th,
+table td {
+  padding: 0.5rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+}
+
+.header {
+  height: 80px;
+}
+
+#MainLabel {
+  text-align: center;
+}
+
+.login-box {
+  flex-direction: column;
+  background-color: #1f6e8c;
+  border-top-right-radius: 20px;
+  border-top-left-radius: 20px;
+  padding: 1rem;
+  min-height: calc(100vh - 80px);
+  margin-right: auto;
+  margin-left: auto;
+  overflow: hidden;
+}
+
+.hh {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin: -1rem;
+  padding: 1rem;
+  background-color: #212020;
+  margin-bottom: 2rem;
+}
+
+.hh h3 {
+  flex: 1;
+  text-align: center;
+}
+
+.hh button {
+  margin-right: auto;
+  cursor: pointer;
+}
+
+.MainButtons {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.MainButtons > button {
+  background-color: #17454d;
+  cursor: pointer;
+  color: #fff;
+  padding: 1.5rem 0;
+  font-size: 1.3rem;
+  display: flex;
+  align-items: center;
+  transition: padding-right 0.3s;
+}
+
+.MainButtons > button a {
+  width: 30%;
+}
+
+.MainButtons > button:hover {
+  background-color: #0e292e;
+}
+
+.MainButtons > button:hover {
+  padding-right: 5%;
+}
+
+.Three_Div {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem 1rem;
+}
+
+.user-box {
+  flex: 0 0 calc(50% - 1rem);
+}
+
+.user-box label {
+  display: inline-block;
+  margin-bottom: 0.25rem;
+}
+
+.user-box input[type="text"],
+.user-box input[type="number"],
+.user-box input[type="date"],
+.user-box select {
+  display: block;
+  width: 100%;
+  font-size: 1rem;
+  font-family: "Alexandria", sans-serif;
+  outline: none;
+  height: 40px;
+  padding-right: 0.5rem;
+  padding-left: 0.5rem;
+  border-radius: 3px;
+  border: 1px solid #828282;
+}
+
+.BB {
+  color: #fff;
+  margin-top: 1rem;
+  display: flex;
+  gap: 1rem;
+}
+
+.Buto {
+  flex: 0 0 calc(25% - 1rem);
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.Buto:first-of-type {
+  background-color: #27b304;
+  color: #fff;
+}
+
+.Buto:first-of-type:hover {
+  background-color: #1f8f03;
+}
+
+.Buto:nth-of-type(2) {
+  background-color: #efab13;
+  color: #000;
+}
+
+.Buto:nth-of-type(2):hover {
+  background-color: #bf890f;
+}
+
+.Buto:nth-of-type(3) {
+  background-color: #9d1010;
+  color: #fff;
+}
+
+.Buto:nth-of-type(3):hover {
+  background-color: #7e0d0d;
+}
+
+.tabdata {
+  margin-top: 2rem;
+}
+
+.reports-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.reports-card {
+  text-align: center;
+  background-color: #091c1f;
+  padding: 1rem;
+  border-radius: 4px;
+}
+
+/* Media quieries */
+@media screen and (max-width: 767px) {
+  .MainButtons {
+    grid-template-columns: 1fr;
+  }
+
+  .user-box {
+    flex: 0 0 100%;
+  }
+
+  .BB {
+    flex-direction: column;
+  }
+}
+/* End of media queries */

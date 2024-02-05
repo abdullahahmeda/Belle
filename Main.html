@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="ar" dir="rtl">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -28,33 +28,37 @@
       type="text/javascript"
       src="https://cdn.jsdelivr.net/npm/toastify-js"
     ></script>
-    <link rel="stylesheet" href="Style.css" />
+    <!-- <link rel="stylesheet" href="Style.css" /> -->
+    <link rel="stylesheet" href="styles.css" />
     <title> </title>
   </head>
   <body style="min-height: unset; word-break: unset">
-    <h2 id="MainLabel">برنامج المحاسبة</h2>
-    <div class="BA">
-      <button
-        id="Moon"
-        onclick="ConvertModeToMoon()"
-        type="button"
-        style="height: 30px; width: 30px"
-      >
-        <a class="fa fa-moon-o"></a>
-      </button>
-      <button
-        id="Sun"
-        onclick="ConvertModeToSun()"
-        type="button"
-        style="height: 30px; width: 30px"
-      >
-        <a class="fa fa-sun-o"></a>
-      </button>
-      <!-- <input type="text" id="Myusername" readonly="" />
+    <div class="container">
+      <div class="flex items-center justify-center header">
+        <h2 id="MainLabel" class="flex-1">برنامج المحاسبة</h2>
+        <div class="BA mr-auto">
+          <button
+            id="Moon"
+            class="button-secondary cursor-pointer"
+            onclick="ConvertModeToMoon()"
+            type="button"
+          >
+            <a class="fa fa-moon-o"></a>
+          </button>
+          <button
+            id="Sun"
+            class="button-secondary cursor-pointer"
+            onclick="ConvertModeToSun()"
+            type="button"
+          >
+            <a class="fa fa-sun-o"></a>
+          </button>
+          <!-- <input type="text" id="Myusername" readonly="" />
     <input type="text" id="MyMobile" readonly="" style="display: none;"/> -->
-    </div>
-    <!--loginPage  -->
-    <!-- <div class='login-box' id='loginPage' style='height: 163px; width: 80%;top: 50%;'>
+        </div>
+      </div>
+      <!--loginPage  -->
+      <!-- <div class='login-box' id='loginPage' style='height: 163px; width: 80%;top: 50%;'>
     <div class='hh'> <h3> تسجيل الدخول</h3> </div>
   <form id='Branch_Main_form' style="justify-content: space-evenly;"> 
       <div class='Users_Div' style='height: 25%;'>
@@ -71,1617 +75,1378 @@
         </div>
   </form>  
 </div>  -->
-    <!-- Main -->
-    <div class="login-box" id="Main" style="display: none; height: 80%">
-      <div class="hh">
-        <h3 style="width: calc(100% - 70px)">الواجهة الرئيسية</h3>
-        <button
-          class="SignOut"
-          onclick="init()"
-          style="background-color: #818fb4; width: 30px; height: 30px"
-        >
-          <a
-            id="LoadingMain"
-            class="fa fa-refresh"
-            style="color: rgba(67, 78, 3, 0.603); width: 100%"
-          >
-          </a>
-        </button>
-        <!-- <button class='SignOut' onclick='SignOutUser()' style='background-color: red; height: 30px; width: 30px;'>
+      <!-- Main -->
+      <div class="login-box" id="Main" style="display: none; height: 80%">
+        <div class="hh">
+          <h3>الواجهة الرئيسية</h3>
+          <button class="SignOut button-secondary" onclick="init()">
+            <a id="LoadingMain" class="fa fa-refresh"> </a>
+          </button>
+          <!-- <button class='SignOut' onclick='SignOutUser()' style='background-color: red; height: 30px; width: 30px;'>
         <a class='fa fa-close' style='color:rgba(100, 1, 1, 0.603) ;'> </a>
       </button> -->
+        </div>
+        <form>
+          <div class="MainButtons">
+            <button onclick="ShowSalesWi()" type="button">
+              <a id="invoicedollar" class="fas fa-plus"> </a>
+              فاتورة مبيعات جديدة
+            </button>
+            <button onclick="ShowSalesBrowser()" type="button">
+              <a id="invoicedollar2" class="fas fa-file-invoice-dollar"> </a>
+              المبيعات
+            </button>
+            <button onclick="ShowTahseelBrowser()" type="button">
+              <a
+                id="tahseel-browser-loading"
+                class="fas fa-file-invoice-dollar"
+              >
+              </a>
+              التحصيلات
+            </button>
+            <button onclick="ShowMethodBrowser()" tabindex="13" type="button">
+              <a id="creditcard" class="fa fa-credit-card"> </a>
+              طرق الدفع
+            </button>
+            <button
+              onclick="ShowTahseelTypesBrowser()"
+              tabindex="13"
+              type="button"
+            >
+              <a id="tahseel-types-icon" class="fa fa-credit-card"> </a>
+              أنواع التحصيلات
+            </button>
+            <button
+              onclick="ShowExpenseTypesBrowser()"
+              tabindex="13"
+              type="button"
+            >
+              <a id="expense-types-icon" class="fa fa-credit-card"> </a>
+              أنواع المصروفات
+            </button>
+            <button onclick="ShowExpensesBrowser()" type="button">
+              <a id="expenses-browser-icon" class="fas fa-file-invoice-dollar">
+              </a>
+              المصروفات
+            </button>
+            <button onclick="ShowReports()" type="button">
+              <a id="reports-icon" class="fas fa-chart-bar"> </a>
+              التقارير
+            </button>
+          </div>
+        </form>
       </div>
-      <form>
-        <div class="MainButtons">
+      <!-- MethodWi -->
+      <div class="login-box" id="MethodWi" style="display: none; height: 85%">
+        <div class="hh">
+          <h3>طريقة دفع جديدة</h3>
           <button
-            onclick="ShowSalesWi()"
-            style="width: 30%; background-color: #c39623"
-            type="button"
-          >
-            <a id="invoicedollar" class="fas fa-plus" style="color: #1c1933">
-            </a>
-            فاتورة مبيعات جديدة
-          </button>
-          <button
-            onclick="ShowSalesBrowser()"
-            style="width: 30%; background-color: #c39623"
-            type="button"
-          >
-            <a
-              id="invoicedollar2"
-              class="fas fa-file-invoice-dollar"
-              style="color: #1c1933"
-            >
-            </a>
-            المبيعات
-          </button>
-          <button
-            onclick="ShowTahseelWi()"
-            style="width: 30%; background-color: #c39623"
-            type="button"
-          >
-            <a id="new-tahseel-icon" class="fas fa-plus" style="color: #1c1933">
-            </a>
-            إنشاء تحصيل جديد
-          </button>
-          <button
-            onclick="ShowTahseelBrowser()"
-            style="width: 30%; background-color: #c39623"
-            type="button"
-          >
-            <a
-              id="tahseel-browser-loading"
-              class="fas fa-file-invoice-dollar"
-              style="color: #1c1933"
-            >
-            </a>
-            التحصيلات
-          </button>
-          <button
+            class="SignOut button-secondary"
             onclick="ShowMethodBrowser()"
-            style="width: 30%; background-color: rgb(55, 185, 22)"
-            tabindex="13"
-            type="button"
+          >
+            <a id="BackMethodBrowser" class="fa fa-mail-reply"> </a>
+          </button>
+        </div>
+        <form
+          id="FormMethodDetails"
+          method="post"
+          style="height: 90%"
+          onsubmit="return true"
+        >
+          <div class="Three_Div">
+            <div class="user-box">
+              <label for="MetodName">طريقة الدفع</label>
+              <input id="typeP" name="Type" type="hidden" />
+              <input id="ModeP" name="Mode" type="hidden" />
+              <input id="RowMethod" name="RowMethod" type="hidden" />
+              <input id="MetodNum" name="MetodNum" required="" type="hidden" />
+              <input
+                id="MetodName"
+                name="MetodName"
+                required=""
+                tabindex="1"
+                type="text"
+                autocomplete="off"
+              />
+            </div>
+            <div class="user-box">
+              <label for="PercentMetod">نسبة الدفع</label>
+              <div class="flex items-center gap-2">
+                <input
+                  id="PercentMetod"
+                  name="PercentMetod"
+                  required=""
+                  tabindex="2"
+                  type="number"
+                  autocomplete="off"
+                />
+                <label for="PercentMetod">%</label>
+              </div>
+            </div>
+            <div class="user-box">
+              <label for="AmountMetod">مبلغ ثابت</label>
+              <div class="flex items-center gap-2">
+                <input
+                  id="AmountMetod"
+                  name="AmountMetod"
+                  required=""
+                  tabindex="3"
+                  type="number"
+                  autocomplete="off"
+                />
+                <label for="AmountMetod">ريال</label>
+              </div>
+            </div>
+          </div>
+          <div class="BB">
+            <button
+              class="Buto"
+              onclick="onsubmitForm1()"
+              tabindex="103"
+              type="button"
+            >
+              <a class="fa fa-plus"> </a>
+              اضافة
+            </button>
+            <button
+              class="Buto"
+              onclick="onsubmitForm2()"
+              tabindex="104"
+              type="button"
+            >
+              <a class="fa fa-edit"> </a>
+              تعديل
+            </button>
+            <button
+              class="Buto"
+              onclick="onsubmitForm3()"
+              tabindex="105"
+              type="button"
+            >
+              <a class="fa fa-trash"> </a>
+              حذف
+            </button>
+            <button
+              class="Buto"
+              onclick="ClearItemCu()"
+              tabindex="105"
+              type="button"
+            >
+              <a class="fas fa-broom"> </a>
+              تفريغ
+            </button>
+          </div>
+        </form>
+      </div>
+      <!-- MethodBrowser -->
+      <div
+        class="login-box"
+        id="MethodBrowser"
+        style="display: none; height: 80%"
+      >
+        <div class="hh">
+          <h3>طرق الدفع</h3>
+          <button
+            class="SignOut button-secondary"
+            onclick="LoadMethodToTable()"
           >
             <a
-              id="creditcard"
-              class="fa fa-credit-card"
-              style="color: rgb(21, 82, 3)"
+              id="LoadingMethodBrowser"
+              class="fa fa-refresh"
+              style="color: rgba(67, 78, 3, 0.603); width: 100%"
             >
             </a>
-            طرق الدفع
           </button>
+          <button class="SignOut button-secondary" onclick="ShowMethodWi()">
+            <a
+              id="LoadingMethodplus"
+              class="fa fa-plus"
+              style="color: white; width: 100%"
+            >
+            </a>
+          </button>
+          <button class="SignOut button-secondary" onclick="GoToMain()">
+            <a
+              class="fa fa-mail-reply"
+              style="color: rgba(5, 33, 85, 0.603); width: 100%"
+            >
+            </a>
+          </button>
+        </div>
+        <form style="height: 90%; display: block">
+          <form style="height: 40%">
+            <div class="tabdata">
+              <table>
+                <thead>
+                  <tr>
+                    <th style="width: 30px">ت</th>
+                    <th class="hidden"></th>
+                    <th style="width: calc(30% - 60px)">طريقة الدفع</th>
+                    <th style="width: calc(40% - 60px)">نسبة الدفع</th>
+                    <th style="width: calc(40% - 60px)">مبلغ ثابت</th>
+                    <th style="width: 30px"></th>
+                  </tr>
+                </thead>
+                <tbody id="bodyTableMethod"></tbody>
+              </table>
+            </div>
+          </form>
+        </form>
+      </div>
+      <!-- SalesWi -->
+      <div class="login-box" id="SalesWi" style="display: none; height: 85%">
+        <div class="hh">
+          <h3>فاتورة مبيعات جديدة</h3>
+          <button class="SignOut button-secondary" onclick="GoToMain()">
+            <a id="BackMain" class="fa fa-mail-reply"> </a>
+          </button>
+        </div>
+        <form
+          id="FormSalesWiDetails"
+          method="post"
+          style="height: 90%"
+          onsubmit="return true"
+        >
+          <div class="Three_Div">
+            <div class="user-box">
+              <label for="BillNumber">رقم الفاتورة</label>
+              <input id="typeS" name="Type" type="hidden" />
+              <input id="ModeS" name="Mode" type="hidden" />
+              <input id="RowS" name="RowS" type="hidden" />
+              <input id="BillNumber2" type="hidden" />
+              <input
+                id="BillNumber"
+                name="BillNumber"
+                required=""
+                type="text"
+                autocomplete="off"
+                tabindex="1"
+              />
+            </div>
+            <div class="user-box">
+              <label for="BillDate">تاريخ الفاتورة</label>
+              <input
+                id="BillDate"
+                name="BillDate"
+                required=""
+                tabindex="2"
+                type="date"
+                autocomplete="off"
+              />
+            </div>
+            <div class="user-box">
+              <label for="AmountTotal">مبلغ الفاتورة</label>
+              <div class="flex items-center gap-2">
+                <input
+                  id="AmountTotal"
+                  name="AmountTotal"
+                  required=""
+                  tabindex="3"
+                  type="number"
+                  autocomplete="off"
+                  onchange="CaluclateTotalS()"
+                  onkeyup="CaluclateTotalS()"
+                />
+                <label for="AmountTotal">ريال</label>
+              </div>
+            </div>
+            <div class="user-box">
+              <label for="AmountActualTotal">القيمة (بعد حساب المسترجع)</label>
+              <div class="flex items-center gap-2">
+                <input
+                  id="AmountActualTotal"
+                  name="AmountActualTotal"
+                  required=""
+                  disabled=""
+                  tabindex="-1"
+                  type="number"
+                  autocomplete="off"
+                  readonly=""
+                />
+                <label for="AmountActualTotal">ريال</label>
+              </div>
+            </div>
+            <div class="user-box">
+              <label for="MethodNum">طريقة الدفع</label>
+              <select
+                name="MethodNum"
+                id="MethodNum"
+                required=""
+                tabindex="4"
+                onchange="OncahangeMethod(this.value)"
+              ></select>
+              <input id="MethodPer" type="hidden" />
+              <input id="MethodVa" type="hidden" />
+            </div>
+            <div class="user-box">
+              <label for="MethodAmount">خصم الدفع</label>
+              <div class="flex items-center gap-2">
+                <input
+                  id="MethodAmount"
+                  name="MethodAmount"
+                  type="number"
+                  readonly=""
+                />
+                <label for="MethodAmount">ريال</label>
+              </div>
+            </div>
+            <div class="user-box">
+              <label for="DesCountAmount">خصومات اخرى</label>
+              <div class="flex items-center gap-2">
+                <input
+                  id="DesCountAmount"
+                  name="DesCountAmount"
+                  type="number"
+                  tabindex="5"
+                  onchange="CaluclateTotalS()"
+                  onkeyup="CaluclateTotalS()"
+                />
+                <select
+                  id="DesCountSel"
+                  name="DesCountSel"
+                  required=""
+                  tabindex="6"
+                  onchange="CaluclateTotalS()"
+                >
+                  <option value="ريال">ريال</option>
+                  <option value="%">%</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="user-box">
+              <label for="Tax">ضريبة القيمة المضافة</label>
+              <div class="flex items-center gap-2">
+                <input id="Tax" name="Tax" type="number" readonly="" />
+                <input id="TaxP" type="hidden" />
+                <label for="Tax">ريال</label>
+              </div>
+            </div>
+
+            <div class="user-box">
+              <label for="Ready">تجهيز الطلب</label>
+              <div class="flex items-center gap-2">
+                <input
+                  id="Ready"
+                  name="Ready"
+                  required=""
+                  tabindex="8"
+                  type="number"
+                  autocomplete="off"
+                  onkeyup="CaluclateTotalS()"
+                  onchange="CaluclateTotalS()"
+                />
+                <label for="Ready">ريال </label>
+              </div>
+            </div>
+
+            <div class="user-box flex items-center">
+              <input
+                type="checkbox"
+                id="checkbox1"
+                required=""
+                onchange="onchangecheckbox()"
+              />
+              <label for="checkbox1">هل الشحن مجاني</label>
+            </div>
+
+            <div class="user-box">
+              <label for="ShipNum">نوع الشحن</label>
+              <select
+                name="ShipNum"
+                id="ShipNum"
+                required=""
+                tabindex="7"
+                onchange="OncahangeShip(this.value)"
+                disabled=""
+              ></select>
+            </div>
+
+            <div class="user-box">
+              <label for="ShipAmount">مبلغ الشحن</label>
+              <div class="flex items-center gap-2">
+                <input
+                  id="ShipAmount"
+                  name="ShipAmount"
+                  required=""
+                  tabindex="8"
+                  type="number"
+                  autocomplete="off"
+                  onkeyup="CaluclateTotalS()"
+                  onchange="CaluclateTotalS()"
+                  disabled=""
+                />
+                <label for="ShipAmount">ريال</label>
+              </div>
+            </div>
+            <div class="user-box">
+              <label for="RefundAmount">المسترجع</label>
+              <div class="flex items-center gap-2">
+                <input
+                  id="RefundAmount"
+                  name="RefundAmount"
+                  value="0"
+                  required=""
+                  tabindex="8"
+                  type="number"
+                  autocomplete="off"
+                  onkeyup="CaluclateTotalS()"
+                  onchange="CaluclateTotalS()"
+                />
+                <label for="ShipAmount">ريال </label>
+              </div>
+            </div>
+            <div class="user-box">
+              <label for="PlaceName">مكان التوصيل</label>
+              <select
+                name="PlaceName"
+                id="PlaceName"
+                required=""
+                tabindex="7"
+                onchange="OncahangePlaceName(this.value)"
+              ></select>
+            </div>
+
+            <div class="user-box">
+              <label for="PlacePrice">سعر التوصيل</label>
+              <div class="flex items-center gap-2">
+                <input
+                  id="PlacePrice"
+                  name="PlacePrice"
+                  required=""
+                  tabindex="8"
+                  type="number"
+                  autocomplete="off"
+                  onkeyup="CaluclateTotalS()"
+                  onchange="CaluclateTotalS()"
+                />
+                <label for="PlacePrice">ريال </label>
+              </div>
+            </div>
+            <div class="user-box">
+              <label for="OtherCost">تكاليف اخرى</label>
+              <div class="flex items-center gap-2">
+                <input
+                  id="OtherCost"
+                  name="OtherCost"
+                  required=""
+                  tabindex="9"
+                  type="number"
+                  autocomplete="off"
+                  onkeyup="CaluclateTotalS()"
+                  onchange="CaluclateTotalS()"
+                />
+                <label for="OtherCost">ريال</label>
+              </div>
+            </div>
+
+            <div class="user-box">
+              <label for="AmountNet">صافي الفاتورة</label>
+              <div class="flex items-center gap-2">
+                <input
+                  id="AmountNet"
+                  name="AmountNet"
+                  required=""
+                  tabindex="10"
+                  type="number"
+                  autocomplete="off"
+                  readonly=""
+                  class="flex-1"
+                />
+                <label for="AmountNet">ريال</label>
+              </div>
+            </div>
+          </div>
+          <div class="BB">
+            <button
+              class="Buto"
+              onclick="onsubmitFormS1()"
+              tabindex="103"
+              type="button"
+            >
+              <a class="fa fa-plus"> </a>
+              اضافة
+            </button>
+            <button
+              class="Buto"
+              onclick="onsubmitFormS2()"
+              tabindex="104"
+              type="button"
+            >
+              <a class="fa fa-edit"> </a>
+              تعديل
+            </button>
+            <button
+              class="Buto"
+              onclick="onsubmitFormS3()"
+              tabindex="105"
+              type="button"
+            >
+              <a class="fa fa-trash"> </a>
+              حذف
+            </button>
+            <button
+              class="Buto"
+              onclick="ClearItemSa()"
+              tabindex="105"
+              type="button"
+            >
+              <a class="fas fa-broom"> </a>
+              تفريغ
+            </button>
+          </div>
+        </form>
+      </div>
+      <!-- SalesBrowser -->
+      <div
+        class="login-box"
+        id="SalesBrowser"
+        style="display: none; height: 80%"
+      >
+        <div class="hh">
+          <h3>المبيعات</h3>
+          <button class="SignOut button-secondary" onclick="ShowSalesBrowser()">
+            <a
+              id="LoadingSalesBrowser"
+              class="fa fa-refresh"
+              style="color: rgba(67, 78, 3, 0.603); width: 100%"
+            >
+            </a>
+          </button>
+          <button class="SignOut button-secondary" onclick="GoToMain()">
+            <a
+              class="fa fa-mail-reply"
+              style="color: rgba(5, 33, 85, 0.603); width: 100%"
+            >
+            </a>
+          </button>
+        </div>
+        <form style="height: 90%; display: block">
+          <div class="Three_Div">
+            <div class="user-box">
+              <label for="SeaNumber" style="width: 30%">بحث عن رقم</label>
+              <div class="flex items-center gap-2">
+                <input id="SeaNumber" type="text" />
+                <button
+                  class="SignOut button-secondary"
+                  onclick="ClearValueNu()"
+                  type="button"
+                >
+                  <a class="fa fa-close" style="color: red"> </a>
+                </button>
+              </div>
+            </div>
+            <div class="user-box">
+              <label for="SeaDate" style="width: 30%">بحث عن تاريخ</label>
+              <div class="flex items-center gap-2">
+                <input id="SeaDate" type="date" />
+                <button
+                  class="SignOut"
+                  onclick="ClearValueDa()"
+                  style="background-color: #efbaba; height: 30px; width: 30px"
+                  type="button"
+                >
+                  <a class="fa fa-close" style="color: red"> </a>
+                </button>
+                <button
+                  class="SignOut"
+                  onclick="FillterSalesToTable()"
+                  style="background-color: #cbefba; height: 30px; width: 30px"
+                  type="button"
+                >
+                  <a class="fa fa-search" style="color: rgb(6, 114, 3)"> </a>
+                </button>
+              </div>
+            </div>
+          </div>
+          <form style="height: 40%">
+            <div class="tabdata">
+              <table>
+                <thead>
+                  <tr>
+                    <th style="width: calc(5% - 30px)">ت</th>
+                    <th style="width: calc(10% - 30px)">رقم</th>
+                    <th style="width: calc(10% - 30px)">التاريخ</th>
+                    <th style="width: calc(10% - 30px)">مبلغ</th>
+                    <th style="width: calc(10% - 30px)">مسترجع</th>
+                    <th style="width: calc(10% - 30px)">طريقة الدفع</th>
+                    <th style="width: calc(10% - 30px)">خصم الدفع</th>
+                    <th style="width: calc(10% - 30px)">ضريبة</th>
+                    <th style="width: calc(10% - 30px)">نوع الشحن</th>
+                    <th style="width: calc(10% - 30px)">مبلغ الشحن</th>
+                    <th style="width: calc(5% - 30px)">تكاليف اخرى</th>
+                    <th style="width: calc(10% - 30px)">صافي</th>
+                    <th class="hidden"></th>
+                    <th class="hidden"></th>
+                    <th style="width: 30px"></th>
+                    <th class="hidden"></th>
+                    <th class="hidden"></th>
+                    <th class="hidden"></th>
+                  </tr>
+                </thead>
+                <tbody id="bodydataS"></tbody>
+              </table>
+            </div>
+          </form>
+        </form>
+      </div>
+
+      <!-- TahseelWi -->
+      <div class="login-box" id="Tahseel_Wi" style="display: none; height: 85%">
+        <div class="hh">
+          <h3>تحصيل جديد</h3>
+          <button class="SignOut button-secondary" onclick="GoToMain()">
+            <a
+              id="BackTahseelBrowser"
+              class="fa fa-mail-reply"
+              style="color: rgba(5, 33, 85, 0.603); width: 100%"
+            >
+            </a>
+          </button>
+        </div>
+        <form
+          id="FormTahseelDetails"
+          method="post"
+          style="height: 90%"
+          onsubmit="return true"
+        >
+          <div class="Three_Div">
+            <div class="user-box">
+              <label for="Tahseel_Wi__InvoiceBillNumber">رقم الفاتورة</label>
+              <input id="tahseel-type" name="Type" type="hidden" />
+              <input id="tahseel-mode" name="Mode" type="hidden" />
+              <input id="tahseel-row" name="Row" type="hidden" />
+              <input
+                id="Tahseel_Wi__InvoiceBillNumber"
+                type="text"
+                name="BillNumber"
+                required=""
+                tabindex="1"
+              />
+            </div>
+            <div class="user-box">
+              <label for="Tahseel_Wi__InvoiceAmount">مبلغ الفاتورة</label>
+              <input
+                id="Tahseel_Wi__InvoiceAmount"
+                name="BillAmount"
+                required=""
+                tabindex="2"
+                type="number"
+              />
+            </div>
+            <div class="user-box">
+              <label for="Tahseel_Wi__MethodNum">طريقة الدفع</label>
+              <select
+                id="Tahseel_Wi__MethodNum"
+                name="PaymentMethodNum"
+                type="text"
+                readonly=""
+                tabindex="3"
+              ></select>
+            </div>
+            <div class="user-box">
+              <label for="Tahseel_Wi__ReqAmount">المبلغ المطلوب</label>
+              <div class="flex items-center gap-2">
+                <input
+                  id="Tahseel_Wi__ReqAmount"
+                  name="ReqAmount"
+                  required=""
+                  tabindex="4"
+                  type="number"
+                />
+                <label for="Tahseel_Wi__ReqAmount">ريال</label>
+              </div>
+            </div>
+            <div class="user-box">
+              <label for="Tahseel_Wi__Date">التاريخ</label>
+              <input
+                type="date"
+                id="Tahseel_Wi__Date"
+                name="Date"
+                required=""
+                tabindex="5"
+              />
+            </div>
+            <div class="user-box">
+              <label for="Tahseel_Wi__TahseelTypeNum">نوع التحصيل</label>
+              <select
+                id="Tahseel_Wi__TahseelTypeNum"
+                name="TahseelTypeNum"
+                type="text"
+                readonly=""
+                tabindex="3"
+              ></select>
+            </div>
+            <div class="user-box">
+              <input
+                type="checkbox"
+                id="Tahseel_Wi__IsPaid"
+                required=""
+                onchange="onTahseelIsPaidChange()"
+              />
+              <input
+                type="hidden"
+                name="IsPaid"
+                id="Tahseel_Wi__IsPaidActual"
+              />
+              <label for="Tahseel_Wi__IsPaid" style="width: calc(100% - 100px)"
+                >تم الدفع</label
+              >
+            </div>
+          </div>
+          <div class="BB">
+            <button
+              class="Buto"
+              onclick="createNewTahseel()"
+              style="width: 22%; background-color: rgb(30, 138, 3)"
+              tabindex="103"
+              type="button"
+            >
+              <a class="fa fa-plus"> </a>
+              اضافة
+            </button>
+            <button
+              class="Buto"
+              onclick="editTahseel()"
+              tabindex="104"
+              type="button"
+            >
+              <a class="fa fa-edit"> </a>
+              تعديل
+            </button>
+            <button
+              class="Buto"
+              onclick="deleteTahseel()"
+              tabindex="105"
+              type="button"
+            >
+              <a class="fa fa-trash"> </a>
+              حذف
+            </button>
+            <button
+              class="Buto"
+              onclick="return true;"
+              tabindex="105"
+              type="button"
+            >
+              <a class="fas fa-broom"> </a>
+              تفريغ
+            </button>
+          </div>
+        </form>
+      </div>
+      <!-- TahseelBrowser -->
+      <div
+        class="login-box"
+        id="Tahseel_Browser"
+        style="display: none; height: 80%"
+      >
+        <div class="hh">
+          <h3>طرق الدفع</h3>
           <button
-            onclick="ShowTahseelTypesBrowser()"
-            style="width: 30%; background-color: rgb(55, 185, 22)"
-            tabindex="13"
-            type="button"
+            class="SignOut button-secondary"
+            onclick="LoadTahseelToTable()"
           >
             <a
-              id="tahseel-types-icon"
-              class="fa fa-credit-card"
-              style="color: rgb(21, 82, 3)"
+              id="LoadingTahseelBrowser"
+              class="fa fa-refresh"
+              style="color: rgba(67, 78, 3, 0.603); width: 100%"
             >
             </a>
-            أنواع التحصيلات
           </button>
           <button
+            class="SignOut"
+            onclick="ShowTahseelWi()"
+            style="background-color: rgb(30, 138, 3); width: 30px; height: 30px"
+          >
+            <a
+              id="LoadingTahseelplus"
+              class="fa fa-plus"
+              style="color: white; width: 100%"
+            >
+            </a>
+          </button>
+          <button
+            class="SignOut"
+            onclick="GoToMain()"
+            style="
+              background-color: rgba(92, 149, 255, 0.952);
+              width: 30px;
+              height: 30px;
+            "
+          >
+            <a
+              class="fa fa-mail-reply"
+              style="color: rgba(5, 33, 85, 0.603); width: 100%"
+            >
+            </a>
+          </button>
+        </div>
+        <form style="height: 90%; display: block">
+          <form style="height: 40%">
+            <div class="tabdata">
+              <table>
+                <thead>
+                  <tr>
+                    <th style="width: 75px">ت</th>
+                    <th style="width: calc(calc(100% / 8) - 105px)">
+                      رقم الفاتورة
+                    </th>
+                    <th style="width: calc(calc(100% / 8) - 105px)">
+                      مبلغ الفاتورة
+                    </th>
+                    <th style="width: calc(calc(100% / 8) - 105px)">
+                      وسيلة الدفع
+                    </th>
+                    <th style="width: calc(calc(100% / 8) - 105px)">
+                      المبلغ المطلوب
+                    </th>
+                    <th style="width: calc(calc(100% / 8) - 105px)">
+                      المبلغ المحصل
+                    </th>
+                    <th style="width: calc(calc(100% / 8) - 105px)">التاريخ</th>
+                    <th style="width: calc(calc(100% / 8) - 105px)">
+                      نوع التحصيل
+                    </th>
+                    <th style="width: calc(calc(100% / 8) - 105px)">
+                      تم الدفع
+                    </th>
+                    <th style="width: 30px"></th>
+                  </tr>
+                </thead>
+                <tbody id="bodyTableTahseel"></tbody>
+              </table>
+            </div>
+          </form>
+        </form>
+      </div>
+
+      <!-- ExpenseTypesWi -->
+      <div
+        class="login-box"
+        id="Expense_Types__Wi"
+        style="display: none; height: 85%"
+      >
+        <div class="hh">
+          <h3>نوع مصروف جديد</h3>
+          <button
+            class="SignOut button-secondary"
             onclick="ShowExpenseTypesBrowser()"
-            style="width: 30%; background-color: rgb(55, 185, 22)"
-            tabindex="13"
-            type="button"
           >
             <a
-              id="expense-types-icon"
-              class="fa fa-credit-card"
-              style="color: rgb(21, 82, 3)"
+              id="BackExpenseTypesBrowser"
+              class="fa fa-mail-reply"
+              style="color: rgba(5, 33, 85, 0.603); width: 100%"
             >
             </a>
-            أنواع المصروفات
+          </button>
+        </div>
+        <form
+          id="FormExpenseTypesDetails"
+          method="post"
+          style="height: 90%"
+          onsubmit="return true"
+        >
+          <div class="Three_Div">
+            <div class="user-box">
+              <label for="Expense_Types__Wi__Name">نوع المصروف</label>
+              <input id="Expense_Types__Wi__Type" name="Type" type="hidden" />
+              <input id="Expense_Types__Wi__Mode" name="Mode" type="hidden" />
+              <input id="Expense_Types__Wi__Row" name="Row" type="hidden" />
+              <input
+                id="Expense_Types__Wi__Name"
+                name="Name"
+                required=""
+                type="text"
+              />
+            </div>
+          </div>
+          <div class="BB">
+            <button
+              class="Buto"
+              onclick="createExpenseType()"
+              tabindex="103"
+              type="button"
+            >
+              <a class="fa fa-plus"> </a>
+              اضافة
+            </button>
+            <button
+              class="Buto"
+              onclick="editExpenseType()"
+              tabindex="104"
+              type="button"
+            >
+              <a class="fa fa-edit"> </a>
+              تعديل
+            </button>
+            <button
+              class="Buto"
+              onclick="deleteExpenseType()"
+              tabindex="105"
+              type="button"
+            >
+              <a class="fa fa-trash"> </a>
+              حذف
+            </button>
+            <button
+              class="Buto"
+              onclick="clearExpenseType()"
+              tabindex="105"
+              type="button"
+            >
+              <a class="fas fa-broom"> </a>
+              تفريغ
+            </button>
+          </div>
+        </form>
+      </div>
+      <!-- ExpenseTypeBrowser -->
+      <div
+        class="login-box"
+        id="Expense_Types__Browser"
+        style="display: none; height: 80%"
+      >
+        <div class="hh">
+          <h3>أنواع المصروفات</h3>
+          <button
+            class="SignOut button-secondary"
+            onclick="LoadExpenseTypesToTable()"
+          >
+            <a
+              id="LoadingExpenseTypesBrowser"
+              class="fa fa-refresh"
+              style="color: rgba(67, 78, 3, 0.603); width: 100%"
+            >
+            </a>
           </button>
           <button
+            class="SignOut"
+            onclick="ShowExpenseTypesWi()"
+            style="background-color: rgb(30, 138, 3); width: 30px; height: 30px"
+          >
+            <a
+              id="LoadingExpenseTypesPlus"
+              class="fa fa-plus"
+              style="color: white; width: 100%"
+            >
+            </a>
+          </button>
+          <button
+            class="SignOut"
+            onclick="GoToMain()"
+            style="
+              background-color: rgba(92, 149, 255, 0.952);
+              width: 30px;
+              height: 30px;
+            "
+          >
+            <a
+              class="fa fa-mail-reply"
+              style="color: rgba(5, 33, 85, 0.603); width: 100%"
+            >
+            </a>
+          </button>
+        </div>
+        <form style="height: 90%; display: block">
+          <form style="height: 40%">
+            <div class="tabdata">
+              <table>
+                <thead>
+                  <tr>
+                    <th style="width: 30px">ت</th>
+                    <th style="width: calc(100% - 60px)">نوع الدفع</th>
+                    <th style="width: 30px"></th>
+                  </tr>
+                </thead>
+                <tbody id="bodyTableExpenseTypes"></tbody>
+              </table>
+            </div>
+          </form>
+        </form>
+      </div>
+
+      <!-- TahseelTypesWi -->
+      <div
+        class="login-box"
+        id="Tahseel_Types__Wi"
+        style="display: none; height: 85%"
+      >
+        <div class="hh">
+          <h3>نوع تحصيل جديد</h3>
+          <button
+            class="SignOut button-secondary"
+            onclick="ShowTahseelTypesBrowser()"
+          >
+            <a
+              id="BackTahseelTypesBrowser"
+              class="fa fa-mail-reply"
+              style="color: rgba(5, 33, 85, 0.603); width: 100%"
+            >
+            </a>
+          </button>
+        </div>
+        <form
+          id="FormTahseelTypesDetails"
+          method="post"
+          style="height: 90%"
+          onsubmit="return true"
+        >
+          <div class="Three_Div">
+            <div class="user-box">
+              <label for="Tahseel_Types__Wi__Name">نوع التحصيل</label>
+              <input id="Tahseel_Types__Wi__Type" name="Type" type="hidden" />
+              <input id="Tahseel_Types__Wi__Mode" name="Mode" type="hidden" />
+              <input id="Tahseel_Types__Wi__Row" name="Row" type="hidden" />
+              <input
+                id="Tahseel_Types__Wi__Name"
+                name="Name"
+                required=""
+                type="text"
+              />
+              <label for="Tahseel_Types__Wi__Name"></label>
+            </div>
+          </div>
+          <div class="BB">
+            <button
+              class="Buto"
+              onclick="createTahseelType()"
+              style="width: 22%; background-color: rgb(30, 138, 3)"
+              tabindex="103"
+              type="button"
+            >
+              <a class="fa fa-plus"> </a>
+              اضافة
+            </button>
+            <button
+              class="Buto"
+              onclick="editTahseelType()"
+              tabindex="104"
+              type="button"
+            >
+              <a class="fa fa-edit"> </a>
+              تعديل
+            </button>
+            <button
+              class="Buto"
+              onclick="deleteTahseelType()"
+              tabindex="105"
+              type="button"
+            >
+              <a class="fa fa-trash"> </a>
+              حذف
+            </button>
+            <button
+              class="Buto"
+              onclick="clearTahseelType()"
+              tabindex="105"
+              type="button"
+            >
+              <a class="fas fa-broom"> </a>
+              تفريغ
+            </button>
+          </div>
+        </form>
+      </div>
+      <!-- TahseelTypeBrowser -->
+      <div
+        class="login-box"
+        id="Tahseel_Types__Browser"
+        style="display: none; height: 80%"
+      >
+        <div class="hh">
+          <h3>أنواع التحصيلات</h3>
+          <button
+            class="SignOut button-secondary"
+            onclick="LoadTahseelTypesToTable()"
+          >
+            <a
+              id="LoadingTahseelTypesBrowser"
+              class="fa fa-refresh"
+              style="color: rgba(67, 78, 3, 0.603); width: 100%"
+            >
+            </a>
+          </button>
+          <button
+            class="SignOut"
+            onclick="ShowTahseelTypesWi()"
+            style="background-color: rgb(30, 138, 3); width: 30px; height: 30px"
+          >
+            <a
+              id="LoadingTahseelTypesPlus"
+              class="fa fa-plus"
+              style="color: white; width: 100%"
+            >
+            </a>
+          </button>
+          <button
+            class="SignOut"
+            onclick="GoToMain()"
+            style="
+              background-color: rgba(92, 149, 255, 0.952);
+              width: 30px;
+              height: 30px;
+            "
+          >
+            <a
+              class="fa fa-mail-reply"
+              style="color: rgba(5, 33, 85, 0.603); width: 100%"
+            >
+            </a>
+          </button>
+        </div>
+        <form style="height: 90%; display: block">
+          <form style="height: 40%">
+            <div class="tabdata">
+              <table>
+                <thead>
+                  <tr>
+                    <th style="width: 30px">ت</th>
+                    <th style="width: calc(100% - 60px)">نوع التحصيل</th>
+                    <th style="width: 30px"></th>
+                  </tr>
+                </thead>
+                <tbody id="bodyTableTahseelTypes"></tbody>
+              </table>
+            </div>
+          </form>
+        </form>
+      </div>
+
+      <!-- ExpensesWi -->
+      <div
+        class="login-box"
+        id="Expenses__Wi"
+        style="display: none; height: 85%"
+      >
+        <div class="hh">
+          <h3>إضافة مصروف جديد</h3>
+          <button class="SignOut button-secondary" onclick="GoToMain()">
+            <a
+              id="BackExpensesBrowser"
+              class="fa fa-mail-reply"
+              style="color: rgba(5, 33, 85, 0.603); width: 100%"
+            >
+            </a>
+          </button>
+        </div>
+        <form
+          id="FormExpensesDetails"
+          method="post"
+          style="height: 90%"
+          onsubmit="return true"
+        >
+          <div class="Three_Div">
+            <div class="user-box">
+              <label for="Expenses__Wi__Amount">المبلغ</label>
+              <input id="Expenses__Wi__Type" name="Type" type="hidden" />
+              <input id="Expenses__Wi__Mode" name="Mode" type="hidden" />
+              <input id="Expenses__Wi__Row" name="Row" type="hidden" />
+              <div class="flex items-center gap-2">
+                <input
+                  id="Expenses__Wi__Amount"
+                  name="Amount"
+                  required=""
+                  type="number"
+                  tabindex="1"
+                  onchange="onExpenseAmountChange()"
+                  onkeyup="onExpenseAmountChange()"
+                />
+                <label for="Expenses__Wi__Amount">ريال</label>
+              </div>
+            </div>
+            <div class="user-box">
+              <label for="Expenses__Wi__Tax">الضريبة المضافة</label>
+              <input
+                type="number"
+                readonly=""
+                required=""
+                tabindex="2"
+                name="Tax"
+                style="background-color: darkgray"
+                id="Expenses__Wi__Tax"
+              />
+            </div>
+            <div class="user-box">
+              <label for="Expenses__Wi__Tax">نوع المصروف</label>
+              <select
+                required=""
+                tabindex="3"
+                name="ExpenseTypeNum"
+                id="Expenses__Wi__ExpenseTypeNum"
+                onchange="updateExpenseTypeName()"
+              />
+              <input
+                id="Expenses__Wi__ExpenseTypeName"
+                name="ExpenseTypeName"
+                type="hidden"
+              />
+            </div>
+            <div class="user-box">
+              <label for="Expenses__Wi__Recipient">اسم المستلم</label>
+              <input
+                type="text"
+                required=""
+                tabindex="4"
+                name="Recipient"
+                id="Expenses__Wi__Recipient"
+              />
+            </div>
+            <div class="user-box">
+              <label for="Expenses__Wi__Date">تاريخ المصروف</label>
+              <input
+                type="date"
+                required=""
+                tabindex="5"
+                name="Date"
+                id="Expenses__Wi__Date"
+              />
+            </div>
+          </div>
+          <div class="BB">
+            <button
+              class="Buto"
+              onclick="createExpense()"
+              tabindex="103"
+              type="button"
+            >
+              <a class="fa fa-plus"> </a>
+              اضافة
+            </button>
+            <button
+              class="Buto"
+              onclick="editExpense()"
+              tabindex="104"
+              type="button"
+            >
+              <a class="fa fa-edit"> </a>
+              تعديل
+            </button>
+            <button
+              class="Buto"
+              onclick="deleteExpense()"
+              tabindex="105"
+              type="button"
+            >
+              <a class="fa fa-trash"> </a>
+              حذف
+            </button>
+            <button
+              class="Buto"
+              onclick="clearExpense()"
+              tabindex="105"
+              type="button"
+            >
+              <a class="fas fa-broom"> </a>
+              تفريغ
+            </button>
+          </div>
+        </form>
+      </div>
+      <!-- ExpensesBrowser -->
+      <div
+        id="Expenses__Browser"
+        class="login-box"
+        style="display: none; height: 80%"
+      >
+        <div class="hh">
+          <h3>المصروفات</h3>
+          <button
+            class="SignOut button-secondary"
+            onclick="LoadExpensesToTable()"
+          >
+            <a
+              id="LoadingExpensesBrowser"
+              class="fa fa-refresh"
+              style="color: rgba(67, 78, 3, 0.603); width: 100%"
+            >
+            </a>
+          </button>
+          <button
+            class="SignOut"
             onclick="ShowExpensesWi()"
-            style="width: 30%; background-color: #c39623"
-            type="button"
+            style="background-color: rgb(30, 138, 3); width: 30px; height: 30px"
           >
             <a
-              id="new-expenses-icon"
-              class="fas fa-plus"
-              style="color: #1c1933"
+              id="LoadingExpensesPlus"
+              class="fa fa-plus"
+              style="color: white; width: 100%"
             >
             </a>
-            مصروف جديد
           </button>
           <button
-            onclick="ShowExpensesBrowser()"
-            style="width: 30%; background-color: #c39623"
-            type="button"
+            class="SignOut"
+            onclick="GoToMain()"
+            style="
+              background-color: rgba(92, 149, 255, 0.952);
+              width: 30px;
+              height: 30px;
+            "
           >
             <a
-              id="expenses-browser-icon"
-              class="fas fa-file-invoice-dollar"
-              style="color: #1c1933"
+              class="fa fa-mail-reply"
+              style="color: rgba(5, 33, 85, 0.603); width: 100%"
             >
             </a>
-            المصروفات
           </button>
-          <button
-            onclick="ShowReports()"
-            style="width: 30%; background-color: #c39623"
-            type="button"
-          >
+        </div>
+        <form style="height: 90%; display: block">
+          <form style="height: 40%">
+            <div class="tabdata">
+              <table>
+                <thead>
+                  <tr>
+                    <th style="width: 70px">ت</th>
+                    <th style="width: calc(25% - 300px)">المبلغ</th>
+                    <th style="width: calc(25% - 300px)">القيمة المضافة</th>
+                    <th style="width: calc(25% - 300px)">نوع المصروف</th>
+                    <th style="width: calc(25% - 300px)">المستلم</th>
+                    <th style="width: 200px">التاريخ</th>
+                    <th style="width: 30px"></th>
+                  </tr>
+                </thead>
+                <tbody id="bodyTableExpenses"></tbody>
+              </table>
+            </div>
+          </form>
+        </form>
+      </div>
+      <div id="Reports" class="login-box" style="display: none; height: 80%">
+        <div class="hh">
+          <h3>التقارير</h3>
+          <button class="SignOut button-secondary" onclick="GoToMain()">
             <a
-              id="reports-icon"
-              class="fas fa-chart-bar"
-              style="color: #1c1933"
+              class="fa fa-mail-reply"
+              style="color: rgba(5, 33, 85, 0.603); width: 100%"
             >
             </a>
-            التقارير
           </button>
         </div>
-      </form>
-    </div>
-    <!-- MethodWi -->
-    <div class="login-box" id="MethodWi" style="display: none; height: 85%">
-      <div class="hh">
-        <h3 style="width: calc(100% - 30px)">طريقة دفع جديدة</h3>
-        <button
-          class="SignOut"
-          onclick="ShowMethodBrowser()"
-          style="
-            background-color: rgba(92, 149, 255, 0.952);
-            width: 30px;
-            height: 30px;
-          "
-        >
-          <a
-            id="BackMethodBrowser"
-            class="fa fa-mail-reply"
-            style="color: rgba(5, 33, 85, 0.603); width: 100%"
-          >
-          </a>
-        </button>
-      </div>
-      <form
-        id="FormMethodDetails"
-        method="post"
-        style="height: 90%"
-        onsubmit="return true"
-      >
-        <div class="Three_Div">
-          <div class="user-box">
-            <label for="MetodName">طريقة الدفع</label>
-            <input id="typeP" name="Type" type="text" style="display: none" />
-            <input id="ModeP" name="Mode" type="text" style="display: none" />
-            <input
-              id="RowMethod"
-              name="RowMethod"
-              type="text"
-              style="display: none"
-            />
-            <input
-              id="MetodNum"
-              name="MetodNum"
-              required=""
-              type="text"
-              style="display: none"
-            />
-            <input
-              id="MetodName"
-              name="MetodName"
-              required=""
-              tabindex="1"
-              type="text"
-              autocomplete="off"
-            />
-            <label for="MetodName"></label>
+        <div class="reports-wrapper">
+          <div class="reports-card">
+            <h3>إجمالي عدد المبيعات</h3>
+            <p id="total-sales-count"></p>
           </div>
-          <div class="user-box">
-            <label for="PercentMetod">نسبة الدفع </label>
-            <input
-              id="PercentMetod"
-              name="PercentMetod"
-              required=""
-              tabindex="2"
-              type="number"
-              autocomplete="off"
-            />
-            <label for="PercentMetod">% </label>
+          <div class="reports-card">
+            <h3>إجمالي مبالغ المبيعات</h3>
+            <p id="total-sales-amount"></p>
           </div>
-          <div class="user-box">
-            <label for="AmountMetod">مبلغ ثابت</label>
-            <input
-              id="AmountMetod"
-              name="AmountMetod"
-              required=""
-              tabindex="3"
-              type="number"
-              autocomplete="off"
-            />
-            <label for="AmountMetod">ريال</label>
+          <div class="reports-card">
+            <h3>صافي الفواتير</h3>
+            <p id="total-sales-amount-net"></p>
           </div>
-        </div>
-        <div class="BB">
-          <button
-            class="Buto"
-            onclick="onsubmitForm1()"
-            style="width: 22%; background-color: rgb(30, 138, 3)"
-            tabindex="103"
-            type="button"
-          >
-            <a class="fa fa-plus" style="color: rgb(18, 68, 2)"> </a>
-            اضافة
-          </button>
-          <button
-            class="Buto"
-            onclick="onsubmitForm2()"
-            style="width: 22%; background-color: rgb(228, 155, 21)"
-            tabindex="104"
-            type="button"
-          >
-            <a class="fa fa-edit" style="color: rgb(80, 37, 3)"> </a>
-            تعديل
-          </button>
-          <button
-            class="Buto"
-            onclick="onsubmitForm3()"
-            style="width: 22%; background-color: rgb(185, 34, 7)"
-            tabindex="105"
-            type="button"
-          >
-            <a class="fa fa-trash" style="color: rgb(92, 14, 3)"> </a>
-            حذف
-          </button>
-          <button
-            class="Buto"
-            onclick="ClearItemCu()"
-            style="background-color: rgb(255 169 92 / 95%); width: 22%"
-            tabindex="105"
-            type="button"
-          >
-            <a class="fas fa-broom" style="color: rgba(240, 48, 0, 0.781)"> </a>
-            تفريغ
-          </button>
-        </div>
-      </form>
-    </div>
-    <!-- MethodBrowser -->
-    <div
-      class="login-box"
-      id="MethodBrowser"
-      style="display: none; height: 80%"
-    >
-      <div class="hh">
-        <h3 style="width: calc(100% - 100px)">طرق الدفع</h3>
-        <button
-          class="SignOut"
-          onclick="LoadMethodToTable()"
-          style="background-color: #818fb4; width: 30px; height: 30px"
-        >
-          <a
-            id="LoadingMethodBrowser"
-            class="fa fa-refresh"
-            style="color: rgba(67, 78, 3, 0.603); width: 100%"
-          >
-          </a>
-        </button>
-        <button
-          class="SignOut"
-          onclick="ShowMethodWi()"
-          style="background-color: rgb(30, 138, 3); width: 30px; height: 30px"
-        >
-          <a
-            id="LoadingMethodplus"
-            class="fa fa-plus"
-            style="color: white; width: 100%"
-          >
-          </a>
-        </button>
-        <button
-          class="SignOut"
-          onclick="GoToMain()"
-          style="
-            background-color: rgba(92, 149, 255, 0.952);
-            width: 30px;
-            height: 30px;
-          "
-        >
-          <a
-            class="fa fa-mail-reply"
-            style="color: rgba(5, 33, 85, 0.603); width: 100%"
-          >
-          </a>
-        </button>
-      </div>
-      <form style="height: 90%; display: block">
-        <form style="height: 40%">
-          <div class="tabdata" style="direction: rtl">
-            <table>
-              <thead>
-                <tr>
-                  <th style="width: 30px">ت</th>
-                  <th style="display: none"></th>
-                  <th style="width: calc(30% - 60px)">طريقة الدفع</th>
-                  <th style="width: calc(40% - 60px)">نسبة الدفع</th>
-                  <th style="width: calc(40% - 60px)">مبلغ ثابت</th>
-                  <th style="width: 30px"></th>
-                </tr>
-              </thead>
-              <tbody id="bodyTableMethod"></tbody>
-            </table>
+          <div class="reports-card">
+            <h3>إجمالي المصروفات</h3>
+            <p id="total-expenses"></p>
           </div>
-        </form>
-      </form>
-    </div>
-    <!-- SalesWi -->
-    <div class="login-box" id="SalesWi" style="display: none; height: 85%">
-      <div class="hh">
-        <h3 style="width: calc(100% - 30px)">فاتورة مبيعات جديدة</h3>
-        <button
-          class="SignOut"
-          onclick="GoToMain()"
-          style="
-            background-color: rgba(92, 149, 255, 0.952);
-            width: 30px;
-            height: 30px;
-          "
-        >
-          <a
-            id="BackMain"
-            class="fa fa-mail-reply"
-            style="color: rgba(5, 33, 85, 0.603); width: 100%"
-          >
-          </a>
-        </button>
-      </div>
-      <form
-        id="FormSalesWiDetails"
-        method="post"
-        style="height: 90%"
-        onsubmit="return true"
-      >
-        <div class="Three_Div">
-          <div class="user-box">
-            <label for="BillNumber">رقم الفاتورة</label>
-            <input id="typeS" name="Type" type="text" style="display: none" />
-            <input id="ModeS" name="Mode" type="text" style="display: none" />
-            <input id="RowS" name="RowS" type="text" style="display: none" />
-            <input id="BillNumber2" type="text" style="display: none" />
-            <input
-              id="BillNumber"
-              name="BillNumber"
-              required=""
-              type="text"
-              autocomplete="off"
-              tabindex="1"
-            />
-            <label for="BillNumber"></label>
+          <div class="reports-card">
+            <h3>إجمالي التحصيلات</h3>
+            <p id="total-tahseel"></p>
           </div>
-          <div class="user-box">
-            <label for="BillDate">تاريخ الفاتورة</label>
-            <input
-              id="BillDate"
-              name="BillDate"
-              required=""
-              tabindex="2"
-              type="date"
-              autocomplete="off"
-            />
-            <label for="BillDate"></label>
+          <div class="reports-card">
+            <h3>المبالغ المتوفرة</h3>
+            <p id="available-amount"></p>
           </div>
-          <div class="user-box">
-            <label for="AmountTotal">مبلغ الفاتورة</label>
-            <input
-              id="AmountTotal"
-              name="AmountTotal"
-              required=""
-              tabindex="3"
-              type="number"
-              autocomplete="off"
-              onchange="CaluclateTotalS()"
-              onkeyup="CaluclateTotalS()"
-            />
-            <label for="AmountTotal">ريال </label>
-          </div>
-          <div class="user-box">
-            <label for="AmountActualTotal">القيمة (بعد حساب المسترجع)</label>
-            <input
-              id="AmountActualTotal"
-              name="AmountActualTotal"
-              required=""
-              disabled=""
-              tabindex="-1"
-              type="number"
-              autocomplete="off"
-              readonly=""
-            />
-            <label for="AmountActualTotal">ريال</label>
-          </div>
-          <div class="user-box">
-            <label for="MethodNum">طريقة الدفع</label>
-            <select
-              name="MethodNum"
-              id="MethodNum"
-              required=""
-              tabindex="4"
-              onchange="OncahangeMethod(this.value)"
-            ></select>
-            <input id="MethodPer" type="text" style="display: none" />
-            <input id="MethodVa" type="text" style="display: none" />
-            <label for="MethodNum"></label>
-          </div>
-          <div class="user-box">
-            <label for="MethodAmount">خصم الدفع</label>
-            <input
-              id="MethodAmount"
-              name="MethodAmount"
-              type="number"
-              readonly=""
-            />
-            <label for="MethodAmount">ريال </label>
-          </div>
-          <div class="user-box">
-            <label for="DesCountAmount">خصومات اخرى</label>
-            <input
-              id="DesCountAmount"
-              name="DesCountAmount"
-              type="number"
-              tabindex="5"
-              onchange="CaluclateTotalS()"
-              onkeyup="CaluclateTotalS()"
-            />
-            <select
-              id="DesCountSel"
-              name="DesCountSel"
-              required=""
-              tabindex="6"
-              style="width: 60px"
-              onchange="CaluclateTotalS()"
-            >
-              <option value="ريال">ريال</option>
-              <option value="%">%</option>
-            </select>
-          </div>
-
-          <div class="user-box">
-            <label for="Tax">ضريبة القيمة المضافة</label>
-            <input id="Tax" name="Tax" type="number" readonly="" />
-            <input id="TaxP" type="number" style="display: none" />
-            <label for="Tax">ريال</label>
-          </div>
-
-          <div class="user-box">
-            <label for="Ready">تجهيز الطلب</label>
-            <input
-              id="Ready"
-              name="Ready"
-              required=""
-              tabindex="8"
-              type="number"
-              autocomplete="off"
-              onkeyup="CaluclateTotalS()"
-              onchange="CaluclateTotalS()"
-            />
-            <label for="Ready">ريال </label>
-          </div>
-
-          <div class="user-box">
-            <input
-              type="checkbox"
-              id="checkbox1"
-              required=""
-              onchange="onchangecheckbox()"
-              style="width: 50px; margin-right: 50px"
-            />
-            <label for="checkbox1" style="width: calc(100% - 100px)"
-              >هل الشحن مجاني</label
-            >
-          </div>
-
-          <div class="user-box">
-            <label for="ShipNum">نوع الشحن</label>
-            <select
-              name="ShipNum"
-              id="ShipNum"
-              required=""
-              tabindex="7"
-              onchange="OncahangeShip(this.value)"
-              disabled=""
-            ></select>
-            <label for="ShipNum"></label>
-          </div>
-
-          <div class="user-box">
-            <label for="ShipAmount">مبلغ الشحن</label>
-            <input
-              id="ShipAmount"
-              name="ShipAmount"
-              required=""
-              tabindex="8"
-              type="number"
-              autocomplete="off"
-              onkeyup="CaluclateTotalS()"
-              onchange="CaluclateTotalS()"
-              disabled=""
-            />
-            <label for="ShipAmount">ريال </label>
-          </div>
-          <div class="user-box">
-            <label for="RefundAmount">المسترجع</label>
-            <input
-              id="RefundAmount"
-              name="RefundAmount"
-              value="0"
-              required=""
-              tabindex="8"
-              type="number"
-              autocomplete="off"
-              onkeyup="CaluclateTotalS()"
-              onchange="CaluclateTotalS()"
-            />
-            <label for="ShipAmount">ريال </label>
-          </div>
-          <div class="user-box">
-            <label for="PlaceName">مكان التوصيل</label>
-            <select
-              name="PlaceName"
-              id="PlaceName"
-              required=""
-              tabindex="7"
-              onchange="OncahangePlaceName(this.value)"
-            ></select>
-            <label for="PlaceName"></label>
-          </div>
-
-          <div class="user-box">
-            <label for="PlacePrice">سعر التوصيل</label>
-            <input
-              id="PlacePrice"
-              name="PlacePrice"
-              required=""
-              tabindex="8"
-              type="number"
-              autocomplete="off"
-              onkeyup="CaluclateTotalS()"
-              onchange="CaluclateTotalS()"
-            />
-            <label for="PlacePrice">ريال </label>
-          </div>
-          <div class="user-box">
-            <label for="OtherCost">تكاليف اخرى</label>
-            <input
-              id="OtherCost"
-              name="OtherCost"
-              required=""
-              tabindex="9"
-              type="number"
-              autocomplete="off"
-              onkeyup="CaluclateTotalS()"
-              onchange="CaluclateTotalS()"
-            />
-            <label for="OtherCost">ريال</label>
-          </div>
-
-          <div class="user-box">
-            <label for="AmountNet">صافي الفاتورة</label>
-            <input
-              id="AmountNet"
-              name="AmountNet"
-              required=""
-              tabindex="10"
-              type="number"
-              autocomplete="off"
-              readonly=""
-            />
-            <label for="AmountNet">ريال</label>
-          </div>
-        </div>
-        <div class="BB">
-          <button
-            class="Buto"
-            onclick="onsubmitFormS1()"
-            style="width: 22%; background-color: rgb(30, 138, 3)"
-            tabindex="103"
-            type="button"
-          >
-            <a class="fa fa-plus" style="color: rgb(18, 68, 2)"> </a>
-            اضافة
-          </button>
-          <button
-            class="Buto"
-            onclick="onsubmitFormS2()"
-            style="width: 22%; background-color: rgb(228, 155, 21)"
-            tabindex="104"
-            type="button"
-          >
-            <a class="fa fa-edit" style="color: rgb(80, 37, 3)"> </a>
-            تعديل
-          </button>
-          <button
-            class="Buto"
-            onclick="onsubmitFormS3()"
-            style="width: 22%; background-color: rgb(185, 34, 7)"
-            tabindex="105"
-            type="button"
-          >
-            <a class="fa fa-trash" style="color: rgb(92, 14, 3)"> </a>
-            حذف
-          </button>
-          <button
-            class="Buto"
-            onclick="ClearItemSa()"
-            style="background-color: rgb(255 169 92 / 95%); width: 22%"
-            tabindex="105"
-            type="button"
-          >
-            <a class="fas fa-broom" style="color: rgba(240, 48, 0, 0.781)"> </a>
-            تفريغ
-          </button>
-        </div>
-      </form>
-    </div>
-    <!-- SalesBrowser -->
-    <div class="login-box" id="SalesBrowser" style="display: none; height: 80%">
-      <div class="hh">
-        <h3 style="width: calc(100% - 70px)">المبيعات</h3>
-        <button
-          class="SignOut"
-          onclick="ShowSalesBrowser()"
-          style="background-color: #818fb4; width: 30px; height: 30px"
-        >
-          <a
-            id="LoadingSalesBrowser"
-            class="fa fa-refresh"
-            style="color: rgba(67, 78, 3, 0.603); width: 100%"
-          >
-          </a>
-        </button>
-        <button
-          class="SignOut"
-          onclick="GoToMain()"
-          style="
-            background-color: rgba(92, 149, 255, 0.952);
-            width: 30px;
-            height: 30px;
-          "
-        >
-          <a
-            class="fa fa-mail-reply"
-            style="color: rgba(5, 33, 85, 0.603); width: 100%"
-          >
-          </a>
-        </button>
-      </div>
-      <form style="height: 90%; display: block">
-        <div class="Three_Div">
-          <div class="user-box">
-            <label for="SeaNumber" style="width: 30%">بحث عن رقم</label>
-            <input id="SeaNumber" type="text" style="width: calc(70% - 35px)" />
-            <button
-              class="SignOut"
-              onclick="ClearValueNu()"
-              style="background-color: #efbaba; height: 30px; width: 30px"
-              type="button"
-            >
-              <a class="fa fa-close" style="color: red"> </a>
-            </button>
-          </div>
-          <div class="user-box">
-            <label for="SeaDate" style="width: 30%">بحث عن تاريخ</label>
-            <input id="SeaDate" type="date" style="width: calc(70% - 70px)" />
-            <button
-              class="SignOut"
-              onclick="ClearValueDa()"
-              style="background-color: #efbaba; height: 30px; width: 30px"
-              type="button"
-            >
-              <a class="fa fa-close" style="color: red"> </a>
-            </button>
-            <button
-              class="SignOut"
-              onclick="FillterSalesToTable()"
-              style="background-color: #cbefba; height: 30px; width: 30px"
-              type="button"
-            >
-              <a class="fa fa-search" style="color: rgb(6, 114, 3)"> </a>
-            </button>
-          </div>
-        </div>
-        <form style="height: 40%">
-          <div class="tabdata" style="direction: rtl">
-            <table>
-              <thead>
-                <tr>
-                  <th style="width: calc(5% - 30px)">ت</th>
-                  <th style="width: calc(10% - 30px)">رقم</th>
-                  <th style="width: calc(10% - 30px)">التاريخ</th>
-                  <th style="width: calc(10% - 30px)">مبلغ</th>
-                  <th style="width: calc(10% - 30px)">مسترجع</th>
-                  <th style="width: calc(10% - 30px)">طريقة الدفع</th>
-                  <th style="width: calc(10% - 30px)">خصم الدفع</th>
-                  <th style="width: calc(10% - 30px)">ضريبة</th>
-                  <th style="width: calc(10% - 30px)">نوع الشحن</th>
-                  <th style="width: calc(10% - 30px)">مبلغ الشحن</th>
-                  <th style="width: calc(5% - 30px)">تكاليف اخرى</th>
-                  <th style="width: calc(10% - 30px)">صافي</th>
-                  <th style="display: none"></th>
-                  <th style="display: none"></th>
-                  <th style="width: 30px"></th>
-                  <th style="display: none"></th>
-                  <th style="display: none"></th>
-                  <th style="display: none"></th>
-                </tr>
-              </thead>
-              <tbody id="bodydataS"></tbody>
-            </table>
-          </div>
-        </form>
-      </form>
-    </div>
-
-    <!-- TahseelWi -->
-    <div class="login-box" id="Tahseel_Wi" style="display: none; height: 85%">
-      <div class="hh">
-        <h3 style="width: calc(100% - 30px)">تحصيل جديد</h3>
-        <button
-          class="SignOut"
-          onclick="GoToMain()"
-          style="
-            background-color: rgba(92, 149, 255, 0.952);
-            width: 30px;
-            height: 30px;
-          "
-        >
-          <a
-            id="BackTahseelBrowser"
-            class="fa fa-mail-reply"
-            style="color: rgba(5, 33, 85, 0.603); width: 100%"
-          >
-          </a>
-        </button>
-      </div>
-      <form
-        id="FormTahseelDetails"
-        method="post"
-        style="height: 90%"
-        onsubmit="return true"
-      >
-        <div class="Three_Div">
-          <div class="user-box">
-            <label for="Tahseel_Wi__InvoiceBillNumber">رقم الفاتورة</label>
-            <input
-              id="tahseel-type"
-              name="Type"
-              type="text"
-              style="display: none"
-            />
-            <input
-              id="tahseel-mode"
-              name="Mode"
-              type="text"
-              style="display: none"
-            />
-            <input
-              id="tahseel-row"
-              name="Row"
-              type="text"
-              style="display: none"
-            />
-            <input
-              id="Tahseel_Wi__InvoiceBillNumber"
-              name="BillNumber"
-              required=""
-              tabindex="1"
-            />
-            <label for="Tahseel_Wi__InvoiceBillNumber"></label>
-          </div>
-          <div class="user-box">
-            <label for="Tahseel_Wi__InvoiceAmount">مبلغ الفاتورة</label>
-            <input
-              id="Tahseel_Wi__InvoiceAmount"
-              name="BillAmount"
-              required=""
-              tabindex="2"
-              type="number"
-            />
-            <label for="Tahseel_Wi__InvoiceAmount"></label>
-          </div>
-          <div class="user-box">
-            <label for="Tahseel_Wi__MethodNum">طريقة الدفع</label>
-            <select
-              id="Tahseel_Wi__MethodNum"
-              name="PaymentMethodNum"
-              type="text"
-              readonly=""
-              tabindex="3"
-            ></select>
-            <label for="Tahseel_Wi__MethodNum"></label>
-          </div>
-          <div class="user-box">
-            <label for="Tahseel_Wi__ReqAmount">المبلغ المطلوب</label>
-            <input
-              id="Tahseel_Wi__ReqAmount"
-              name="ReqAmount"
-              required=""
-              tabindex="4"
-              type="number"
-            />
-            <label for="Tahseel_Wi__ReqAmount">ريال</label>
-          </div>
-          <div class="user-box">
-            <label for="Tahseel_Wi__Date">التاريخ</label>
-            <input
-              type="date"
-              id="Tahseel_Wi__Date"
-              name="Date"
-              required=""
-              tabindex="5"
-            />
-          </div>
-          <div class="user-box">
-            <label for="Tahseel_Wi__TahseelTypeNum">نوع التحصيل</label>
-            <select
-              id="Tahseel_Wi__TahseelTypeNum"
-              name="TahseelTypeNum"
-              type="text"
-              readonly=""
-              tabindex="3"
-            ></select>
-            <label for="Tahseel_Wi__TahseelTypeNum"></label>
-          </div>
-          <div class="user-box">
-            <input
-              type="checkbox"
-              id="Tahseel_Wi__IsPaid"
-              required=""
-              style="width: 50px; margin-right: 50px"
-              onchange="onTahseelIsPaidChange()"
-            />
-            <input
-              type="text"
-              name="IsPaid"
-              id="Tahseel_Wi__IsPaidActual"
-              style="display: none"
-            />
-            <label for="Tahseel_Wi__IsPaid" style="width: calc(100% - 100px)"
-              >تم الدفع</label
-            >
-          </div>
-        </div>
-        <div class="BB">
-          <button
-            class="Buto"
-            onclick="createNewTahseel()"
-            style="width: 22%; background-color: rgb(30, 138, 3)"
-            tabindex="103"
-            type="button"
-          >
-            <a class="fa fa-plus" style="color: rgb(18, 68, 2)"> </a>
-            اضافة
-          </button>
-          <button
-            class="Buto"
-            onclick="editTahseel()"
-            style="width: 22%; background-color: rgb(228, 155, 21)"
-            tabindex="104"
-            type="button"
-          >
-            <a class="fa fa-edit" style="color: rgb(80, 37, 3)"> </a>
-            تعديل
-          </button>
-          <button
-            class="Buto"
-            onclick="deleteTahseel()"
-            style="width: 22%; background-color: rgb(185, 34, 7)"
-            tabindex="105"
-            type="button"
-          >
-            <a class="fa fa-trash" style="color: rgb(92, 14, 3)"> </a>
-            حذف
-          </button>
-          <button
-            class="Buto"
-            onclick="return true;"
-            style="background-color: rgb(255 169 92 / 95%); width: 22%"
-            tabindex="105"
-            type="button"
-          >
-            <a class="fas fa-broom" style="color: rgba(240, 48, 0, 0.781)"> </a>
-            تفريغ
-          </button>
-        </div>
-      </form>
-    </div>
-    <!-- TahseelBrowser -->
-    <div
-      class="login-box"
-      id="Tahseel_Browser"
-      style="display: none; height: 80%"
-    >
-      <div class="hh">
-        <h3 style="width: calc(100% - 100px)">طرق الدفع</h3>
-        <button
-          class="SignOut"
-          onclick="LoadTahseelToTable()"
-          style="background-color: #818fb4; width: 30px; height: 30px"
-        >
-          <a
-            id="LoadingTahseelBrowser"
-            class="fa fa-refresh"
-            style="color: rgba(67, 78, 3, 0.603); width: 100%"
-          >
-          </a>
-        </button>
-        <button
-          class="SignOut"
-          onclick="ShowTahseelWi()"
-          style="background-color: rgb(30, 138, 3); width: 30px; height: 30px"
-        >
-          <a
-            id="LoadingTahseelplus"
-            class="fa fa-plus"
-            style="color: white; width: 100%"
-          >
-          </a>
-        </button>
-        <button
-          class="SignOut"
-          onclick="GoToMain()"
-          style="
-            background-color: rgba(92, 149, 255, 0.952);
-            width: 30px;
-            height: 30px;
-          "
-        >
-          <a
-            class="fa fa-mail-reply"
-            style="color: rgba(5, 33, 85, 0.603); width: 100%"
-          >
-          </a>
-        </button>
-      </div>
-      <form style="height: 90%; display: block">
-        <form style="height: 40%">
-          <div class="tabdata" style="direction: rtl">
-            <table>
-              <thead>
-                <tr>
-                  <th style="width: 75px">ت</th>
-                  <th style="width: calc(calc(100% / 8) - 105px)">
-                    رقم الفاتورة
-                  </th>
-                  <th style="width: calc(calc(100% / 8) - 105px)">
-                    مبلغ الفاتورة
-                  </th>
-                  <th style="width: calc(calc(100% / 8) - 105px)">
-                    وسيلة الدفع
-                  </th>
-                  <th style="width: calc(calc(100% / 8) - 105px)">
-                    المبلغ المطلوب
-                  </th>
-                  <th style="width: calc(calc(100% / 8) - 105px)">
-                    المبلغ المحصل
-                  </th>
-                  <th style="width: calc(calc(100% / 8) - 105px)">التاريخ</th>
-                  <th style="width: calc(calc(100% / 8) - 105px)">
-                    نوع التحصيل
-                  </th>
-                  <th style="width: calc(calc(100% / 8) - 105px)">تم الدفع</th>
-                  <th style="width: 30px"></th>
-                </tr>
-              </thead>
-              <tbody id="bodyTableTahseel"></tbody>
-            </table>
-          </div>
-        </form>
-      </form>
-    </div>
-
-    <!-- ExpenseTypesWi -->
-    <div
-      class="login-box"
-      id="Expense_Types__Wi"
-      style="display: none; height: 85%"
-    >
-      <div class="hh">
-        <h3 style="width: calc(100% - 30px)">نوع مصروف جديد</h3>
-        <button
-          class="SignOut"
-          onclick="ShowExpenseTypesBrowser()"
-          style="
-            background-color: rgba(92, 149, 255, 0.952);
-            width: 30px;
-            height: 30px;
-          "
-        >
-          <a
-            id="BackExpenseTypesBrowser"
-            class="fa fa-mail-reply"
-            style="color: rgba(5, 33, 85, 0.603); width: 100%"
-          >
-          </a>
-        </button>
-      </div>
-      <form
-        id="FormExpenseTypesDetails"
-        method="post"
-        style="height: 90%"
-        onsubmit="return true"
-      >
-        <div class="Three_Div">
-          <div class="user-box">
-            <label for="Expense_Types__Wi__Name">نوع المصروف</label>
-            <input
-              id="Expense_Types__Wi__Type"
-              name="Type"
-              type="text"
-              style="display: none"
-            />
-            <input
-              id="Expense_Types__Wi__Mode"
-              name="Mode"
-              type="text"
-              style="display: none"
-            />
-            <input
-              id="Expense_Types__Wi__Row"
-              name="Row"
-              type="text"
-              style="display: none"
-            />
-            <input
-              id="Expense_Types__Wi__Name"
-              name="Name"
-              required=""
-              type="text"
-            />
-            <label for="Expense_Types__Wi__Name"></label>
-          </div>
-        </div>
-        <div class="BB">
-          <button
-            class="Buto"
-            onclick="createExpenseType()"
-            style="width: 22%; background-color: rgb(30, 138, 3)"
-            tabindex="103"
-            type="button"
-          >
-            <a class="fa fa-plus" style="color: rgb(18, 68, 2)"> </a>
-            اضافة
-          </button>
-          <button
-            class="Buto"
-            onclick="editExpenseType()"
-            style="width: 22%; background-color: rgb(228, 155, 21)"
-            tabindex="104"
-            type="button"
-          >
-            <a class="fa fa-edit" style="color: rgb(80, 37, 3)"> </a>
-            تعديل
-          </button>
-          <button
-            class="Buto"
-            onclick="deleteExpenseType()"
-            style="width: 22%; background-color: rgb(185, 34, 7)"
-            tabindex="105"
-            type="button"
-          >
-            <a class="fa fa-trash" style="color: rgb(92, 14, 3)"> </a>
-            حذف
-          </button>
-          <button
-            class="Buto"
-            onclick="clearExpenseType()"
-            style="background-color: rgb(255 169 92 / 95%); width: 22%"
-            tabindex="105"
-            type="button"
-          >
-            <a class="fas fa-broom" style="color: rgba(240, 48, 0, 0.781)"> </a>
-            تفريغ
-          </button>
-        </div>
-      </form>
-    </div>
-    <!-- ExpenseTypeBrowser -->
-    <div
-      class="login-box"
-      id="Expense_Types__Browser"
-      style="display: none; height: 80%"
-    >
-      <div class="hh">
-        <h3 style="width: calc(100% - 100px)">أنواع المصروفات</h3>
-        <button
-          class="SignOut"
-          onclick="LoadExpenseTypesToTable()"
-          style="background-color: #818fb4; width: 30px; height: 30px"
-        >
-          <a
-            id="LoadingExpenseTypesBrowser"
-            class="fa fa-refresh"
-            style="color: rgba(67, 78, 3, 0.603); width: 100%"
-          >
-          </a>
-        </button>
-        <button
-          class="SignOut"
-          onclick="ShowExpenseTypesWi()"
-          style="background-color: rgb(30, 138, 3); width: 30px; height: 30px"
-        >
-          <a
-            id="LoadingExpenseTypesPlus"
-            class="fa fa-plus"
-            style="color: white; width: 100%"
-          >
-          </a>
-        </button>
-        <button
-          class="SignOut"
-          onclick="GoToMain()"
-          style="
-            background-color: rgba(92, 149, 255, 0.952);
-            width: 30px;
-            height: 30px;
-          "
-        >
-          <a
-            class="fa fa-mail-reply"
-            style="color: rgba(5, 33, 85, 0.603); width: 100%"
-          >
-          </a>
-        </button>
-      </div>
-      <form style="height: 90%; display: block">
-        <form style="height: 40%">
-          <div class="tabdata" style="direction: rtl">
-            <table>
-              <thead>
-                <tr>
-                  <th style="width: 30px">ت</th>
-                  <th style="width: calc(100% - 60px)">نوع الدفع</th>
-                  <th style="width: 30px"></th>
-                </tr>
-              </thead>
-              <tbody id="bodyTableExpenseTypes"></tbody>
-            </table>
-          </div>
-        </form>
-      </form>
-    </div>
-
-    <!-- TahseelTypesWi -->
-    <div
-      class="login-box"
-      id="Tahseel_Types__Wi"
-      style="display: none; height: 85%"
-    >
-      <div class="hh">
-        <h3 style="width: calc(100% - 30px)">نوع تحصيل جديد</h3>
-        <button
-          class="SignOut"
-          onclick="ShowTahseelTypesBrowser()"
-          style="
-            background-color: rgba(92, 149, 255, 0.952);
-            width: 30px;
-            height: 30px;
-          "
-        >
-          <a
-            id="BackTahseelTypesBrowser"
-            class="fa fa-mail-reply"
-            style="color: rgba(5, 33, 85, 0.603); width: 100%"
-          >
-          </a>
-        </button>
-      </div>
-      <form
-        id="FormTahseelTypesDetails"
-        method="post"
-        style="height: 90%"
-        onsubmit="return true"
-      >
-        <div class="Three_Div">
-          <div class="user-box">
-            <label for="Tahseel_Types__Wi__Name">نوع التحصيل</label>
-            <input
-              id="Tahseel_Types__Wi__Type"
-              name="Type"
-              type="text"
-              style="display: none"
-            />
-            <input
-              id="Tahseel_Types__Wi__Mode"
-              name="Mode"
-              type="text"
-              style="display: none"
-            />
-            <input
-              id="Tahseel_Types__Wi__Row"
-              name="Row"
-              type="text"
-              style="display: none"
-            />
-            <input
-              id="Tahseel_Types__Wi__Name"
-              name="Name"
-              required=""
-              type="text"
-            />
-            <label for="Tahseel_Types__Wi__Name"></label>
-          </div>
-        </div>
-        <div class="BB">
-          <button
-            class="Buto"
-            onclick="createTahseelType()"
-            style="width: 22%; background-color: rgb(30, 138, 3)"
-            tabindex="103"
-            type="button"
-          >
-            <a class="fa fa-plus" style="color: rgb(18, 68, 2)"> </a>
-            اضافة
-          </button>
-          <button
-            class="Buto"
-            onclick="editTahseelType()"
-            style="width: 22%; background-color: rgb(228, 155, 21)"
-            tabindex="104"
-            type="button"
-          >
-            <a class="fa fa-edit" style="color: rgb(80, 37, 3)"> </a>
-            تعديل
-          </button>
-          <button
-            class="Buto"
-            onclick="deleteTahseelType()"
-            style="width: 22%; background-color: rgb(185, 34, 7)"
-            tabindex="105"
-            type="button"
-          >
-            <a class="fa fa-trash" style="color: rgb(92, 14, 3)"> </a>
-            حذف
-          </button>
-          <button
-            class="Buto"
-            onclick="clearTahseelType()"
-            style="background-color: rgb(255 169 92 / 95%); width: 22%"
-            tabindex="105"
-            type="button"
-          >
-            <a class="fas fa-broom" style="color: rgba(240, 48, 0, 0.781)"> </a>
-            تفريغ
-          </button>
-        </div>
-      </form>
-    </div>
-    <!-- TahseelTypeBrowser -->
-    <div
-      class="login-box"
-      id="Tahseel_Types__Browser"
-      style="display: none; height: 80%"
-    >
-      <div class="hh">
-        <h3 style="width: calc(100% - 100px)">أنواع التحصيلات</h3>
-        <button
-          class="SignOut"
-          onclick="LoadTahseelTypesToTable()"
-          style="background-color: #818fb4; width: 30px; height: 30px"
-        >
-          <a
-            id="LoadingTahseelTypesBrowser"
-            class="fa fa-refresh"
-            style="color: rgba(67, 78, 3, 0.603); width: 100%"
-          >
-          </a>
-        </button>
-        <button
-          class="SignOut"
-          onclick="ShowTahseelTypesWi()"
-          style="background-color: rgb(30, 138, 3); width: 30px; height: 30px"
-        >
-          <a
-            id="LoadingTahseelTypesPlus"
-            class="fa fa-plus"
-            style="color: white; width: 100%"
-          >
-          </a>
-        </button>
-        <button
-          class="SignOut"
-          onclick="GoToMain()"
-          style="
-            background-color: rgba(92, 149, 255, 0.952);
-            width: 30px;
-            height: 30px;
-          "
-        >
-          <a
-            class="fa fa-mail-reply"
-            style="color: rgba(5, 33, 85, 0.603); width: 100%"
-          >
-          </a>
-        </button>
-      </div>
-      <form style="height: 90%; display: block">
-        <form style="height: 40%">
-          <div class="tabdata" style="direction: rtl">
-            <table>
-              <thead>
-                <tr>
-                  <th style="width: 30px">ت</th>
-                  <th style="width: calc(100% - 60px)">نوع التحصيل</th>
-                  <th style="width: 30px"></th>
-                </tr>
-              </thead>
-              <tbody id="bodyTableTahseelTypes"></tbody>
-            </table>
-          </div>
-        </form>
-      </form>
-    </div>
-
-    <!-- ExpensesWi -->
-    <div class="login-box" id="Expenses__Wi" style="display: none; height: 85%">
-      <div class="hh">
-        <h3 style="width: calc(100% - 30px)">إضافة مصروف جديد</h3>
-        <button
-          class="SignOut"
-          onclick="GoToMain()"
-          style="
-            background-color: rgba(92, 149, 255, 0.952);
-            width: 30px;
-            height: 30px;
-          "
-        >
-          <a
-            id="BackExpensesBrowser"
-            class="fa fa-mail-reply"
-            style="color: rgba(5, 33, 85, 0.603); width: 100%"
-          >
-          </a>
-        </button>
-      </div>
-      <form
-        id="FormExpensesDetails"
-        method="post"
-        style="height: 90%"
-        onsubmit="return true"
-      >
-        <div class="Three_Div">
-          <div class="user-box">
-            <label for="Expenses__Wi__Amount">المبلغ</label>
-            <input
-              id="Expenses__Wi__Type"
-              name="Type"
-              type="text"
-              style="display: none"
-            />
-            <input
-              id="Expenses__Wi__Mode"
-              name="Mode"
-              type="text"
-              style="display: none"
-            />
-            <input
-              id="Expenses__Wi__Row"
-              name="Row"
-              type="text"
-              style="display: none"
-            />
-            <input
-              id="Expenses__Wi__Amount"
-              name="Amount"
-              required=""
-              type="number"
-              tabindex="1"
-              onchange="onExpenseAmountChange()"
-              onkeyup="onExpenseAmountChange()"
-            />
-            <label for="Expenses__Wi__Amount">ريال</label>
-          </div>
-          <div class="user-box">
-            <label for="Expenses__Wi__Tax">الضريبة المضافة</label>
-            <input
-              type="number"
-              readonly=""
-              required=""
-              tabindex="2"
-              name="Tax"
-              style="background-color: darkgray"
-              id="Expenses__Wi__Tax"
-            />
-          </div>
-          <div class="user-box">
-            <label for="Expenses__Wi__Tax">نوع المصروف</label>
-            <select
-              required=""
-              tabindex="3"
-              name="ExpenseTypeNum"
-              id="Expenses__Wi__ExpenseTypeNum"
-              onchange="updateExpenseTypeName()"
-            />
-            <input
-              id="Expenses__Wi__ExpenseTypeName"
-              name="ExpenseTypeName"
-              style="display: none"
-            />
-          </div>
-          <div class="user-box">
-            <label for="Expenses__Wi__Recipient">اسم المستلم</label>
-            <input
-              type="text"
-              required=""
-              tabindex="4"
-              name="Recipient"
-              id="Expenses__Wi__Recipient"
-            />
-          </div>
-          <div class="user-box">
-            <label for="Expenses__Wi__Date">تاريخ المصروف</label>
-            <input
-              type="date"
-              required=""
-              tabindex="5"
-              name="Date"
-              id="Expenses__Wi__Date"
-            />
-          </div>
-        </div>
-        <div class="BB">
-          <button
-            class="Buto"
-            onclick="createExpense()"
-            style="width: 22%; background-color: rgb(30, 138, 3)"
-            tabindex="103"
-            type="button"
-          >
-            <a class="fa fa-plus" style="color: rgb(18, 68, 2)"> </a>
-            اضافة
-          </button>
-          <button
-            class="Buto"
-            onclick="editExpense()"
-            style="width: 22%; background-color: rgb(228, 155, 21)"
-            tabindex="104"
-            type="button"
-          >
-            <a class="fa fa-edit" style="color: rgb(80, 37, 3)"> </a>
-            تعديل
-          </button>
-          <button
-            class="Buto"
-            onclick="deleteExpense()"
-            style="width: 22%; background-color: rgb(185, 34, 7)"
-            tabindex="105"
-            type="button"
-          >
-            <a class="fa fa-trash" style="color: rgb(92, 14, 3)"> </a>
-            حذف
-          </button>
-          <button
-            class="Buto"
-            onclick="clearExpense()"
-            style="background-color: rgb(255 169 92 / 95%); width: 22%"
-            tabindex="105"
-            type="button"
-          >
-            <a class="fas fa-broom" style="color: rgba(240, 48, 0, 0.781)"> </a>
-            تفريغ
-          </button>
-        </div>
-      </form>
-    </div>
-    <!-- ExpensesBrowser -->
-    <div
-      id="Expenses__Browser"
-      class="login-box"
-      style="display: none; height: 80%"
-    >
-      <div class="hh">
-        <h3 style="width: calc(100% - 100px)">المصروفات</h3>
-        <button
-          class="SignOut"
-          onclick="LoadExpensesToTable()"
-          style="background-color: #818fb4; width: 30px; height: 30px"
-        >
-          <a
-            id="LoadingExpensesBrowser"
-            class="fa fa-refresh"
-            style="color: rgba(67, 78, 3, 0.603); width: 100%"
-          >
-          </a>
-        </button>
-        <button
-          class="SignOut"
-          onclick="ShowExpensesWi()"
-          style="background-color: rgb(30, 138, 3); width: 30px; height: 30px"
-        >
-          <a
-            id="LoadingExpensesPlus"
-            class="fa fa-plus"
-            style="color: white; width: 100%"
-          >
-          </a>
-        </button>
-        <button
-          class="SignOut"
-          onclick="GoToMain()"
-          style="
-            background-color: rgba(92, 149, 255, 0.952);
-            width: 30px;
-            height: 30px;
-          "
-        >
-          <a
-            class="fa fa-mail-reply"
-            style="color: rgba(5, 33, 85, 0.603); width: 100%"
-          >
-          </a>
-        </button>
-      </div>
-      <form style="height: 90%; display: block">
-        <form style="height: 40%">
-          <div class="tabdata" style="direction: rtl">
-            <table>
-              <thead>
-                <tr>
-                  <th style="width: 70px">ت</th>
-                  <th style="width: calc(25% - 300px)">المبلغ</th>
-                  <th style="width: calc(25% - 300px)">القيمة المضافة</th>
-                  <th style="width: calc(25% - 300px)">نوع المصروف</th>
-                  <th style="width: calc(25% - 300px)">المستلم</th>
-                  <th style="width: 200px">التاريخ</th>
-                  <th style="width: 30px"></th>
-                </tr>
-              </thead>
-              <tbody id="bodyTableExpenses"></tbody>
-            </table>
-          </div>
-        </form>
-      </form>
-    </div>
-    <div id="Reports" class="login-box" style="display: none; height: 80%">
-      <div class="hh" style="margin-bottom: 1rem">
-        <h3 style="width: calc(100% - 100px)">التقارير</h3>
-        <button
-          class="SignOut"
-          onclick="GoToMain()"
-          style="
-            background-color: rgba(92, 149, 255, 0.952);
-            width: 30px;
-            height: 30px;
-          "
-        >
-          <a
-            class="fa fa-mail-reply"
-            style="color: rgba(5, 33, 85, 0.603); width: 100%"
-          >
-          </a>
-        </button>
-      </div>
-      <div class="reports-wrapper">
-        <div class="Reports_Card">
-          <h3>إجمالي عدد المبيعات</h3>
-          <p id="total-sales-count"></p>
-        </div>
-        <div class="Reports_Card">
-          <h3>إجمالي مبالغ المبيعات</h3>
-          <p id="total-sales-amount"></p>
-        </div>
-        <div class="Reports_Card">
-          <h3>صافي الفواتير</h3>
-          <p id="total-sales-amount-net"></p>
-        </div>
-        <div class="Reports_Card">
-          <h3>إجمالي المصروفات</h3>
-          <p id="total-expenses"></p>
-        </div>
-        <div class="Reports_Card">
-          <h3>إجمالي التحصيلات</h3>
-          <p id="total-tahseel"></p>
-        </div>
-        <div class="Reports_Card">
-          <h3>المبالغ المتوفرة</h3>
-          <p id="available-amount"></p>
         </div>
       </div>
     </div>
