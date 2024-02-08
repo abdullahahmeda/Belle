@@ -96,21 +96,18 @@ async function ShowReports() {
   Loading.className = "fas fa-chart-bar";
 }
 
-function ShowMethodBrowser() {
+async function ShowMethodBrowser() {
   let Loading = document.getElementById("LoadingMethodBrowser");
   let Loading1 = document.getElementById("creditcard");
   let Loading2 = document.getElementById("BackMethodBrowser");
   Loading.className = "fa fa-refresh fa-spin";
   Loading1.className = "fa fa-refresh fa-spin";
   Loading2.className = "fa fa-refresh fa-spin";
-  LoadMethodToTable();
-  const myTimeout = setTimeout(function () {
-    ShowSelectForm("MethodBrowser");
-    Loading.className = "fa fa-refresh";
-    Loading1.className = "fa fa-credit-card";
-    Loading2.className = "fa fa-mail-reply";
-    clearTimeout(myTimeout);
-  }, 2000);
+  await LoadMethodToTable();
+  ShowSelectForm("MethodBrowser");
+  Loading.className = "fa fa-refresh";
+  Loading1.className = "fa fa-credit-card";
+  Loading2.className = "fa fa-mail-reply";
 }
 
 async function ShowTahseelTypesBrowser() {
@@ -322,28 +319,25 @@ function LoadMethodName() {
   }
 }
 
-function LoadMethodToTable() {
+async function LoadMethodToTable() {
   let Num, MetodNum, MetodName, PercentMetod, AmountMetod;
   let Loading = document.getElementById("LoadingMethodBrowser");
   Loading.className = "fa fa-refresh fa-spin";
   document.getElementById("bodyTableMethod").innerHTML = "";
-  LoadPaymentMethods();
-  const myTimeout = setTimeout(function () {
-    if (isNaN(DataPaymentMethods[0].Num) == false) {
-      for (let index = 0; index < DataPaymentMethods.length; index++) {
-        Num = DataPaymentMethods[index].Num;
-        MetodNum = DataPaymentMethods[index].MetodNum;
-        MetodName = DataPaymentMethods[index].MetodName;
-        PercentMetod = DataPaymentMethods[index].PercentMetod;
-        AmountMetod = DataPaymentMethods[index].AmountMetod;
-        if (DataPaymentMethods[index].Num != "") {
-          AddRowMethod(Num, MetodNum, MetodName, PercentMetod, AmountMetod);
-        }
+  await LoadPaymentMethods();
+  if (isNaN(DataPaymentMethods[0].Num) == false) {
+    for (let index = 0; index < DataPaymentMethods.length; index++) {
+      Num = DataPaymentMethods[index].Num;
+      MetodNum = DataPaymentMethods[index].MetodNum;
+      MetodName = DataPaymentMethods[index].MetodName;
+      PercentMetod = DataPaymentMethods[index].PercentMetod;
+      AmountMetod = DataPaymentMethods[index].AmountMetod;
+      if (DataPaymentMethods[index].Num != "") {
+        AddRowMethod(Num, MetodNum, MetodName, PercentMetod, AmountMetod);
       }
     }
-    Loading.className = "fa fa-refresh";
-    clearTimeout(myTimeout);
-  }, 2000);
+  }
+  Loading.className = "fa fa-refresh";
 }
 
 function AddRowMethod(Num, MetodNum, MetodName, PercentMetod, AmountMetod) {
