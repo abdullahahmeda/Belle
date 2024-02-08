@@ -1,6 +1,6 @@
 const sheetId = "1q3M1Etd73E7s3HaH_SZyEwBAZUCbAY_nhjmB02WDoTc";
 const Script =
-  "https://script.google.com/macros/s/AKfycbzHoNFrA-opvU2vcQ4aw_xMz930zURNXK_XUJQ917n_vJVG8FdZNm2z2AuRkDowCR1KkQ/exec";
+  "https://script.google.com/macros/s/AKfycbyZhrtEIGDOVgAryJxUT68QSIuGz8-J_sXOa5BXs7pwN12rvEV_CYV-aUdNQSlfr_6A-Q/exec";
 const base = `${Script}?`;
 let query = encodeURIComponent("Select *");
 let PlacesSheetName = "places";
@@ -204,16 +204,13 @@ async function ShowSalesWi() {
   Loading.className = "fa fa-refresh fa-spin";
   Loading1.className = "fa fa-refresh fa-spin";
   await LoadPaymentMethods();
-  LoadSetting();
+  await LoadSetting();
   await LoadInvoices();
-  Loadplaces();
-  const myTimeout = setTimeout(function () {
-    Loading.className = "fas fa-plus";
-    Loading1.className = "fa fa-mail-reply";
-    ClearItemSa();
-    ShowSelectForm("SalesWi");
-    clearTimeout(myTimeout);
-  }, 3000);
+  await Loadplaces();
+  Loading.className = "fas fa-plus";
+  Loading1.className = "fa fa-mail-reply";
+  ClearItemSa();
+  ShowSelectForm("SalesWi");
 }
 
 function GoToMain() {
@@ -1310,9 +1307,9 @@ function submitTahseelForm(Time = 5000) {
 }
 
 // ********************SalesWi
-function LoadSetting() {
+async function LoadSetting() {
   DataSetting = [];
-  fetch(SettingUrl)
+  await fetch(SettingUrl)
     .then((res) => res.text())
     .then((rep) => {
       const jsonSetting = JSON.parse(rep.substring(47).slice(0, -2));
@@ -1332,6 +1329,7 @@ function LoadSetting() {
       });
       LoadSettingName();
     });
+  return DataSetting;
 }
 
 function LoadSettingName() {
@@ -1341,8 +1339,8 @@ function LoadSettingName() {
   Ready.value = DataSetting[0].SettingName;
   let Tax = document.getElementById("TaxP");
   Tax.value = DataSetting[1].SettingName;
-  let ShipNum = document.getElementById("ShipNum");
-  ShipNum.innerHTML = "";
+  // let ShipNum = document.getElementById("ShipNum");
+  // ShipNum.innerHTML = "";
   let OtherCost = document.getElementById("OtherCost");
   OtherCost.value = DataSetting[4].SettingName;
   for (let index = 2; index < 4; index++) {
@@ -1352,7 +1350,7 @@ function LoadSettingName() {
     optionClass = document.createElement("option");
     optionClass.value = SettingNum;
     optionClass.textContent = SettingNote;
-    ShipNum.appendChild(optionClass);
+    // ShipNum.appendChild(optionClass);
   }
 }
 
@@ -1379,9 +1377,9 @@ function OncahangeMethod(Myvalue) {
   CaluclateTotalS();
 }
 
-function Loadplaces() {
+async function Loadplaces() {
   Dataplaces = [];
-  fetch(PlacesUrl)
+  await fetch(PlacesUrl)
     .then((res) => res.text())
     .then((rep) => {
       const jsonplaces = JSON.parse(rep.substring(47).slice(0, -2));
@@ -1401,6 +1399,7 @@ function Loadplaces() {
       });
       LoadplacesName();
     });
+  return Dataplaces;
 }
 
 function LoadplacesName() {
@@ -1453,8 +1452,8 @@ function ClearItemSa() {
   MethodNum.style.border = "none";
   document.getElementById("MethodAmount").value = "";
   document.getElementById("Tax").value = "";
-  document.getElementById("ShipNum").value = "";
-  document.getElementById("ShipAmount").value = "";
+  // document.getElementById("ShipNum").value = "";
+  // document.getElementById("ShipAmount").value = "";
   document.getElementById("AmountNet").value = "";
   document.getElementById("MethodPer").value = "";
   document.getElementById("MethodVa").value = "";
@@ -1486,13 +1485,14 @@ function CaluclateTotalS() {
   let MethodAmount = document.getElementById("MethodAmount");
   let Tax = document.getElementById("Tax");
   let TaxP = document.getElementById("TaxP");
-  let ShipAmount = document.getElementById("ShipAmount");
+  // let ShipAmount = document.getElementById("ShipAmount");
   let ShipAmount2 = 0;
-  if (ShipAmount.value != 0) {
-    ShipAmount2 = Number(ShipAmount.value);
-  }
+  // if (ShipAmount.value != 0) {
+  //   ShipAmount2 = Number(ShipAmount.value);
+  // }
   let OtherCost = document.getElementById("OtherCost");
   let AmountNet = document.getElementById("AmountNet");
+  const isFreeShipping = document.getElementById("checkbox1").checked;
   AmountActualTotal.value =
     Number(AmountTotal.value) - Number(RefundAmount.value);
   if (DesCountSel.value == "ريال") {
@@ -1516,25 +1516,15 @@ function CaluclateTotalS() {
     Number(Tax.value) -
     ShipAmount2 -
     Number(OtherCost.value) -
-    Number(PlacePrice.value);
+    (isFreeShipping ? Number(PlacePrice.value) : 0);
   AmountNet.value = GetFormat(String(AmountNet.value));
 }
 
 function onchangecheckbox() {
-  let ShipNum = document.getElementById("ShipNum");
-  let ShipAmount = document.getElementById("ShipAmount");
+  // let ShipNum = document.getElementById("ShipNum");
+  // let ShipAmount = document.getElementById("ShipAmount");
   let checkbox1 = document.getElementById("checkbox1");
-  if (checkbox1.checked == false) {
-    ShipNum.value = "";
-    ShipAmount.value = 0;
-    ShipNum.disabled = true;
-    ShipAmount.style.backgroundColor = "darkgray";
-    ShipAmount.disabled = true;
-  } else {
-    ShipNum.disabled = false;
-    ShipAmount.style.backgroundColor = "";
-    ShipAmount.disabled = false;
-  }
+  document.getElementById("FreeShipping_Actual").value = checkbox1.checked;
   CaluclateTotalS();
 }
 
@@ -1725,6 +1715,7 @@ async function ShowSalesBrowser() {
           InvoicesData[index].DesCountSel,
           InvoicesData[index].PlaceName,
           InvoicesData[index].PlacePrice,
+          InvoicesData[index].FreeShipping,
         );
       }
     }
@@ -1816,6 +1807,7 @@ function AddRowPrS(
   DesCountSel,
   PlaceName,
   PlacePrice,
+  FreeShipping,
 ) {
   let bodydata = document.getElementById("bodydataS");
   let row = bodydata.insertRow();
@@ -1848,6 +1840,9 @@ function AddRowPrS(
   cell.id = "S" + bodydata.childElementCount + "Tax";
   cell.innerHTML = GetFormat(String(Tax));
   cell.className = "Calcu3";
+  cell = row.insertCell();
+  cell.id = "S" + bodydata.childElementCount + "FreeShipping";
+  cell.innerHTML = FreeShipping ? "نعم" : "لا";
   cell = row.insertCell();
   cell.id = "S" + bodydata.childElementCount + "ShipType";
   cell.innerHTML = PlaceName;
@@ -1905,7 +1900,7 @@ function AddRowPrS(
   cell.style.display = "none";
 }
 
-function showdatarowsS() {
+async function showdatarowsS() {
   let indextable = document.activeElement.parentElement.parentElement.id;
   let Num = document.getElementById(indextable).children.item(0).textContent;
   let BillNumber = document
@@ -1920,77 +1915,71 @@ function showdatarowsS() {
   let RefundAmount = document
     .getElementById(indextable)
     .children.item(4).textContent;
-  // let MethodName=document.getElementById(indextable).children.item(5).textContent  ;
   let MethodAmount = document
     .getElementById(indextable)
     .children.item(6).textContent;
   let Tax = document.getElementById(indextable).children.item(7).textContent;
-  // let ShipType=document.getElementById(indextable).children.item(8).textContent  ;
-  let ShipAmount = document
-    .getElementById(indextable)
-    .children.item(9).textContent;
+  let FreeShipping =
+    document.getElementById(indextable).children.item(8).textContent === "نعم";
   let OtherCost = document
     .getElementById(indextable)
-    .children.item(10).textContent;
+    .children.item(11).textContent;
   let AmountNet = document
     .getElementById(indextable)
-    .children.item(11).textContent;
-  let MethodNum = document
-    .getElementById(indextable)
     .children.item(12).textContent;
-  let ShipNum = document
+  let MethodNum = document
     .getElementById(indextable)
     .children.item(13).textContent;
   let Loading = document
     .getElementById(indextable)
-    .children.item(14)
+    .children.item(15)
     .children.item(0)
     .children.item(0);
   let DesCountAmount = document
     .getElementById(indextable)
-    .children.item(15).textContent;
-  let Ready = document.getElementById(indextable).children.item(16).textContent;
+    .children.item(16).textContent;
+  let Ready = document.getElementById(indextable).children.item(17).textContent;
   let DesCountSel = document
     .getElementById(indextable)
-    .children.item(17).textContent;
+    .children.item(18).textContent;
   let PlaceName = document
     .getElementById(indextable)
-    .children.item(18).textContent;
+    .children.item(19).textContent;
   let PlacePrice = document
     .getElementById(indextable)
-    .children.item(19).textContent;
-  LoadPaymentMethods();
-  LoadSetting();
+    .children.item(20).textContent;
   Loading.className = "fa fa-refresh fa-spin";
-  const myTimeout = setTimeout(function () {
-    document.getElementById("RowS").value = Number(Num) + 1;
-    document.getElementById("BillNumber").value = BillNumber;
-    document.getElementById("BillNumber2").value = BillNumber;
-    document.getElementById("BillDate").value = BillDate;
-    document.getElementById("AmountTotal").value = AmountTotal;
-    document.getElementById("RefundAmount").value = RefundAmount;
-    document.getElementById("MethodNum").value = MethodNum;
-    document.getElementById("MethodAmount").value = MethodAmount;
-    document.getElementById("Tax").value = Tax;
-    document.getElementById("ShipNum").value = ShipNum;
-    let Ship = document.getElementById("ShipAmount");
-    Ship.value = ShipAmount;
-    document.getElementById("OtherCost").value = OtherCost;
-    document.getElementById("AmountNet").value = AmountNet;
-    document.getElementById("Ready").value = Ready;
-    document.getElementById("DesCountAmount").value = DesCountAmount;
-    document.getElementById("DesCountSel").value = DesCountSel;
-    if (Ship.value != 0) {
-      document.getElementById("checkbox1").checked = true;
-      onchangecheckbox();
-    }
-    document.getElementById("PlaceName").value = PlaceName;
-    document.getElementById("PlacePrice").value = PlacePrice;
-    OncahangeMethod(MethodNum);
-    ShowSelectForm("SalesWi");
-    Loading.className = "fa fa-edit";
-    clearTimeout(myTimeout);
-  }, 2000);
+  await LoadPaymentMethods();
+  await LoadSetting();
+  await Loadplaces();
+  document.getElementById("RowS").value = Number(Num) + 1;
+  document.getElementById("BillNumber").value = BillNumber;
+  document.getElementById("BillNumber2").value = BillNumber;
+  document.getElementById("BillDate").value = BillDate;
+  document.getElementById("AmountTotal").value = AmountTotal;
+  document.getElementById("RefundAmount").value = RefundAmount;
+  document.getElementById("MethodNum").value = MethodNum;
+  document.getElementById("MethodAmount").value = MethodAmount;
+  document.getElementById("Tax").value = Tax;
+  // document.getElementById("ShipNum").value = ShipNum;
+  // let Ship = document.getElementById("ShipAmount");
+  // Ship.value = ShipAmount;
+  document.getElementById("OtherCost").value = OtherCost;
+  document.getElementById("AmountNet").value = AmountNet;
+  document.getElementById("Ready").value = Ready;
+  document.getElementById("DesCountAmount").value = DesCountAmount;
+  document.getElementById("DesCountSel").value = DesCountSel;
+  // if (Ship.value != 0) {
+  //   document.getElementById("checkbox1").checked = true;
+  //   onchangecheckbox();
+  // }
+  document.getElementById("checkbox1").checked = FreeShipping;
+  document.getElementById("FreeShipping_Actual").value = FreeShipping;
+  document.getElementById("PlaceName").value = PlaceName;
+  document.getElementById("PlacePrice").value = PlacePrice;
+  OncahangeMethod(MethodNum);
+  ShowSelectForm("SalesWi");
+  Loading.className = "fa fa-edit";
 }
 
 async function FillterSalesToTable() {
@@ -2027,6 +2016,7 @@ async function FillterSalesToTable() {
               InvoicesData[index].DesCountSel,
               InvoicesData[index].PlaceName,
               InvoicesData[index].PlacePrice,
+              InvoicesData[index].FreeShipping,
             );
           }
         } else if (SeaDate.value != "") {
@@ -2050,6 +2040,7 @@ async function FillterSalesToTable() {
               InvoicesData[index].DesCountSel,
               InvoicesData[index].PlaceName,
               InvoicesData[index].PlacePrice,
+              InvoicesData[index].FreeShipping,
             );
           }
         }

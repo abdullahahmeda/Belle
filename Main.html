@@ -34,8 +34,7 @@
   </head>
   <body style="min-height: unset; word-break: unset">
     <div class="container">
-      <!-- 
-      <div class="flex items-center justify-center header">
+      <div class="hidden items-center justify-center header">
         <h2 id="MainLabel" class="flex-1">برنامج المحاسبة</h2>
         <div class="BA mr-auto">
           <button
@@ -55,8 +54,7 @@
             <a class="fa fa-sun-o"></a>
           </button>
         </div>
-</div> -->
-
+      </div>
       <!--loginPage  -->
       <!-- <div class='login-box' id='loginPage' style='height: 163px; width: 80%;top: 50%;'>
     <div class='hh'> <h3> تسجيل الدخول</h3> </div>
@@ -447,37 +445,12 @@
                 required=""
                 onchange="onchangecheckbox()"
               />
+              <input
+                type="hidden"
+                name="FreeShipping"
+                id="FreeShipping_Actual"
+              />
               <label for="checkbox1">هل الشحن مجاني</label>
-            </div>
-
-            <div class="user-box">
-              <label for="ShipNum">نوع الشحن</label>
-              <select
-                name="ShipNum"
-                id="ShipNum"
-                required=""
-                tabindex="7"
-                onchange="OncahangeShip(this.value)"
-                disabled=""
-              ></select>
-            </div>
-
-            <div class="user-box">
-              <label for="ShipAmount">مبلغ الشحن</label>
-              <div class="flex items-center gap-2">
-                <input
-                  id="ShipAmount"
-                  name="ShipAmount"
-                  required=""
-                  tabindex="8"
-                  type="number"
-                  autocomplete="off"
-                  onkeyup="CaluclateTotalS()"
-                  onchange="CaluclateTotalS()"
-                  disabled=""
-                />
-                <label for="ShipAmount">ريال</label>
-              </div>
             </div>
             <div class="user-box">
               <label for="RefundAmount">المسترجع</label>
@@ -672,6 +645,7 @@
                     <th style="width: calc(10% - 30px)">طريقة الدفع</th>
                     <th style="width: calc(10% - 30px)">خصم الدفع</th>
                     <th style="width: calc(10% - 30px)">ضريبة</th>
+                    <th style="width: calc(10% - 30px)">التوصيل مجاني</th>
                     <th style="width: calc(10% - 30px)">نوع الشحن</th>
                     <th style="width: calc(10% - 30px)">مبلغ الشحن</th>
                     <th style="width: calc(5% - 30px)">تكاليف اخرى</th>
