@@ -1509,7 +1509,8 @@ function CaluclateTotalS() {
     Number(Ready.value) -
     DiCount -
     Number(MethodAmount.value) -
-    Number(PlacePrice.value);
+    Number(PlacePrice.value) - 
+    (isFreeShipping ?  Number(PlacePrice.value) : 0)
   // Number(Tax.value) -
   // - Number(OtherCost.value)
   AmountNet.value = GetFormat(String(AmountNet.value));
