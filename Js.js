@@ -1500,17 +1500,18 @@ function CaluclateTotalS() {
   Value1 =
     (Number(AmountActualTotal.value) * Number(MethodPer.value)) / 100 +
     Number(MethodVa.value);
-  MethodAmount.value =
-    (Number(Value1) * Number(TaxP.value)) / 100 + Number(Value1);
-  Tax.value = Number(AmountActualTotal.value) - value;
+  MethodAmount.value = GetFormat(
+    String((Number(Value1) * Number(TaxP.value)) / 100 + Number(Value1)),
+  );
+  Tax.value = GetFormat(String(Number(AmountActualTotal.value) - value));
   AmountNet.value =
     Number(AmountActualTotal.value) -
     Number(Tax.value) -
     Number(Ready.value) -
     DiCount -
     Number(MethodAmount.value) -
-    Number(PlacePrice.value) - 
-    (isFreeShipping ?  Number(PlacePrice.value) : 0)
+    Number(PlacePrice.value) -
+    (isFreeShipping ? Number(PlacePrice.value) : 0);
   // Number(Tax.value) -
   // - Number(OtherCost.value)
   AmountNet.value = GetFormat(String(AmountNet.value));
@@ -1838,7 +1839,7 @@ function AddRowPrS(
   cell.className = "Calcu3";
   cell = row.insertCell();
   cell.id = "S" + bodydata.childElementCount + "FreeShipping";
-  cell.innerHTML = FreeShipping ? "نعم" : "لا";
+  cell.innerHTML = FreeShipping ? "ن��م" : "لا";
   cell = row.insertCell();
   cell.id = "S" + bodydata.childElementCount + "ShipType";
   cell.innerHTML = PlaceName;
