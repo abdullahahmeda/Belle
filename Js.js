@@ -1485,16 +1485,11 @@ function CaluclateTotalS() {
   let MethodAmount = document.getElementById("MethodAmount");
   let Tax = document.getElementById("Tax");
   let TaxP = document.getElementById("TaxP");
-  // let ShipAmount = document.getElementById("ShipAmount");
-  let ShipAmount2 = 0;
-  // if (ShipAmount.value != 0) {
-  //   ShipAmount2 = Number(ShipAmount.value);
-  // }
-  let OtherCost = document.getElementById("OtherCost");
   let AmountNet = document.getElementById("AmountNet");
   const isFreeShipping = document.getElementById("checkbox1").checked;
   AmountActualTotal.value =
     Number(AmountTotal.value) - Number(RefundAmount.value);
+  const value = Number(AmountActualTotal.value) / 1.15;
   if (DesCountSel.value == "ريال") {
     DiCount = Number(DesCountAmount.value);
   }
@@ -1507,16 +1502,16 @@ function CaluclateTotalS() {
     Number(MethodVa.value);
   MethodAmount.value =
     (Number(Value1) * Number(TaxP.value)) / 100 + Number(Value1);
-  Tax.value = (Number(TaxP.value) / 100) * Number(AmountActualTotal.value);
+  Tax.value = Number(AmountActualTotal.value) - value;
   AmountNet.value =
     Number(AmountActualTotal.value) -
+    Number(Tax.value) -
     Number(Ready.value) -
     DiCount -
     Number(MethodAmount.value) -
-    Number(Tax.value) -
-    ShipAmount2 -
-    Number(OtherCost.value) -
-    (isFreeShipping ? Number(PlacePrice.value) : 0);
+    Number(PlacePrice.value);
+  // Number(Tax.value) -
+  // - Number(OtherCost.value)
   AmountNet.value = GetFormat(String(AmountNet.value));
 }
 
